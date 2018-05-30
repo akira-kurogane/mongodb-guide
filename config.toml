@@ -33,18 +33,18 @@ name = "<i class='fa fa-fw fa-bullhorn'></i> Theme credits"
 url = "/credits"
 weight = 30
 
-[Languages.fr]
-title = "Le guide d'Akira pour MongoDB"
+[Languages.ja]
+title = "アキラのMongoDBガイド"
 weight = 2
-languageName = "Français"
+languageName = "日本語"
 
-[[Languages.fr.menu.shortcuts]]
-name = "<i class='fa fa-fw fa-github'></i> Repo Github"
+[[Languages.ja.menu.shortcuts]]
+name = "<i class='fa fa-fw fa-github'></i> Github repo"
 identifier = "ds"
 url = "https://github.com/akira-kurogane/mongodb-guide"
 weight = 10
 
-[[Languages.fr.menu.shortcuts]]
-name = "<i class='fa fa-fw fa-bullhorn'></i> Crédits de thème"
+[[Languages.ja.menu.shortcuts]]
+name = "<i class='fa fa-fw fa-bullhorn'></i> Theme クレジット"
 url = "/credits"
 weight = 30
