@@ -2,7 +2,7 @@
 title = "Sharding for expansion"
 date =  2018-05-31T16:05:23+10:00
 draft = true
-weight = 5
+weight = 15
 +++
 
 Basic overview

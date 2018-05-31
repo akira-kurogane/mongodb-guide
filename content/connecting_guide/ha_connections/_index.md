@@ -1,5 +1,5 @@
 +++
-title = "Staying connected with automatic failover"
+title = "Automatic failover"
 date =  2018-05-30T23:41:54+10:00
 weight = 25
 +++
