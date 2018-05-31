@@ -1,6 +1,7 @@
 +++
 title = "Inserts, updates and deletes"
 date =  2018-05-31T15:07:14+10:00
+draft = true
 weight = 25
 +++
 

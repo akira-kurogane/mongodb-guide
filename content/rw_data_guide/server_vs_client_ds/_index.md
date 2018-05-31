@@ -1,6 +1,7 @@
 +++
 title = "Data structure on server vs. client"
 date =  2018-05-31T15:02:04+10:00
+draft = true
 weight = 10
 +++
 
