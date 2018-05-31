@@ -10,11 +10,14 @@ defaultContentLanguageInSubdir= true
 
 [params]
   description = "Akira's guide for MongoDB"
-  author = "Mathieu Cornic"
+  author = "Akira Kurogane"
   showVisitedLinks = true
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
+
+[blackfriday]
+  smartypants = false
 
 [Languages]
 [Languages.en]

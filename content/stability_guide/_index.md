@@ -11,4 +11,12 @@ pre = "<b>4. </b>"
 
 # Making MongoDB Stable
 
+### Why are all the good DBs and other datastores replicated these days? 
+
+(A story about improved speeds and sizes whilst no progress for mean time-to-failure)
+
+### The oplog mechanims
+
+TODO
+
 {{% children  %}}
