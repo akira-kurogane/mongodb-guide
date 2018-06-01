@@ -11,4 +11,29 @@ pre = "<b>9. </b>"
 
 # Read the docs
 
+## Installing
+
+## Building from source
+
+## Configuration
+
+### The practical minimums
+
+### Cluster example
+
+### Security 
+(see that section)
+
+## Commands and operators
+
+### CRUD, Aggregation
+### Admin
+
+## Mongo shell
+
+## System collections
+
+## Log messages
+
+
 {{% children  %}}
