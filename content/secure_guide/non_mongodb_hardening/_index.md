@@ -5,4 +5,6 @@ draft = true
 weight = 30
 +++
 
-Lorem Ipsum.
+Limit network exposure
+
+Limit unix access. Use a dedicated account for running the mongod / mongos processes, i.e. not "root".

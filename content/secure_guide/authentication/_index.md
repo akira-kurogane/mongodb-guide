@@ -5,4 +5,10 @@ draft = true
 weight = 10
 +++
 
-Lorem Ipsum.
+Password
+
+LDAP
+
+Kerberos
+
+Automatically enabled when internal auth is enabled. I.e. whenever mongod and mongos nodes use a keyfile
