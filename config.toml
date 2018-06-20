@@ -12,6 +12,8 @@ defaultContentLanguageInSubdir= true
   description = "Akira's guide for MongoDB"
   author = "Akira Kurogane"
   showVisitedLinks = true
+  disableInlineCopyToClipBoard = true
+  themeVariant = "green"
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
