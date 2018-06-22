@@ -26,7 +26,7 @@ var x = 1;
 for (i = 0; i < 100; i++) { print(i); }
 function max(a, b) { return a > b ? a : b; }
 ```
-_Javascript that uses "db" special global object to send commands to the connection to a MongoDB server_
+_Javascript that uses a "db" special global object to send commands to the connection to a MongoDB server_
 
 ```javascript
 use <database_name>  //set current database namespace
@@ -100,8 +100,54 @@ I can't call it with certainty, but server-side Javascript looks to be a target 
 
 Having a CLI is a practical requirement for doing administration, so basically everyone will use it for that reason at least. Most people will also use it for learning. The MongoDB documentation uses mongo shell syntax all over too.
 
-### How you use it
+### Common Examples
 
-\[TODO: Connection example; Oh look, a javascript sandbox. With auto-magic printing of returned vals. Initial poke via an isMaster command as another example. db.createUser()?\]
+#### Connection
 
-https://docs.mongodb.com/manual/reference/program/mongo/
+On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run). The examples beneath show how to connect to.
+
+- A replicaset named "**merch_backend_rs**" 
+- It has two normal, data-bearing nodes running at
+  - **dbsvrhost1:27017** (the current primary),
+  - **dbsvrhost2:27017** (currently a secondary), 
+- And an arbiter on a third, unspecified host.
+- The main user database is "**orderhist**".
+- There is a user "**akira**" with password "**secret**", and the usual "**admin**" db is the authentication database (i.e. where the _system.users_ and related system collections are).
+
+Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.
+```sh
+# Most typical. "-u" and "-p" are short for --username, --password.
+# The long "--authenticationDatabase" argument is required unless you to
+#  choose to start in the "admin" database instead of your user "orderhist"s
+#  database. Or you used the legacy method of creating authentication users
+#  in the "orderhist" db.
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# With an explicit replica set conn string. The benefit compared to default, automatic
+#  detection of replica set topology (that you probably unknowingly used all the time 
+#  until now) is this method will:
+#   1. Change to be connected to the PRIMARY node, so you will be able to make writes
+#   2. The connection will succeed even if dbsvrhost1 is down a.t.m.
+# So use this type of connection string in your batch scripts.
+# (Don't include the arbiter in the host list - it wont authenticate users.)
+mongo --host merch_backend_rs/dbsvrhost1:27017,dbsvrhost2:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# Using a mongodb URI connection string, the same as in your application code.
+#  This will require that you execute "use orderhist" after connecting to get into that
+#  db namespace. In this method, with no database name argument specified, "admin" 
+#  is the default db namespace for authentication.
+mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/?replicaSet=merch_backend_rs'
+
+# If you have disabled authentication in the mongod configuration, and it is 
+#  running on port 27017 on localhost, and you want to use the "test" db ...
+#  Bingo!, the naked command will work.
+mongo
+
+# Execute a javascript script file
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin daily_report.js
+
+# Execute a javascript statement as a command-line argument.
+mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
+```
+
+When you 
