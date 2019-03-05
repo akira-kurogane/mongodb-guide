@@ -10,7 +10,7 @@ From the perspective of the driver developer a MongoDB driver:
 - Sends and receives that info, keeping track of which reply from a server matches which request.
   - When using a connection pool it also keeps a track of which thread the requests were sent from
 - Goes to error handling when there are network interruptions like abrupt socket closure and other TCP casuality situations
-- There is a _lot_ of detail in the 'Meta' API driver specification about <a href=https://github.com/mongodb/specifications/tree/master/source/server-discovery-and-monitoring">server discovery and monitoring</a> ("SDAM") and <a href="https://github.com/mongodb/specifications/tree/master/source/server-selection">server selection</a> which _all_ the supported drivers follow. 
+- Implements a _lot_ of detail in the 'Meta' API driver specification for <a href=https://github.com/mongodb/specifications/tree/master/source/server-discovery-and-monitoring">server discovery and monitoring</a> ("SDAM") and <a href="https://github.com/mongodb/specifications/tree/master/source/server-selection">server selection</a>.
 
 From the application developer's perspective the MongoDB driver:
 

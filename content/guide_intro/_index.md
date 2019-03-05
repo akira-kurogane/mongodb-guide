@@ -16,12 +16,12 @@ pre = "<b>1. </b>"
 Mostly everyone who has used one of the 'NoSQL' databases which came into popularity post-2010, of which MongoDB is the most popular, already appreciate this. But for those of you still using relational databases the key points are
 
 - Reduced lines of code
-- You don't need to perform a full mental switch between the paradigm of your application's logic and the paradigm of the server-side data storage mechanism when you're programming a part that writes to or reads from the database.
+- You don't need to perform a full mental switch between the paradigm of your application's data structure v.s. the server-side data storage mechanism.
 You are a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3900881/">glucose-powered computer</a> and context change is expensive. Only so much glucose can be converted by your neurons into thought-sparks a day, so save your sparks for things that are more valuable to you.
 
 Want to do things quicker by using more developers / tools? For example your Web front-end has been created in language _X_, but the data scientists that will mine gold from the big data need to use language _Y_? MongoDB has got you covered - C, C++, C#, Erlang, Go, Java, Node.js, Perl, PHP, Python, Ruby and Scala are supported.
 
-The simplicity of the client API will also reduce the _technical debt_ of your codebase significantly. To the original developer this may seem important, but for the development department that owns the technology it is more important than the speed of new feature development.
+The simplicity of the client API will also reduce the _technical debt_ of your codebase significantly. To the original developer this may seem unimportant, but for the development department that owns the technology it is more important than the speed of new feature development.
 
 ### Write faster, read faster
 
@@ -39,7 +39,7 @@ As the data load progressed:
 
 The takeaway for me was _the hardware specs were no longer some sort of fantasy numbers way above the user's reality_, which was a given for RDBMS-using application developers until then. If the hardware manufacturers have engineered their equipment to flick _x_ million or billion electrons per second from one silicon nano-suburb to another, I could now use _all_ those electrons for my data purposes.
 
-With the change in hardware-land to SSDs, and furthermore MongoDB's change to the WiredTiger storage engine, MongoDB users now usually enjoy throughput and latency will be somewhat higher than the figures above. But the key point is to expect MongoDB to redline your _hardware's_ throughput and/or latency by the volume of _your_ data being moved, without the database software eating a noticeable chunk of the server capacity for itself.
+With the change in hardware-land to SSDs, and furthermore MongoDB's change to the WiredTiger storage engine, MongoDB users now enjoy throughput and latency somewhat higher than the puny 30MB/s figure above. But the key point is to expect MongoDB to redline your _hardware's_ throughput and/or latency by the volume of _your_ data being moved, without the database software eating a noticeable chunk of the server capacity for itself.
 
 ### Go big
 
@@ -47,9 +47,9 @@ The growth of e-commerce and social networking in the noughties lead to many tho
 
 The NoSQL databases for the most part came with a huge benefit for this businesses / websites - easy data partitioning. You don't program the distribution logic in your application, instead you leave it to the database driver or the db server node you connect to.
 
-(They mostly also included replication, making automatic database failover another thing that happens on the other 'side' of the database driver. See the separate section for this though.)
+The NoSQL databases mostly also included replication, making automatic database failover another thing that happens on the other 'side' of the database driver. See the separate section for this though.
 
-Which field(s) you should pick as the _shard key_ is an important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).
+Which field(s) should be chosen to partition data is still a very important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).
 
 ### Get bigger quickly 
 

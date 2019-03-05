@@ -8,7 +8,7 @@ weight = 20
 
 The mongo shell is just another client application. There, I said it. 
 
-It is _not_ a special node within a MongoDB replica set or cluster. It is an application that connects and communicates with the mongod (or mongos) nodes with the same MongoDB Wire protocol TCP traffic that any other application could. If it was a black box rather than being open source, and free, you could reverse-engineer it even without super-dooper elite hacker skills. It has no special sauce that gives it elevated privilege or better performance compared to what any MongoDB driver-using application can have.
+It is _not_ a special node within a MongoDB replica set or cluster. It is an application that connects and communicates with the mongod (or mongos) nodes with the same MongoDB Wire protocol TCP traffic that any other application could. If it was a black box rather than being open source, you could reverse-engineer it even without super-dooper elite hacker skills. It has no special sauce that gives it elevated privilege or better performance compared to what any MongoDB driver-using application can have.
 
 What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter). It's not the only one that has ever existed, but it is the only popular one to date.
 
@@ -70,20 +70,20 @@ To recap the mongo shell:
 
 - Uses the MongoDB wire protocol to communicate with MongoDB servers the same as any application
 - It is C++ internally
-- Makes use of javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter
+- Makes use of a javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter
 - Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database
 - There is one "db" MongoDB connection object created which represents the connection to the mongod or mongos host you specified with the --host argument when you began the shell
   - You are not forced to use the "db" global and the "db" global alone. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)". It would be an untypical way to use the shell however.
 - The behind-the-scenes flow every time you execute a db.XXX() command:
   1. You create documents as Javascript objects, and execute Javascript functions in the interpreter. 
-  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands also as BSON objects, ones that includes the BSON-converted javascript argument values (if any), puts it into the OP_COMMAND and sends it over the network
+  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands also as BSON objects, ones that includes the BSON-converted javascript argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or v3.2(?) experimented OP_COMMAND format requests) and sends it over the network
   3. The server responds with a reply in BSON
   4. The mongo shell converts the reply to a javascript result, and the BSON data is converted to a Javascript object
   5. The converted-to-Javascript-binary-format result is assigned into javascript variable if you set one, or auto-printed into the shell terminal if you did not.
 
 _**Q.** "But what about server-side Javascript? That's what MongoDB uses right?"_
 
-No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but there only for running within 
+No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within 
 
 - a MapReduce framework command, or 
 - if using a $where operator in a find command, or
@@ -117,10 +117,10 @@ On the unix (or windows) shell you can specify connection options, and optionall
 Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.
 ```sh
 # Most typical. "-u" and "-p" are short for --username, --password.
-# The long "--authenticationDatabase" argument is required unless you to
-#  choose to start in the "admin" database instead of your user "orderhist"s
-#  database. Or you used the legacy method of creating authentication users
-#  in the "orderhist" db.
+# The long "--authenticationDatabase" argument can be replaced with
+#  "?authSource=admin" as a parameter. But you need to specify that
+#  "admin" is the database with the user credentials unless you used
+#  the legacy method of creating authentication users in the "orderhist" db.
 mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
 
 # With an explicit replica set conn string. The benefit compared to default, automatic
@@ -149,5 +149,3 @@ mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatab
 # Execute a javascript statement as a command-line argument.
 mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
 ```
-
-When you 
