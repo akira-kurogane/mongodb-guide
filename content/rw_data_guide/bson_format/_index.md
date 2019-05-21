@@ -26,6 +26,7 @@ JSON (and BSON with it) contains key names. This means storage space is consumed
 Recommendation: use short key names. One- or two-characters ones are easier to work with that long ones in my experience, anyhow.
 
 In practice BSON is the encoding of MongoDB and isn't used in any other software as popular as MongoDB yet. Nonetheless the BSON specification is one thing and MongoDB is another. There are some extra requirements that MongoDB places on any BSON object is will store:
+
 - 16MB maximum size. The BSON specification places no upper limit on the size of data it encodes but the MongoDB database server and the drivers do.
 - "\_id" field: Every document saved to a collection will have an "_id" field value. It is the primary key value of all collections. One of an ObjectId() type will be given automatically if none is specified at insert time.
 

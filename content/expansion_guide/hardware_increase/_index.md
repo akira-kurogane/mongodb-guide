@@ -7,22 +7,16 @@ weight = 10
 
 ## Hardware - the simple answer, as far as RAM allows
 
-My first recommendation for upsizing is MongoDB-agnostic. Although MongoDB supports distribution with Sharding, don't jump the gun to use sharding if you can simply replace your servers with bigger ones, or stick more RAM or attach larger disks to them.
+My first recommendation for upsizing is MongoDB-agnostic. Although MongoDB supports distribution with Sharding, don't jump the gun to use it if it would be simple to replace your servers with bigger ones, or stick more RAM into them, or attach faster disks to them. I don't mean upgrade to non-commodity servers or get bleeding-edge peripherals for them &ndash; stay on approximately the same $$-per-GB level &ndash; just get more of those gigabytes.
 
+Because MongoDB uses replica sets it's easy to add a new larger server into it, remove one of the smaller ones when the new one's initial sync is complete, and repeat until all your old servers have been replaced by their upgrades. No downtime at all except for the 'blip' of a primary switch.
 
-Because MongoDB uses replica sets it's easy to add a new larger server into it, remove one of the smaller ones when the new one's initial sync is complete, and repeat until, say, all your old servers have been replaced by their upgrades.
+Stepping up server size may not help if the database _write load_ is already reaching a _disk write bottleneck_ that is caused by the volume of updates alone. A bigger server with disks that are excxactly the same specs as the older server's will be no improvement. In fact it could be worse - improved throughput in CPU and memory is likely to make the 'traffic jam' for disk even more spectactular. In this case you should A) shard (to get more write capacity through parallelization) or B) attach significantly better disk to your servers.
 
+If your disk is saturated by a high _read load_ on the other hand, getting more memory will immediately reduce that. Well, it wont reduce reads at times that the mongod process must inevitably read everything. Eg. #1 directly after a restart when it is fetching document data from disk to RAM cache. Eg. #2 if the data storage size > file buffer cache in RAM and you run a full dump say for the nightly backups. But outside of those cases more RAM is a big, and quick, win.
 
-It may not be the right solution if:
+If you only have the option of getting more servers of the same size rather than bigger ones &ndash; (TODO LINK) sharding.
 
-- The database load is already reaching a disk bottleneck that is caused by the volume of updates alone.
-  - More RAM will reduce the read load on the disk so this is specifically about the write load.
-  - But bigger disk may mean faster disk - it depends on the variety used, e.g. RAID 5, SSD in large size 
-  - And a new disk may be faster just as a result of being a newer model. Check the specs.
-- The database load has a CPU bottleneck. This is unlikely given the number of cores in today's typical servers, but not impossible either. Simply see your CPU metrics to assess this.
+### Caveat
 
-
-~~It might be a less appealing solution if:~~
-
-- ~~You'd prefer to pay less and buy servers of the same spec as in your starting replica set~~
-- ~~In a corporate setting I have seen cases where many servers of a certain size are available without any finance friction, say because a sales contract obtained a certain model at discount, or standardized hardware is preferred as a policy~~
+Hardware improvements are linear. Applications with bad database access patterns are exponentially greedy. If the db resource usage isn't sane hardware upsizing will win a battle but you'll still lose the war.

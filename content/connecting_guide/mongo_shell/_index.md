@@ -10,7 +10,7 @@ The mongo shell is just another client application. There, I said it.
 
 It is _not_ a special node within a MongoDB replica set or cluster. It is an application that connects and communicates with the mongod (or mongos) nodes with the same MongoDB Wire protocol TCP traffic that any other application could. If it was a black box rather than being open source, you could reverse-engineer it even without super-dooper elite hacker skills. It has no special sauce that gives it elevated privilege or better performance compared to what any MongoDB driver-using application can have.
 
-What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter). It's not the only one that has ever existed, but it is the only popular one to date.
+What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter) a.k.a. REPL (read-evaluate-print loop). It's not the only one that has ever existed, but it is the only popular one to date.
 
 Although it is a C++ program the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as "show databases", "exit", etc. everything is Javascript.
 
@@ -58,6 +58,7 @@ while (cursor.hasNext()) {
 By the way apart from "use <database_name>", which sets the database namespace the client sends in the Wire Protocol request, those legacy command expressions are just translated internally to a Javascript function. For example "show collections" is really:
 ```js
 //From mongo/shell/utils.js
+//The real code behind "show collections":
 if (what == "collections" || what == "tables") {
     db.getCollectionNames().forEach(function(x) {
         print(x);
@@ -69,11 +70,12 @@ if (what == "collections" || what == "tables") {
 To recap the mongo shell:
 
 - Uses the MongoDB wire protocol to communicate with MongoDB servers the same as any application
+- It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.
 - It is C++ internally
-- Makes use of a javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter
+- Makes use of a javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter / REPL.
 - Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database
 - There is one "db" MongoDB connection object created which represents the connection to the mongod or mongos host you specified with the --host argument when you began the shell
-  - You are not forced to use the "db" global and the "db" global alone. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)". It would be an untypical way to use the shell however.
+  - You don't have to use the "db" global var if you don't want. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)" and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
 - The behind-the-scenes flow every time you execute a db.XXX() command:
   1. You create documents as Javascript objects, and execute Javascript functions in the interpreter. 
   2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands also as BSON objects, ones that includes the BSON-converted javascript argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or v3.2(?) experimented OP_COMMAND format requests) and sends it over the network
@@ -83,7 +85,7 @@ To recap the mongo shell:
 
 _**Q.** "But what about server-side Javascript? That's what MongoDB uses right?"_
 
-No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within 
+No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within  (TODO confirm these (or at least the first two) are deprecated in 4.0 and removed in 4.2)
 
 - a MapReduce framework command, or 
 - if using a $where operator in a find command, or
@@ -110,7 +112,7 @@ On the unix (or windows) shell you can specify connection options, and optionall
 - It has two normal, data-bearing nodes running at
   - **dbsvrhost1:27017** (the current primary),
   - **dbsvrhost2:27017** (currently a secondary), 
-- And an arbiter on a third, unspecified host.
+- And an arbiter on a third host somewhere.
 - The main user database is "**orderhist**".
 - There is a user "**akira**" with password "**secret**", and the usual "**admin**" db is the authentication database (i.e. where the _system.users_ and related system collections are).
 
