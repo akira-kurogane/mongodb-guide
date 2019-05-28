@@ -14,6 +14,8 @@ defaultContentLanguageInSubdir= true
   showVisitedLinks = true
   disableInlineCopyToClipBoard = true
   themeVariant = "green"
+  # Disable search function. It will hide search bar
+  disableSearch = false
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
