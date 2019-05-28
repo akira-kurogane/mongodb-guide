@@ -1,13 +1,13 @@
 +++
 title = "Connection string URI"
-description = "The syntax of the MongoDB connection URI"
+description = "MongoDB connection URI syntax"
 date =  2018-05-30T23:14:32+10:00
 weight = 5
 +++
 
-Although there were some differences between the connection argument formats used in the early versions of the drivers, over time they standardized on supporting the following RFC 3986-style URI syntax:
+Although there were differences between the connection argument formats used in the early versions of the drivers, over time they standardized on supporting the following RFC 3986-style URI syntax:
 
-<tt>mongodb:\[//\[user\[:password\]@\]host\[:port\]\]\[/\[user\_auth\_db\_name\]\[?\[conn\_option\[=value\]\]\[,conn\_option\[=value\]\]\*\]\]`</tt>
+<tt>mongodb:\[//\[user\[:password\]@\]host\[:port\]\]\[/\[user\_auth\_db\_name\]\[?\[conn\_option\[=value\]\]\[,conn\_option\[=value\]\]\*\]\]</tt>
 
 You might know that the mongo shell can accept a different format, but those are command line arguments. What is used internally in the driver is the URI format above. And since v3.4 or so it also accepts the URI format in the --host argument. MongoDB tools such mongodump came on board a little later.
 
@@ -39,7 +39,7 @@ Unintuitively the TCP connection will be established and stay open! It will rema
 
 For convenience the full syntax again:
 
-<tt>mongodb:\[//\[user\[:password\]@\]host\[:port\]\]\[/\[user\_auth\_db\_name\]\[?\[conn\_option\[=value\]\]\[,conn\_option\[=value\]\]\*\]\]`</tt>
+<tt>mongodb:\[//\[user\[:password\]@\]host\[:port\]\]\[/\[user\_auth\_db\_name\]\[?\[conn\_option\[=value\]\]\[,conn\_option\[=value\]\]\*\]\]</tt>
 
 After the "/" that follows host\[:port\] all the values are optional. The first is the user_auth_db_name (see above), then whether that db name is present or not put "?" before any other parameters. Delimit with an "\&", like in a HTTP URI.
 
@@ -49,7 +49,7 @@ TODO: replace SSL with TLS everywhere in this document.
 
 <tt>mongodb://akira:secret@myhost.my.domain:27017/?ssl=true\&minPoolSize=50</tt>
 
-#### The (one) parameter that can't go in the URI
+#### The (one) connection parameter that can't go in the URI
 
 Using the "ssl=true" option in my example above requires me to point out that, unfortunately, one of the SSL options (but so far only this one) need to be passed to the client connection function outside of URI. SSL connections usually require a CA cert file and/or a client certificate file to be used, and you can't put a local filepath into an URI. (Well maybe you can, but this isn't standardized.)
 
