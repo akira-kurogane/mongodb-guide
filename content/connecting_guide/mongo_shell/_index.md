@@ -10,7 +10,7 @@ The mongo shell is just another client application. There, I said it.
 
 It is _not_ a special node within a MongoDB replica set or cluster. It is an application that connects and communicates with the mongod (or mongos) nodes with the same MongoDB Wire protocol TCP traffic that any other application could. If it was a black box rather than being open source, you could reverse-engineer it even without super-dooper elite hacker skills. It has no special sauce that gives it elevated privilege or better performance compared to what any MongoDB driver-using application can have.
 
-What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter) a.k.a. REPL (read-evaluate-print loop). It's not the only one that has ever existed, but it is the only popular one to date.
+What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter) a.k.a. REPL (read-evaluate-print loop). It's not the only MongoDB CLI that has ever existed, but it is the only popular one to date.
 
 Although it is a C++ program the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as "show databases", "exit", etc. everything is Javascript.
 
@@ -70,18 +70,19 @@ if (what == "collections" || what == "tables") {
 To recap the mongo shell:
 
 - Uses the MongoDB wire protocol to communicate with MongoDB servers the same as any application
-- It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.
 - It is C++ internally
 - Makes use of a javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter / REPL.
+- It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.
 - Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database
-- There is one "db" MongoDB connection object created which represents the connection to the mongod or mongos host you specified with the --host argument when you began the shell
-  - You don't have to use the "db" global var if you don't want. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)" and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
+- There is one "<tt>db</tt>" MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell. (TODO LINK to connection URI page)
+  - The connection always includes a database namespace when commands are sent. You can change it at will ("use &lt;another_db_name&gt;") so it is variable, but it can't be empty/null. Default is "test".
+  - You don't have to use the "db" global var if you don't want to. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)" and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
 - The behind-the-scenes flow every time you execute a db.XXX() command:
   1. You create documents as Javascript objects, and execute Javascript functions in the interpreter. 
-  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands also as BSON objects, ones that includes the BSON-converted javascript argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or v3.2(?) experimented OP_COMMAND format requests) and sends it over the network
+  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2(?) experimental OP_COMMAND format requests) and sends it over the network
   3. The server responds with a reply in BSON
   4. The mongo shell converts the reply to a javascript result, and the BSON data is converted to a Javascript object
-  5. The converted-to-Javascript-binary-format result is assigned into javascript variable if you set one, or auto-printed into the shell terminal if you did not.
+  5. The converted-to-Javascript-binary-format result is assigned into a javascript variable if you set one, or auto-printed into the shell terminal if you did not.
 
 _**Q.** "But what about server-side Javascript? That's what MongoDB uses right?"_
 
@@ -106,7 +107,7 @@ Having a CLI is a practical requirement for doing administration, so basically e
 
 #### Connection
 
-On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run). The examples beneath show how to connect to.
+On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run). The examples beneath show how to connect to:
 
 - A replicaset named "**merch_backend_rs**" 
 - It has two normal, data-bearing nodes running at
