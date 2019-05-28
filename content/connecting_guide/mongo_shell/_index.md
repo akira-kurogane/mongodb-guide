@@ -1,5 +1,6 @@
 +++
 title = "The mongo shell"
+description = "The simple truth about the mongo shell"
 date =  2018-05-30T23:26:59+10:00
 weight = 20
 +++

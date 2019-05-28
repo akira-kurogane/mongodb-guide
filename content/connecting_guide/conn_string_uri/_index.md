@@ -1,5 +1,6 @@
 +++
 title = "Connection string URI"
+description = "The syntax of the MongoDB connection URI"
 date =  2018-05-30T23:14:32+10:00
 weight = 5
 +++
