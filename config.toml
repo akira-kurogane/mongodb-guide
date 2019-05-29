@@ -1,7 +1,7 @@
-baseURL = "localhost:1313"
+baseURL = "https://akira-kurogane.github.io/mongodb-guide/"
 languageCode = "en-US"
 defaultContentLanguage = "en"
-publishDir = "docs"
+publishDir = "public"
 
 title = "Akira's MongoDB Guide"
 theme = "hugo-theme-learn"
