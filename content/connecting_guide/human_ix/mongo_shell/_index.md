@@ -16,20 +16,23 @@ What is unique about the mongo shell compared to the thousands of other MongoDB-
 Although it is a C++ program the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as "show databases", "exit", etc. everything is Javascript.
 
 _Legacy MySQL-like commands:_
+
 ```text
 use <database_name>
 show databases
 show collections
 ```
 _Normal Javascript. Some client side-only expressions and functions, pretty much identical to the native Javascript supported in web browsers etc._
+
 ```js
 var x = 1;
 for (i = 0; i < 100; i++) { print(i); }
 function max(a, b) { return a > b ? a : b; }
 ```
-_Javascript that uses a "db" special global object to send commands to the connection to a MongoDB server_
 
-```javascript
+_Javascript that uses the "db" special global object to send commands to the connection to a MongoDB server_
+
+```js
 use <database_name>  //set current database namespace
 db.getVersion()    //database namespace doesn't affect this particular command
 //Because I did not capture the result into a variable (i.e. I didn't put "var version_result = …" at the front)
