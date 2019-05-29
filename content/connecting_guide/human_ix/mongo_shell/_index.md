@@ -13,16 +13,83 @@ It is _not_ a special node within a MongoDB replica set or cluster. It is an app
 
 What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter) a.k.a. REPL (read-evaluate-print loop). It's not the only MongoDB CLI that has ever existed, but it is the only popular one to date.
 
-Although it is a C++ program the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as "show databases", "exit", etc. everything is Javascript.
+### Why use it
 
-_Legacy MySQL-like commands:_
+Having an interactive shell is a practical requirement for doing administration, so basically everyone will use it for that reason at least. Most people will also use it for learning. The MongoDB documentation uses mongo shell syntax all over too.
+
+### Connection examples
+
+On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run).
+
+If you are not already familiar with the command-line arguments the mongo shell accepts please expand the following section.
+
+{{%expand%}}
+The examples beneath show how to connect to:
+
+- A replicaset named "**merch_backend_rs**" 
+- It has two normal, data-bearing nodes running at
+  - **dbsvrhost1:27017** (the current primary),
+  - **dbsvrhost2:27017** (currently a secondary), 
+- And an arbiter on a third host somewhere.
+- The main user database is "**orderhist**".
+- There is a user "**akira**" with password "**secret**", and the usual "**admin**" db is the authentication database (i.e. where the _system.users_ and related system collections are).
+
+Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.
+```sh
+# Most typical
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# Specify the replicaset name to guarantee a proper replset connection
+mongo --host merch_backend_rs/dbsvrhost1:27017,dbsvrhost2:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# Using a mongodb URI connection string, the same as in your application code.
+mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/orderhist?authSource=admin&replicaSet=merch_backend_rs'
+
+# If you have disabled authentication in the mongod configuration, and it is 
+#  running on port 27017 on localhost, and you want to use the "test" db ...
+#  Bingo!, the naked command will work.
+mongo
+
+# Execute a javascript script file
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin daily_report.js
+
+# Execute a javascript statement as a command-line argument.
+mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
+```
+
+In the case of sharded cluster do _not_ add a replicaset parameter in the connection arguments. Just provide the hostname(s) and por(s) of the mongos node(s) you are connecting to.
+{{%/expand%}}
+
+## Internals
+
+Although it is made with C++ the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as "show databases", "exit", etc. everything is Javascript.
+
+### Shell parsing
+
+#### Legacy MySQL-like commands
 
 ```text
 use <database_name>
 show databases
 show collections
 ```
-_Normal Javascript. Some client side-only expressions and functions, pretty much identical to the native Javascript supported in web browsers etc._
+
+Apart from "use _database\_name_", which sets the database namespace the client sends in the Wire Protocol requests, these legacy command expressions are all translated internally to a Javascript function. For example "show collections" is really:
+
+```js
+//From mongo/shell/utils.js
+//The real code behind "show collections":
+if (what == "collections" || what == "tables") {
+    db.getCollectionNames().forEach(function(x) {
+        print(x);
+    });
+    return "";
+}
+```
+
+#### Plain Javascript
+
+The mongo shell will process javascript with referring to any database context if you want to! Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.
 
 ```js
 var x = 1;
@@ -30,7 +97,9 @@ for (i = 0; i < 100; i++) { print(i); }
 function max(a, b) { return a > b ? a : b; }
 ```
 
-_Javascript that uses the "db" special global object to send commands to the connection to a MongoDB server_
+#### Javascript that acts with database connection objects
+
+Unless you use the --no-db argument there will be the "db" special global object which can be used to send db command messages over the connection to a MongoDB server.
 
 ```js
 use <database_name>  //set current database namespace
@@ -59,17 +128,9 @@ while (cursor.hasNext()) {
 ...
 ```
 
-By the way apart from "use <database_name>", which sets the database namespace the client sends in the Wire Protocol request, those legacy command expressions are just translated internally to a Javascript function. For example "show collections" is really:
-```js
-//From mongo/shell/utils.js
-//The real code behind "show collections":
-if (what == "collections" || what == "tables") {
-    db.getCollectionNames().forEach(function(x) {
-        print(x);
-    });
-    return "";
-}
-```
+**TODO** expand on what the wire protocol traffic is for all commands in the example above.
+
+### Recap
 
 To recap the mongo shell:
 
@@ -90,69 +151,10 @@ To recap the mongo shell:
 
 _**Q.** "But what about server-side Javascript? That's what MongoDB uses right?"_
 
-No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within  (TODO confirm these (or at least the first two) are deprecated in 4.0 and removed in 4.2)
+No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within:
 
-- a MapReduce framework command, or 
-- if using a $where operator in a find command, or
-- as the "reduce", "keyf" or "finalize" arguments in a "group" command.
+- a [MapReduce](https://docs.mongodb.com/manual/core/map-reduce/) command, or 
+- _(Superseded by $expr in v3.6; removed v4.2):_ if using a $where operator in a <tt>find</tt> command, or
+- _(Deprecated v3.4; removed v4.2):_ as the "reduce", "keyf" or "finalize" arguments in a <tt>group</tt> command.
 
-
-The $where operator and db.collection.group() command are uncommon ones, they're not MongoDB's equivalent of same keywords in SQL.
-
-These functions are javascript, but they get packed inside a special BSON datatype to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower that the native C++ processing in the mongod process.
-
-I can't call it with certainty, but server-side Javascript looks to be a target for deprecation. The group command is already marked as deprecated as of version 3.4.
-
-### Why use it
-
-Having a CLI is a practical requirement for doing administration, so basically everyone will use it for that reason at least. Most people will also use it for learning. The MongoDB documentation uses mongo shell syntax all over too.
-
-### Common Examples
-
-#### Connection
-
-On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run). The examples beneath show how to connect to:
-
-- A replicaset named "**merch_backend_rs**" 
-- It has two normal, data-bearing nodes running at
-  - **dbsvrhost1:27017** (the current primary),
-  - **dbsvrhost2:27017** (currently a secondary), 
-- And an arbiter on a third host somewhere.
-- The main user database is "**orderhist**".
-- There is a user "**akira**" with password "**secret**", and the usual "**admin**" db is the authentication database (i.e. where the _system.users_ and related system collections are).
-
-Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.
-```sh
-# Most typical. "-u" and "-p" are short for --username, --password.
-# The long "--authenticationDatabase" argument can be replaced with
-#  "?authSource=admin" as a parameter. But you need to specify that
-#  "admin" is the database with the user credentials unless you used
-#  the legacy method of creating authentication users in the "orderhist" db.
-mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
-
-# With an explicit replica set conn string. The benefit compared to default, automatic
-#  detection of replica set topology (that you probably unknowingly used all the time 
-#  until now) is this method will:
-#   1. Change to be connected to the PRIMARY node, so you will be able to make writes
-#   2. The connection will succeed even if dbsvrhost1 is down a.t.m.
-# So use this type of connection string in your batch scripts.
-# (Don't include the arbiter in the host list - it wont authenticate users.)
-mongo --host merch_backend_rs/dbsvrhost1:27017,dbsvrhost2:27017/orderhist -u akira -p secret --authenticationDatabase admin
-
-# Using a mongodb URI connection string, the same as in your application code.
-#  This will require that you execute "use orderhist" after connecting to get into that
-#  db namespace. In this method, with no database name argument specified, "admin" 
-#  is the default db namespace for authentication.
-mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/?replicaSet=merch_backend_rs'
-
-# If you have disabled authentication in the mongod configuration, and it is 
-#  running on port 27017 on localhost, and you want to use the "test" db ...
-#  Bingo!, the naked command will work.
-mongo
-
-# Execute a javascript script file
-mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin daily_report.js
-
-# Execute a javascript statement as a command-line argument.
-mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
-```
+These functions are javascript, but they get packed inside a special BSON datatype to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.
