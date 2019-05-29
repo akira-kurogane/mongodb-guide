@@ -7,25 +7,25 @@
     <meta name="description" content="The shape of network communication between MongoDB clients and server">
 <meta name="author" content="Akira Kurogane">
 
-    <link rel="icon" href="/akira-kurogane.github.io/mongodb-guide/images/favicon.png" type="image/png">
+    <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
     <title>Client-Server network communication :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/nucleus.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/fontawesome-all.min.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/hybrid.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/featherlight.min.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/perfect-scrollbar.min.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/auto-complete.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/atom-one-dark-reasonable.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/theme.css?1559169578" rel="stylesheet">
-    <link href="/akira-kurogane.github.io/mongodb-guide/css/hugo-theme.css?1559169578" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1559169793" rel="stylesheet">
     
-      <link href="/akira-kurogane.github.io/mongodb-guide/css/theme-green.css?1559169578" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1559169793" rel="stylesheet">
     
 
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/jquery-3.3.1.min.js?1559169578"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1559169793"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/">
+  <body class="" data-url="/mongodb-guide/en/connecting_guide/cs_nw_details/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/akira-kurogane.github.io/mongodb-guide/js/lunr.min.js?1559169578"></script>
-<script type="text/javascript" src="/akira-kurogane.github.io/mongodb-guide/js/auto-complete.js?1559169578"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1559169793"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1559169793"></script>
 <script type="text/javascript">
     
-        var baseurl = "akira-kurogane.github.io\/mongodb-guide\/\/en";
+        var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/akira-kurogane.github.io/mongodb-guide/js/search.js?1559169578"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1559169793"></script>
 
     
   </div>
@@ -83,12 +83,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/guide_intro/">
+      <a href="/mongodb-guide/en/guide_intro/">
           <b>1. </b>What you can do with MongoDB
           
             <i class="fas fa-check read-icon"></i>
@@ -107,12 +107,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
         parent
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/">
+      <a href="/mongodb-guide/en/connecting_guide/">
           <b>2. </b>Connecting to MongoDB
           
             <i class="fas fa-check read-icon"></i>
@@ -136,12 +136,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/">
           Human how-to
           
             <i class="fas fa-check read-icon"></i>
@@ -165,12 +165,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/">
           Connection string URI
           
             <i class="fas fa-check read-icon"></i>
@@ -191,12 +191,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/">
           The mongo shell
           
             <i class="fas fa-check read-icon"></i>
@@ -226,12 +226,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
         parent
         active
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/">
           client ⇄ TCP ⇄ db server
           
             <i class="fas fa-check read-icon"></i>
@@ -255,12 +255,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/">
           Drivers and &#39;the wire&#39;
           
             <i class="fas fa-check read-icon"></i>
@@ -281,12 +281,12 @@ Akira's MongoDB Guide
  
   
     
-    <li data-nav-id="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
         
         
         
         ">
-      <a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/">
           Automatic failover
           
             <i class="fas fa-check read-icon"></i>
@@ -331,7 +331,7 @@ Akira's MongoDB Guide
               </li>
           
               <li> 
-                  <a class="padding" href="akira-kurogane.github.io/mongodb-guide/en/akira-kurogane.github.io/mongodb-guide/credits"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
+                  <a class="padding" href="https://akira-kurogane.github.io/en/mongodb-guide/credits"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
               </li>
           
         </ul>
@@ -356,7 +356,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/" selected>English</option>
                     
                   
               
@@ -436,7 +436,7 @@ Akira's MongoDB Guide
             
           
           
-            <a href='akira-kurogane.github.io/mongodb-guide/en/'>Top page</a> > <a href='akira-kurogane.github.io/mongodb-guide/en/connecting_guide/'>Connecting to MongoDB</a> > Client-Server network communication
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/connecting_guide/'>Connecting to MongoDB</a> > Client-Server network communication
           
          
           
@@ -498,7 +498,7 @@ Akira's MongoDB Guide
 			
 				
 <li>
-<a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" >Drivers and &#39;the wire&#39;</a>
+<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" >Drivers and &#39;the wire&#39;</a>
 </li>
 				
 
@@ -515,7 +515,7 @@ Akira's MongoDB Guide
 			
 				
 <li>
-<a href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" >Automatic failover</a>
+<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" >Automatic failover</a>
 </li>
 				
 
@@ -724,10 +724,10 @@ Akira's MongoDB Guide
 	 
 	 
 		
-			<a class="nav nav-prev" href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -737,20 +737,20 @@ Akira's MongoDB Guide
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/clipboard.min.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/perfect-scrollbar.min.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/jquery.sticky.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/featherlight.min.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/html5shiv-printshiv.min.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/highlight.pack.js?1559169578"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1559169793"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1559169793"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/modernizr.custom-3.6.0.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/learn.js?1559169578"></script>
-    <script src="/akira-kurogane.github.io/mongodb-guide/js/hugo-learn.js?1559169578"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1559169793"></script>
+    <script src="/mongodb-guide/js/learn.js?1559169793"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1559169793"></script>
 
-    <link href="/akira-kurogane.github.io/mongodb-guide/mermaid/mermaid.css?1559169578" type="text/css" rel="stylesheet" />
-    <script src="/akira-kurogane.github.io/mongodb-guide/mermaid/mermaid.js?1559169578"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1559169793" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1559169793"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

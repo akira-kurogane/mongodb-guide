@@ -3,61 +3,61 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>akira-kurogane.github.io/mongodb-guide/ja/categories/</loc>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/ja/categories/</loc>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="akira-kurogane.github.io/mongodb-guide/en/categories/"
+                href="https://akira-kurogane.github.io/mongodb-guide/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="akira-kurogane.github.io/mongodb-guide/ja/categories/"
+                href="https://akira-kurogane.github.io/mongodb-guide/ja/categories/"
                 />
   </url>
   
   <url>
-    <loc>akira-kurogane.github.io/mongodb-guide/ja/tags/</loc>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/ja/tags/</loc>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="akira-kurogane.github.io/mongodb-guide/en/tags/"
+                href="https://akira-kurogane.github.io/mongodb-guide/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="akira-kurogane.github.io/mongodb-guide/ja/tags/"
+                href="https://akira-kurogane.github.io/mongodb-guide/ja/tags/"
                 />
   </url>
   
   <url>
-    <loc>akira-kurogane.github.io/mongodb-guide/ja/credits/</loc>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/ja/credits/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="akira-kurogane.github.io/mongodb-guide/en/credits/"
+                href="https://akira-kurogane.github.io/mongodb-guide/en/credits/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="akira-kurogane.github.io/mongodb-guide/ja/credits/"
+                href="https://akira-kurogane.github.io/mongodb-guide/ja/credits/"
                 />
   </url>
   
   <url>
-    <loc>akira-kurogane.github.io/mongodb-guide/ja/</loc>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/ja/</loc>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="akira-kurogane.github.io/mongodb-guide/en/"
+                href="https://akira-kurogane.github.io/mongodb-guide/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="akira-kurogane.github.io/mongodb-guide/ja/"
+                href="https://akira-kurogane.github.io/mongodb-guide/ja/"
                 />
   </url>
   

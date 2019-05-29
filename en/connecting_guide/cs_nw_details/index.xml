@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Client-Server network communication on Akira&#39;s MongoDB Guide</title>
-    <link>akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/</link>
+    <link>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/</link>
     <description>Recent content in Client-Server network communication on Akira&#39;s MongoDB Guide</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Wed, 30 May 2018 22:56:34 +1000</lastBuildDate>
     
-	<atom:link href="akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
