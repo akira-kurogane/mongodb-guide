@@ -103,7 +103,7 @@ Unless you use the --no-db argument there will be the "db" special global object
 
 ```js
 use <database_name>  //set current database namespace
-db.getVersion()    //database namespace doesn't affect this particular command
+db.version()    //database namespace doesn't affect this particular command
 //Because I did not capture the result into a variable (i.e. I didn't put "var version_result = …" at the front)
 //  the shell will capture the return value from db.getVersion() and auto-print it here
 3.4.4
@@ -128,6 +128,25 @@ while (cursor.hasNext()) {
 ...
 ```
 
+In the example above:
+
+1. _&lt;database\_name&gt;_ is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed there is another "use xxxxx" statement or something that implies it, like a _db.getSiblingDB(...)_ function.
+2. _db.getVersion()_ will create a <tt>buildinfo</tt> command as BSON object. Through javascript-interpreter-to-C++-code boundary and then the C++ driver library that is put that in wire protocol message message and send it the db server. The response travels those layers in reverse, finally ending with the <tt>buildinfo</tt> result in Javascript object, from which the _version_ property is picked and printed.
+3. _db.serverStatus()_ is a helper function that executes _db.adminCommand({serverStatus: 1})) instead. I.e. this time the BSON object being packed and set is _{serverStatus: 1}_ compared to _{hostinfo: 1}_. At the return the whole object (rather than just one scalar value property) is pretty-printed onto the terminal output.
+4. A similar pattern at first to the last two comands, just that a _{find: "database\_name.collection\_name"}_ BSON object is being sent. However this time there will be a cursor with results. Through the driver API each document in the cursor results will be passed separately with each iteration of the cursor. If more results need to be fetched from the server side <tt>getMore</tt> requests holding the cursor id value from the <tt>find</tt> command's result will be sent and read repeatedly until the cursor is exhausted (or times out) on the server side.
+
+#### Ever-present db namespace
+
+The sent commands always includes a database namespace. You can change it at will ("use _another\_db\_name_") so it is variable, but it can't be empty/null. Default is "test".
+
+Some commands don't logically require a db namespace &ndash; eg. isMaster, addShard, replSetGetStatus &ndash; but they won't work unless it is set to "admin". Many a time I've had those fail until I typed "use admin" and tried again. Some like isMaster you don't notice because you're probably never call it except by the a shell helper function (_db.isMaster()_) that sets it.
+
+_Crystal ball gazing:_ Having said all this it isn't out the question that what is unnecessary will be removed in the future. The [OP_MSG](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg) message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. E.g. the db server (mongod or mongos) could just silently ignore the db name scope from the client when it is a command such as isMaster, serverStatus, etc.
+
+### Explicit db connection objects
+
+You don't have to use the "db" global var if you don't want to. You can manually create other live MongoDB connections objects with <tt>connect(&lt;conn_uri&gt;)</tt>, or <tt>new Mongo(&lt;conn_uri&gt;)</tt> and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
+
 **TODO** expand on what the wire protocol traffic is for all commands in the example above.
 
 ### Recap
@@ -140,8 +159,6 @@ To recap the mongo shell:
 - It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.
 - Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database
 - There is one "<tt>db</tt>" MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell. (TODO LINK to connection URI page)
-  - The connection always includes a database namespace when commands are sent. You can change it at will ("use &lt;another_db_name&gt;") so it is variable, but it can't be empty/null. Default is "test".
-  - You don't have to use the "db" global var if you don't want to. You can manually create other live MongoDB connections objects with connect(\<conn_uri\>), or "new Mongo(\<conn_uri\>)" and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
 - The behind-the-scenes flow every time you execute a db.XXX() command:
   1. You create documents as Javascript objects, and execute Javascript functions in the interpreter. 
   2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2(?) experimental OP_COMMAND format requests) and sends it over the network
