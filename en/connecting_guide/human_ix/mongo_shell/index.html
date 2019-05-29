@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta name="description" content="The simple truth about the mongo shell">
+<meta name="author" content="Akira Kurogane">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The mongo shell :: Akira&#39;s MongoDB Guide</title>
+
+    
+    <link href="/css/nucleus.css?1559117002" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1559117002" rel="stylesheet">
+    <link href="/css/hybrid.css?1559117002" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1559117002" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1559117002" rel="stylesheet">
+    <link href="/css/auto-complete.css?1559117002" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1559117002" rel="stylesheet">
+    <link href="/css/theme.css?1559117002" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1559117002" rel="stylesheet">
+    
+      <link href="/css/theme-green.css?1559117002" rel="stylesheet">
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1559117002"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/en/connecting_guide/human_ix/mongo_shell/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+Akira's MongoDB Guide
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1559117002"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1559117002"></script>
+<script type="text/javascript">
+    
+        var baseurl = "localhost:1313\/en";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1559117002"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/guide_intro/">
+          <b>1. </b>What you can do with MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/en/connecting_guide/">
+          <b>2. </b>Connecting to MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/">
+          Human how-to
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/conn_string_uri/">
+          Connection string URI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/mongo_shell/">
+          The mongo shell
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/">
+          client ⇄ TCP ⇄ db server
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/drivers/">
+          Drivers and &#39;the wire&#39;
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/ha_connections/">
+          Automatic failover
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/akira-kurogane/mongodb-guide"><i class='fa fa-fw fa-github'></i> Github repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="#ZgotmplZ"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="localhost:1313/en/connecting_guide/human_ix/mongo_shell/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <center>
+
+    Github repo: 
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide" data-icon="octicon-star" data-show-count="false" aria-label="Star Akira's MongoDB Guide on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide/fork" data-icon="octicon-repo-forked" data-show-count="false" aria-label="Fork Akira's MongoDB Guide on GitHub">Fork</a>
+
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/en/'>Top page</a> > <a href='/en/connecting_guide/'>Connecting to MongoDB</a> > <a href='/en/connecting_guide/human_ix/'>How to connect from your app or a terminal</a> > The mongo shell
+          
+         
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#what-it-is">What it is</a>
+<ul>
+<li><a href="#why-use-it">Why use it</a></li>
+<li><a href="#connection-examples">Connection examples</a></li>
+</ul></li>
+<li><a href="#internals">Internals</a>
+<ul>
+<li><a href="#shell-parsing">Shell parsing</a>
+<ul>
+<li><a href="#legacy-mysql-like-commands">Legacy MySQL-like commands</a></li>
+<li><a href="#plain-javascript">Plain Javascript</a></li>
+<li><a href="#javascript-that-acts-with-database-connection-objects">Javascript that acts with database connection objects</a></li>
+<li><a href="#ever-present-db-namespace">Ever-present db namespace</a></li>
+</ul></li>
+<li><a href="#explicit-db-connection-objects">Explicit db connection objects</a></li>
+<li><a href="#recap">Recap</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              The mongo shell
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<h2 id="what-it-is">What it is</h2>
+
+<p>The mongo shell is just another client application. There, I said it.</p>
+
+<p>It is <em>not</em> a special node within a MongoDB replica set or cluster. It is an application that connects and communicates with the mongod (or mongos) nodes with the same MongoDB Wire protocol TCP traffic that any other application could. If it was a black box rather than being open source, you could reverse-engineer it even without super-dooper elite hacker skills. It has no special sauce that gives it elevated privilege or better performance compared to what any MongoDB driver-using application can have.</p>
+
+<p>What is unique about the mongo shell compared to the thousands of other MongoDB-connected applications you might install on your computer is that is an interactive CLI (command line interpreter) a.k.a. REPL (read-evaluate-print loop). It's not the only MongoDB CLI that has ever existed, but it is the only popular one to date.</p>
+
+<h3 id="why-use-it">Why use it</h3>
+
+<p>Having an interactive shell is a practical requirement for doing administration, so basically everyone will use it for that reason at least. Most people will also use it for learning. The MongoDB documentation uses mongo shell syntax all over too.</p>
+
+<h3 id="connection-examples">Connection examples</h3>
+
+<p>On the unix (or windows) shell you can specify connection options, and optionally input (a script file to run or a single string to run).</p>
+
+<p>If you are not already familiar with the command-line arguments the mongo shell accepts please expand the following section.</p>
+
+<div class="expand">
+    <div class="expand-label" style="cursor: pointer;" onclick="$h = $(this);$h.next('div').slideToggle(100,function () {$h.children('i').attr('class',function () {return $h.next('div').is(':visible') ? 'fas fa-chevron-down' : 'fas fa-chevron-right';});});">
+        <i style="font-size:x-small;" class="fas fa-chevron-right"></i>
+        <span>
+        
+    	
+    	Expand me...
+    	
+    	</span>
+    </div>
+    <div class="expand-content" style="display: none;">
+        <p>The examples beneath show how to connect to:</p>
+
+<ul>
+<li>A replicaset named &quot;<strong>merch_backend_rs</strong>&quot;</li>
+<li>It has two normal, data-bearing nodes running at
+
+<ul>
+<li><strong>dbsvrhost1:27017</strong> (the current primary),</li>
+<li><strong>dbsvrhost2:27017</strong> (currently a secondary),</li>
+</ul></li>
+<li>And an arbiter on a third host somewhere.</li>
+<li>The main user database is &quot;<strong>orderhist</strong>&quot;.</li>
+<li>There is a user &quot;<strong>akira</strong>&quot; with password &quot;<strong>secret</strong>&quot;, and the usual &quot;<strong>admin</strong>&quot; db is the authentication database (i.e. where the <em>system.users</em> and related system collections are).</li>
+</ul>
+
+<p>Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.</p>
+
+<pre><code class="language-sh"># Most typical
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# Specify the replicaset name to guarantee a proper replset connection
+mongo --host merch_backend_rs/dbsvrhost1:27017,dbsvrhost2:27017/orderhist -u akira -p secret --authenticationDatabase admin
+
+# Using a mongodb URI connection string, the same as in your application code.
+mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/orderhist?authSource=admin&amp;replicaSet=merch_backend_rs'
+
+# If you have disabled authentication in the mongod configuration, and it is 
+#  running on port 27017 on localhost, and you want to use the &quot;test&quot; db ...
+#  Bingo!, the naked command will work.
+mongo
+
+# Execute a javascript script file
+mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin daily_report.js
+
+# Execute a javascript statement as a command-line argument.
+mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print(&quot;Reconcilliation error: Collection a and b counts differ by &quot; + Math.abs(acnt - bcnt));'
+</code></pre>
+
+<p>In the case of sharded cluster do <em>not</em> add a replicaset parameter in the connection arguments. Just provide the hostname(s) and por(s) of the mongos node(s) you are connecting to.</p>
+
+    </div>
+</div>
+
+<h2 id="internals">Internals</h2>
+
+<p>Although it is made with C++ the language that this CLI interprets is Javascript. Apart from a very small number of legacy, imperative-style command expressions such as &quot;show databases&quot;, &quot;exit&quot;, etc. everything is Javascript.</p>
+
+<h3 id="shell-parsing">Shell parsing</h3>
+
+<h4 id="legacy-mysql-like-commands">Legacy MySQL-like commands</h4>
+
+<pre><code class="language-text">use &lt;database_name&gt;
+show databases
+show collections
+</code></pre>
+
+<p>Apart from &quot;use <em>database_name</em>&quot;, which sets the database namespace the client sends in the Wire Protocol requests, these legacy command expressions are all translated internally to a Javascript function. For example &quot;show collections&quot; is really:</p>
+
+<pre><code class="language-js">//From mongo/shell/utils.js
+//The real code behind &quot;show collections&quot;:
+if (what == &quot;collections&quot; || what == &quot;tables&quot;) {
+    db.getCollectionNames().forEach(function(x) {
+        print(x);
+    });
+    return &quot;&quot;;
+}
+</code></pre>
+
+<h4 id="plain-javascript">Plain Javascript</h4>
+
+<p>The mongo shell will process javascript with referring to any database context if you want to! Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.</p>
+
+<pre><code class="language-js">var x = 1;
+for (i = 0; i &lt; 100; i++) { print(i); }
+function max(a, b) { return a &gt; b ? a : b; }
+</code></pre>
+
+<h4 id="javascript-that-acts-with-database-connection-objects">Javascript that acts with database connection objects</h4>
+
+<p>Unless you use the --no-db argument there will be the &quot;db&quot; special global object which can be used to send db command messages over the connection to a MongoDB server.</p>
+
+<pre><code class="language-js">use &lt;database_name&gt;  //set current database namespace
+db.version()    //database namespace doesn't affect this particular command
+//Because I did not capture the result into a variable (i.e. I didn't put &quot;var version_result = …&quot; at the front)
+//  the shell will capture the return value from db.getVersion() and auto-print it here
+3.4.4
+db.serverStatus()    ///database namespace doesn't affect this particular command
+//As before, the return value from the statement will be auto-printed.
+db.serverStatus()
+{
+    &quot;host&quot; : &quot;myhost.mydomain&quot;,
+    &quot;version&quot; : &quot;3.4.4&quot;,
+    &quot;process&quot; : &quot;mongod&quot;,
+    &quot;pid&quot; : NumberLong(2175),
+    ...
+    ...
+    &quot;ok&quot; : 1
+}
+
+var cursor = db.&lt;collection_name&gt;.find({&quot;customer_id&quot;: 10034});     //this command is affected by the database namespace
+while (cursor.hasNext()) {
+  var doc = cursor.next();
+  printjson(doc);
+}
+...
+</code></pre>
+
+<p>In the example above:</p>
+
+<ol>
+<li><em>&lt;database_name&gt;</em> is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed there is another &quot;use xxxxx&quot; statement or something that implies it, like a <em>db.getSiblingDB(...)</em> function.</li>
+<li><em>db.getVersion()</em> will create a <tt>buildinfo</tt> command as BSON object. Through javascript-interpreter-to-C++-code boundary and then the C++ driver library that is put that in wire protocol message message and send it the db server. The response travels those layers in reverse, finally ending with the <tt>buildinfo</tt> result in Javascript object, from which the <em>version</em> property is picked and printed.</li>
+<li><em>db.serverStatus()</em> is a helper function that executes _db.adminCommand({serverStatus: 1})) instead. I.e. this time the BSON object being packed and set is <em>{serverStatus: 1}</em> compared to <em>{hostinfo: 1}</em>. At the return the whole object (rather than just one scalar value property) is pretty-printed onto the terminal output.</li>
+<li>A similar pattern at first to the last two comands, just that a <em>{find: &quot;database_name.collection_name&quot;}</em> BSON object is being sent. However this time there will be a cursor with results. Through the driver API each document in the cursor results will be passed separately with each iteration of the cursor. If more results need to be fetched from the server side <tt>getMore</tt> requests holding the cursor id value from the <tt>find</tt> command's result will be sent and read repeatedly until the cursor is exhausted (or times out) on the server side.</li>
+</ol>
+
+<h4 id="ever-present-db-namespace">Ever-present db namespace</h4>
+
+<p>The sent commands always includes a database namespace. You can change it at will (&quot;use <em>another_db_name</em>&quot;) so it is variable, but it can't be empty/null. Default is &quot;test&quot;.</p>
+
+<p>Some commands don't logically require a db namespace &ndash; eg. isMaster, addShard, replSetGetStatus &ndash; but they won't work unless it is set to &quot;admin&quot;. Many a time I've had those fail until I typed &quot;use admin&quot; and tried again. Some like isMaster you don't notice because you're probably never call it except by the a shell helper function (<em>db.isMaster()</em>) that sets it.</p>
+
+<p><em>Crystal ball gazing:</em> Having said all this it isn't out the question that what is unnecessary will be removed in the future. The <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a> message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. E.g. the db server (mongod or mongos) could just silently ignore the db name scope from the client when it is a command such as isMaster, serverStatus, etc.</p>
+
+<h3 id="explicit-db-connection-objects">Explicit db connection objects</h3>
+
+<p>You don't have to use the &quot;db&quot; global var if you don't want to. You can manually create other live MongoDB connections objects with <tt>connect(&lt;conn_uri&gt;)</tt>, or <tt>new Mongo(&lt;conn_uri&gt;)</tt> and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.</p>
+
+<p><strong>TODO</strong> expand on what the wire protocol traffic is for all commands in the example above.</p>
+
+<h3 id="recap">Recap</h3>
+
+<p>To recap the mongo shell:</p>
+
+<ul>
+<li>Uses the MongoDB wire protocol to communicate with MongoDB servers the same as any application</li>
+<li>It is C++ internally</li>
+<li>Makes use of a javascript engine library and &quot;readline&quot;-style line editor library to provide a live Javascript command line interpreter / REPL.</li>
+<li>It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.</li>
+<li>Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database</li>
+<li>There is one &quot;<tt>db</tt>&quot; MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell. (TODO LINK to connection URI page)</li>
+<li>The behind-the-scenes flow every time you execute a db.XXX() command:
+
+<ol>
+<li>You create documents as Javascript objects, and execute Javascript functions in the interpreter.</li>
+<li>The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2(?) experimental OP_COMMAND format requests) and sends it over the network</li>
+<li>The server responds with a reply in BSON</li>
+<li>The mongo shell converts the reply to a javascript result, and the BSON data is converted to a Javascript object</li>
+<li>The converted-to-Javascript-binary-format result is assigned into a javascript variable if you set one, or auto-printed into the shell terminal if you did not.</li>
+</ol></li>
+</ul>
+
+<p><em><strong>Q.</strong> &quot;But what about server-side Javascript? That's what MongoDB uses right?&quot;</em></p>
+
+<p>No, that's not what MongoDB uses. Well it can interpret and execute some javascript functions you send to it, but they're only for running within:</p>
+
+<ul>
+<li>a <a href="https://docs.mongodb.com/manual/core/map-reduce/">MapReduce</a> command, or</li>
+<li><em>(Superseded by $expr in v3.6; removed v4.2):</em> if using a $where operator in a <tt>find</tt> command, or</li>
+<li><em>(Deprecated v3.4; removed v4.2):</em> as the &quot;reduce&quot;, &quot;keyf&quot; or &quot;finalize&quot; arguments in a <tt>group</tt> command.</li>
+</ul>
+
+<p>These functions are javascript, but they get packed inside a special BSON datatype to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1559117002"></script>
+    <script src="/js/jquery.sticky.js?1559117002"></script>
+    <script src="/js/featherlight.min.js?1559117002"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1559117002"></script>
+    <script src="/js/highlight.pack.js?1559117002"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1559117002"></script>
+    <script src="/js/learn.js?1559117002"></script>
+    <script src="/js/hugo-learn.js?1559117002"></script>
+
+    <link href="/mermaid/mermaid.css?1559117002" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1559117002"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

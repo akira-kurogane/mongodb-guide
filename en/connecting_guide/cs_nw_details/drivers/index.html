@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta name="description" content="Putting perspective on what a MongoDB driver is through a description of the shape and behaviour of your client requests (and server replies) as TCP traffic">
+<meta name="author" content="Akira Kurogane">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Drivers and &#39;the wire&#39; :: Akira&#39;s MongoDB Guide</title>
+
+    
+    <link href="/css/nucleus.css?1559117002" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1559117002" rel="stylesheet">
+    <link href="/css/hybrid.css?1559117002" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1559117002" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1559117002" rel="stylesheet">
+    <link href="/css/auto-complete.css?1559117002" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1559117002" rel="stylesheet">
+    <link href="/css/theme.css?1559117002" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1559117002" rel="stylesheet">
+    
+      <link href="/css/theme-green.css?1559117002" rel="stylesheet">
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1559117002"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/en/connecting_guide/cs_nw_details/drivers/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+Akira's MongoDB Guide
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1559117002"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1559117002"></script>
+<script type="text/javascript">
+    
+        var baseurl = "localhost:1313\/en";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1559117002"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/guide_intro/">
+          <b>1. </b>What you can do with MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/en/connecting_guide/">
+          <b>2. </b>Connecting to MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/">
+          Human how-to
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/conn_string_uri/">
+          Connection string URI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/mongo_shell/">
+          The mongo shell
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/">
+          client ⇄ TCP ⇄ db server
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/drivers/">
+          Drivers and &#39;the wire&#39;
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/ha_connections/">
+          Automatic failover
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/akira-kurogane/mongodb-guide"><i class='fa fa-fw fa-github'></i> Github repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="#ZgotmplZ"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="localhost:1313/en/connecting_guide/cs_nw_details/drivers/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <center>
+
+    Github repo: 
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide" data-icon="octicon-star" data-show-count="false" aria-label="Star Akira's MongoDB Guide on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide/fork" data-icon="octicon-repo-forked" data-show-count="false" aria-label="Fork Akira's MongoDB Guide on GitHub">Fork</a>
+
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/en/'>Top page</a> > <a href='/en/connecting_guide/'>Connecting to MongoDB</a> > <a href='/en/connecting_guide/cs_nw_details/'>Client-Server network communication</a> > Drivers and 'the wire'
+          
+         
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#a-historical-detour">A historical detour</a></li>
+<li><a href="#what-it-looks-like-to-the-programmer">What it looks like to the programmer</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Drivers and &#39;the wire&#39;
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<p>From the perspective of the <em>driver developer</em> a MongoDB driver:</p>
+
+<ul>
+<li>Marshalls data from the language's native types into the format the MongoDB server requires (== a <strong>BSON payload</strong> proceeded by a few classically simple network fields in each packet's header area).</li>
+<li>Sends and receives that info, keeping track of which reply from a server matches which request.
+
+<ul>
+<li>When using a connection pool it also keeps a track of which thread the requests were sent from</li>
+</ul></li>
+<li>Goes to error handling when there are network interruptions like abrupt socket closure and other TCP casuality situations</li>
+<li>Implements a <em>lot</em> of detail in the 'Meta' API driver specification for <a href=https://github.com/mongodb/specifications/tree/master/source/server-discovery-and-monitoring">server discovery and monitoring</a> (&quot;SDAM&quot;) and <a href="https://github.com/mongodb/specifications/tree/master/source/server-selection">server selection</a>.</li>
+</ul>
+
+<p>From the <em>application developer's perspective</em> the MongoDB driver:</p>
+
+<ul>
+<li>Presents the database as an object you can push data in and pull data out of.</li>
+<li>The API provided is idiomatic for your language. E.g. where Java programmers run a <em>find()</em> method on a collection object, C driver users run a <em>mongoc_collection_find()</em> function that takes a mongoc_collection_t* pointer argument, etc.</li>
+</ul>
+
+<p>To look at it from another side this is what the driver API <em>doesn't do</em>:</p>
+
+<ul>
+<li>Involve the application programmer in maintaining the TCP socket connections.</li>
+<li>Involve the application programmer in determining which remote servers are the current primaries (i.e. the one that the writes happen on first)</li>
+<li>Expose network packet data in the wire protocol format</li>
+</ul>
+
+<p>Apart from the fact that you open a connection, and there can be exceptions thrown when a server crashes or the network is disconnected, there is limited expression in the API that the database is on a remote server.
+There are no network-conscious concepts the user must engage with such as 'queue this request', 'pop reply off incoming message stack', etc.</p>
+
+<p>Regardless of which driver you are using, at the Wire Protocol layer they are all the same fundamentally. If they are contemporary versions there's a good chance the BSON payload in each Wire protocol packet is identical excluding ephemeral fields like a timestamps.</p>
+
+<p>The format of data in MongoDB Wire Protocol requests and responses is relatively simple, but it is a binary one and is far from being human-readable. The below comes from TCP payloads captured using tcpdump, manually unwrapped using command line tools <tt>od</tt> and <tt>bsondump</tt> according to the info in the <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/">MongoDB wire protocol documentation</a>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Example <em>find</em> in various APIs</th>
+<th></th>
+<th>MongoDB wire packet</th>
+<th></th>
+<th><tt>mongod</tt> code</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>mongo shell</strong> db.foo.find({&quot;x&quot;: 99};<br><strong>PyMongo</strong> db.foo.find({&quot;x&quot;: 99})<br><strong>Java</strong> db.getCollection(&quot;foo&quot;).find(eq(&quot;x&quot;, 99))<br><strong>PHP</strong> $db-&gt;foo-&gt;find(['x' =&gt; 99]);<br><strong>Ruby</strong> client[:foo].find(x: 99)</td>
+<td>→</td>
+<td><strong><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a></strong><br>length=180;requestID=0x1b73a9;responseTo=0;opCode=2013(=OP_MSG type)<br>flags=0x00.0x00<br>section 1/1 = <tt>{<br>&nbsp; &quot;find&quot;:&quot;foo&quot;,<br>&nbsp; &quot;filter&quot;:{&quot;x&quot;:99.0},<br>&nbsp; &quot;$clusterTime&quot;:{ ... }},<br>&nbsp; &quot;signature&quot;:{ ... },<br>&nbsp; &quot;$db&quot;:&quot;test&quot;<br>}</tt></td>
+<td>→</td>
+<td><a href="https://github.com/mongodb/mongo/blob/v3.6/src/mongo/db/commands/find_cmd.cpp">mongo::FindCmd::run</a></td>
+</tr>
+
+<tr>
+<td>(A cursor object with first batch results)</td>
+<td>←</td>
+<td><strong><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a></strong> (as a reply)<br>length=180;requestID=0xb5a;responseTo=0x1b73a9;opCode=2013(=OP_MSG type)<br>flags=0x00.0x00<br>section 1/1 = <tt>{<br>&nbsp; &quot;cursor&quot;:{<br>&nbsp; &nbsp; &quot;id&quot;:{&quot;$numberLong&quot;:&quot;0&quot;},<br>&nbsp; &nbsp; &quot;ns&quot;:&quot;test.foo&quot;,<br>&nbsp; &nbsp; &quot;firstBatch&quot;:[<br>&nbsp; &nbsp; {&quot;_id&quot;:ObjectId(&quot;5b3433ad88d64ee7afb5dc80&quot;), &quot;x&quot;:99.0,&quot;order_cust_id&quot;:&quot;AF4R2109&quot;}<br>&nbsp; ]<br>&nbsp; },<br>&nbsp; &quot;ok&quot;:1.0,<br>&nbsp; &quot;operationTime&quot;:{ ... },<br>&nbsp; &quot;$clusterTime&quot;:{ ... },<br>&nbsp; &quot;signature&quot;:{ ... },<br>&nbsp; &quot;keyId&quot;:{&quot;$numberLong&quot;:&quot;0&quot;}}}<br>}</tt></td>
+<td>←</td>
+<td>↲</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="a-historical-detour">A historical detour</h4>
+
+<p>The above is latest-and-greatest OP_MSG format. At time of writing only the 3.6+ mongo shell and dev-branch drivers would be using it. In truth most driver versions are still being shoe-horned into the legacy <strong>OP_QUERY</strong> message type.</p>
+
+<p>Per its name OP_QUERY was meant to only be for queries, but was repurposed for mostly any type of request message. In its network packet fields it included a &quot;fullCollectionName&quot; field because queries always need a a db and collection name scope). But there are commands that don't have a collection scope (eg. replicaSetGetStatus, createUser)  but don't have a dedicated wire protocol message type either. How to send them? The workaround for those cases was that &quot;$cmd&quot; was used as a <em>dummy collection name</em> at the end of the &quot;fullCollectionName&quot; field. This workaround became so standard that it is even set this way for commands such as <em>find</em> which do need a collection scope. You can see in the example below that the collection name &quot;foo&quot; has moved inside the BSON and is absent outside.</p>
+
+<table>
+<thead>
+<tr>
+<th>Legacy wire packet examples</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-query">OP_QUERY</a><br>length=215;requestId=0x6633483;responseTo=0;opCode=2004(=OP_QUERY type)<br>fullCollectionName=&quot;test.$cmd&quot; <em>//N.b. the dummy &quot;$cmd&quot; collection name</em> <br>numberToSkip=0;numberToReturn=0xffff<br>document = <tt>{<br>&nbsp; &quot;find&quot;:&quot;foo&quot;,<br>&nbsp; &quot;filter&quot;:{&quot;x&quot;:99},<br>&nbsp; &quot;lsid&quot;:{ ... },<br>&nbsp; &quot;$clusterTime&quot;:{ ... },<br>&nbsp; &quot;signature&quot;:{ ... },<br>&nbsp; &quot;keyId&quot;:{&quot;$numberLong&quot;:&quot;0&quot;}}}<br>}</tt></td>
+</tr>
+
+<tr>
+<td><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-reply">OP_REPLY</a><br>length=301;requestId=0xbb8;responseTo=0x6633483;opCode=1(=OP_REPLY type)<br>responseFlags=0x08(=AwaitCapable)<br>cursorID=0 <em>//important for getMore cmds that follow, if any</em>;<br>startingFrom=0;numberReturned=1<br>document = <tt>{<br>&nbsp; &quot;cursor&quot;<br>&nbsp; {<br>&nbsp; &nbsp; &quot;firstBatch&quot;:[<br>&nbsp; &nbsp; &nbsp; {&quot;_id&quot;:ObjectId(&quot;5b3433ad88d64ee7afb5dc80&quot;), &quot;x&quot;:99.0,&quot;order_cust_id&quot;:&quot;AF4R2109&quot;}<br>&nbsp; &nbsp; ],<br>&nbsp; &nbsp; &quot;id&quot;:{&quot;$numberLong&quot;:&quot;0&quot;},<br>&nbsp; &nbsp; &quot;ns&quot;:&quot;test.foo&quot;},<br>&nbsp; &nbsp; &quot;ok&quot;:1.0,<br>&nbsp; &nbsp; &quot;operationTime&quot;:{ ... },<br>&nbsp; &nbsp; &quot;signature&quot;:{ .. }<br>&nbsp; }<br>}</tt></td>
+</tr>
+</tbody>
+</table>
+
+<p>My way of looking at is:</p>
+
+<ul>
+<li>In the beginning there were just collection editing or reading commands (query, insert, update, delete) and four wire packet types for those, plus a reply message type. The db+collection namespace was put in a network field, outside the BSON payload document.</li>
+<li>Soon there many more command types that the database server accepted. A generic command wire packet format was needed. The existing drivers (that needed to be supported for some time) started using OP_QUERY overloaded for this purpose.</li>
+<li>A generic command wire packet type OP_COMMAND was invented! And used by mongo shell v3.4(?) and between nodes in clusters and replica sets. But it didn't go mainstream.</li>
+<li>Instead the OP_MSG type has become the new standard, to be used by 4.2? era drivers. Neither the collection name or database name is in the network header fields - they'll be in &quot;ns&quot; (namespace) inside the BSON payload instead.</li>
+</ul>
+
+<p>You might have noticed that there's no single field in the BSON command that says what sort of command the client is sending. Does the server run through a list of keys in fixed order until it gets a match? (E.g. <em>if (commandMessage.hasKey(&quot;find&quot;) then --&gt; FindCmd:run(), else if commandMessage.hasKey(&quot;update&quot;) -&gt; UpdateCmd::run()</em>, etc. ....?).</p>
+
+<p>Nope, a simpler mechanism is used. From <tt>util/net/op_msg.h</tt>:</p>
+
+<pre><code class="language-C++">    StringData getCommandName() const {
+        return body.firstElementFieldName();
+    }
+</code></pre>
+
+<p>A lesson from this is that order in BSON can matter (at least to MongoDB). Important for driver developers, but not application programmers as the driver API will take care of this point for you.</p>
+
+<h4 id="what-it-looks-like-to-the-programmer">What it looks like to the programmer</h4>
+
+<p>I don't want to re-invent the documentation wheel for this part. MongoDB's official documentation tutorials are good and cover many language samples in one page. Some links for a couple of types of operations:</p>
+
+<ul>
+<li><a href="https://docs.mongodb.com/manual/tutorial/insert-documents/">Document insert example</a> (Python, Java, Node.js, PHP, C#, Perl, Ruby, Scala)</li>
+<li><a href="https://docs.mongodb.com/manual/tutorial/query-documents/">Query example</a> (Python, Java, Node.js, PHP, C#, Perl, Ruby, Scala)</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/en/connecting_guide/cs_nw_details/" title="Client-Server network communication"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1559117002"></script>
+    <script src="/js/jquery.sticky.js?1559117002"></script>
+    <script src="/js/featherlight.min.js?1559117002"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1559117002"></script>
+    <script src="/js/highlight.pack.js?1559117002"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1559117002"></script>
+    <script src="/js/learn.js?1559117002"></script>
+    <script src="/js/hugo-learn.js?1559117002"></script>
+
+    <link href="/mermaid/mermaid.css?1559117002" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1559117002"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

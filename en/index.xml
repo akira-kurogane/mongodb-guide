@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Top page on Akira&#39;s MongoDB Guide</title>
+    <link>localhost:1313/en/</link>
+    <description>Recent content in Top page on Akira&#39;s MongoDB Guide</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="localhost:1313/en/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Credits for the Learn Theme for Hugo</title>
+      <link>localhost:1313/en/credits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>localhost:1313/en/credits/</guid>
+      <description>Contributors Thanks to them  for making Open Source Software a better place !
+.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start } .ghContributors  div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors  div label{ padding-left: 4px ; } .ghContributors  div span{ font-size: x-small; padding-left: 4px ; }   @matcornic 149 commits   @matalo33 37 commits   @lierdakil 16 commits   @gwleclerc 13 commits   @mdavids 10 commits   @coliff 9 commits   @ozobi 5 commits   @Xipas 5 commits   @pdelaby 4 commits   @Chris-Greaves 3 commits   @mreithub 3 commits   @massimeddu 3 commits   @willwade 3 commits   @denisvm 2 commits   @gpospelov 2 commits   @tanzaho 2 commits   @wikijm 2 commits   @lfalin 2 commits   @alexvargasbenamburg 1 commits   @afs2015 1 commits   @arifpedia 1 commits   @MrMoio 1 commits   @ChrisLasar 1 commits   @IEvangelist 1 commits   @giuliov 1 commits   @haitch 1 commits   @ImgBotApp 1 commits   @RealOrangeOne 1 commits   @JohnBlood 1 commits   @kamilchm 1 commits   @lloydbenson 1 commits   @sykesm 1 commits   @654wak654 1 commits   @PierreAdam 1 commits   @ripienaar 1 commits   @EnigmaCurry 1 commits   @taiidani 1 commits   @exKAZUu 1 commits   @shelane 1 commits   @tedyoung 1 commits   @Thiht 1 commits   @editicalu 1 commits   @fossabot 1 commits   @kamar535 1 commits   @nonumeros 1 commits   @pgorod 1 commits   @proelbtn 1 commits   And a special thanks to @vjeantet for his work on docdock, a fork of hugo-theme-learn.</description>
+    </item>
+    
+  </channel>
+</rss>

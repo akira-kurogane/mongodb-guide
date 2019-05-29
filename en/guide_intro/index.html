@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta name="description" content="A dash through the top reasons to use MongoDB">
+<meta name="author" content="Akira Kurogane">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>What you can do with MongoDB :: Akira&#39;s MongoDB Guide</title>
+
+    
+    <link href="/css/nucleus.css?1559117002" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1559117002" rel="stylesheet">
+    <link href="/css/hybrid.css?1559117002" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1559117002" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1559117002" rel="stylesheet">
+    <link href="/css/auto-complete.css?1559117002" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1559117002" rel="stylesheet">
+    <link href="/css/theme.css?1559117002" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1559117002" rel="stylesheet">
+    
+      <link href="/css/theme-green.css?1559117002" rel="stylesheet">
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1559117002"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/en/guide_intro/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+Akira's MongoDB Guide
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1559117002"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1559117002"></script>
+<script type="text/javascript">
+    
+        var baseurl = "localhost:1313\/en";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1559117002"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/en/guide_intro/">
+          <b>1. </b>What you can do with MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/">
+          <b>2. </b>Connecting to MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/">
+          Human how-to
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/conn_string_uri/">
+          Connection string URI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/human_ix/mongo_shell/">
+          The mongo shell
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/">
+          client ⇄ TCP ⇄ db server
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/drivers/">
+          Drivers and &#39;the wire&#39;
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/en/connecting_guide/cs_nw_details/ha_connections/">
+          Automatic failover
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/akira-kurogane/mongodb-guide"><i class='fa fa-fw fa-github'></i> Github repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="#ZgotmplZ"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="localhost:1313/en/guide_intro/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <center>
+
+    Github repo: 
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide" data-icon="octicon-star" data-show-count="false" aria-label="Star Akira's MongoDB Guide on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide/fork" data-icon="octicon-repo-forked" data-show-count="false" aria-label="Fork Akira's MongoDB Guide on GitHub">Fork</a>
+
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/en/'>Top page</a> > What you can do with MongoDB
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#develop-faster">Develop faster</a>
+<ul>
+<li><a href="#broadest-client-language-support">Broadest client language support</a></li>
+</ul></li>
+<li><a href="#write-and-read-data-faster">Write and read data faster</a></li>
+<li><a href="#go-big">Go big</a></li>
+<li><a href="#get-bigger-quickly">Get bigger quickly</a></li>
+<li><a href="#be-small">Be small</a></li>
+<li><a href="#get-smaller-quickly">Get smaller quickly</a></li>
+<li><a href="#survive-server-data-center-failures">Survive server, data center failures</a></li>
+<li><a href="#know-the-inside-out">Know the inside out</a>
+<ul>
+<li><a href="#diagnostic-information">Diagnostic information</a></li>
+<li><a href="#source-code">Source code</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              What you can do with MongoDB
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<h3 id="develop-faster">Develop faster</h3>
+
+<p>Mostly everyone who has used one of the 'NoSQL' databases which came into popularity post-2010, of which MongoDB is the most popular, already appreciate this. But for those of you still using relational databases the key reasons for the higher development productivity are:</p>
+
+<ul>
+<li>Reduced lines of code</li>
+<li>You don't need to perform a full mental switch between the paradigm of your application's data structure v.s. the server-side data storage mechanism.</li>
+</ul>
+
+<p>You are a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3900881/">glucose-powered computer</a> and context change is expensive. Only so much glucose can be converted by your neurons into thought-sparks a day, so save your sparks for things that are more valuable to you.</p>
+
+<h4 id="broadest-client-language-support">Broadest client language support</h4>
+
+<p>Want to do things quicker by using more developers / tools? For example your Web front-end has been created in language <em>X</em>, but the data scientists that will mine gold from the big data need to use language <em>Y</em>? MongoDB has got you covered - C, C++, C#, Erlang, Go, Java, Node.js, Perl, PHP, Python, Ruby and Scala are supported.</p>
+
+<p>The simplicity of the client API will also reduce the <em>technical debt</em> of your codebase significantly. To the original developer this may seem unimportant, but for the development department that owns the technology it is more important than the speed of new feature development.</p>
+
+<h3 id="write-and-read-data-faster">Write and read data faster</h3>
+
+<p>This has always been my favourite feature of MongoDB.</p>
+
+<p>Let's take a trip back in time, to 2010 or so. The first MongoDB version I was using was 1.6, and I had a task to load a dataset of some 10's of GB. I can't remember the client program, but it might have been mongoimport.</p>
+
+<p>As the data load progressed:</p>
+
+<ol>
+<li>I was pleasantly surprised by the rate of document inserts.</li>
+<li>I was a little shocked by the rate of inserts.</li>
+<li>I was getting suspicious of the insertion rate. Was the counter just a client-side lie? (No, I confirmed server-side.)</li>
+<li>I started sanity-checking the numbers, by datasize too. I arrived at a figure ~30 MB/s.</li>
+<li>30 MB/s reminded me of something. At the time commodity HDD specs advertised 30MB/s write speeds. I checked the server's disk specs. They were the same 30 MB/s rate.</li>
+</ol>
+
+<p>The takeaway for me was <em>the hardware specs were no longer some sort of fantasy numbers way above the user's reality</em>, which was a given for RDBMS-using application developers until then. If the hardware manufacturers have engineered their equipment to flick <em>x</em> million or billion electrons per second from one silicon nano-suburb to another, I could now use <em>all</em> those electrons for my data purposes.</p>
+
+<p>With the change in hardware-land to SSDs, and furthermore MongoDB's change to the WiredTiger storage engine, MongoDB users now enjoy throughput and latency somewhat higher than the puny 30MB/s figure above. But the key point is to expect MongoDB to redline your <em>hardware's</em> throughput and/or latency by the volume of <em>your</em> data being moved, without the database software eating a noticeable chunk of the server capacity for itself.</p>
+
+<h3 id="go-big">Go big</h3>
+
+<p>The growth of e-commerce and social networking in the noughties lead to many thousands of businesses having a problem that was limited to few before. This was dataset sizes that exceeded the capacity of the biggest server you could afford to buy. If your user base was large, well, you either became one of the few companies that engineered around this by getting good at <em>distributed data</em> in your server application, or you limited data detail and panicked about whether you'd last the next 2 months before the server RAM and disk upgrades were delivered.</p>
+
+<p>The NoSQL databases for the most part came with a huge benefit for this businesses / websites - easy data partitioning. You don't program the distribution logic in your application, instead you leave it to the database driver or the db server node you connect to.</p>
+
+<p>The NoSQL databases mostly also included TODO LINK replication, making automatic database failover another thing that happens on the other 'side' of the database driver.</p>
+
+<p>Which field(s) should be chosen to partition data is still a very important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).</p>
+
+<h3 id="get-bigger-quickly">Get bigger quickly</h3>
+
+<p>Starting with a single, unsharded MongoDB replica set is not a problem if suddenly you find you data volume growing. A single replica set can be dynamically converted, in configuration, to being the first shard of a one-shard MongoDB cluster. With no downtime or any reinsertion of your user data you can gain the ability to add new shards. Add one, two, as many as are needed, and the first cluster's data will be redistributed automatically until the number of documents in collections is balanced between the shards.</p>
+
+<p>This has no impact on the logical view of the data to the client. To the client it is as though there is one server with larger capacity. Even document data that might happen to be in the process of being moved from one shard to another as part of shard balancing will not experience an error or delay. (It will delay the background move instead, if the access is write).</p>
+
+<h3 id="be-small">Be small</h3>
+
+<p>You can also be small - MongoDB does not hang some performance-lowering burden of distributed data management on your database server, or place configuration burden on you as a database administrator, if you aren't using it.</p>
+
+<p>You don't even have to have a replica set <em>if</em>, in a rare sort of use case, you can afford for your database to be down (say if a data center's power goes out) and furthermore don't care if the data is lost (say if the hard disk suffers irreversible corruption). MongoDB can run as a <em>standalone</em> <tt>mongod</tt> process and this lets you forgo the cost of having a second or third server. (Starting from v4.0 technically all nodes must be in a replica set by configuration, but that can be single-node replica set.)</p>
+
+<h3 id="get-smaller-quickly">Get smaller quickly</h3>
+
+<p>I'm just kidding. But if you weren't, yes, you can use <a href="https://docs.mongodb.com/manual/reference/method/db.collection.remove/">remove</a> (== document delete), <a href="https://docs.mongodb.com/manual/reference/method/db.collection.drop/">drop</a> (== whole collection drop), <a href="https://docs.mongodb.com/manual/reference/method/rs.remove/">rs.remove(&lt;replica member&gt;)</a> and <a href="https://docs.mongodb.com/manual/reference/command/removeShard/">removeShard</a>.</p>
+
+<h3 id="survive-server-data-center-failures">Survive server, data center failures</h3>
+
+<p>MongoDB replica set members contain copies of each other's data to within whatever limit of time it takes for an update on the primary to be replicated to the secondaries. This can be just a millisecond in the better cases.</p>
+
+<p>An important corollary to this is: the drivers (i.e. the MongoDB API library you use in your code to connect to MongoDB) are all replicaset-aware, regardless of which language you are version.</p>
+
+<p>If you are using sharding, you will connect to a <tt>mongos</tt> node. The <tt>mongos</tt> node does the failover handling in that case.</p>
+
+<p>So if a server dies:</p>
+
+<ul>
+<li>The remaining replica set nodes will notice this (default is with &lt;= 2 seconds, the 'heartbeat' cycle). If the server that died was the primary, they will hold a new election and one of the prior secondaries becomes the new primary. There is a dynamic replicaset state shared between them which is updated. When the former primary is restarted it will receive and act accordingly to that new state where it is a secondary, not try to continue as it was before it's halt.</li>
+<li>The clients that were connected, with the replica-set aware driver code, will detect the failure of the read/write they were performing at the time.</li>
+<li>Apart from the 'blip' of reads and writes that failed because they were en-route to the former primary just about the time it died, the application's database functionality <em>remains up</em>.
+E.g. if you were serving 10,000 web page request a minute some, say dozens, will have database errors. The web pages served before and after will be unaffected.</li>
+<li>You don't have to accept that the client fails to perform it's intended logic during the period of time between the first primary's crash and the new one stepping up. The type of error returned in the event of a lost primary will allow you to recognize that a new primary will shortly step up, and that you can try to do the same thing again (say with try-catch block). MongoDB drivers do <em>not</em> automatically retry for a good reason though - whether something should be retried or not depends on your application's requirements. So it is left to programmers to explicity choose what to do - retry, or not. Redo writes assuming the original context is still valid, or not. Just try the write again, and if there is a duplicate error you could assume the write originally succeeded (and was replicated to the secondary node that subsequently became the new primary)</li>
+</ul>
+
+<h3 id="know-the-inside-out">Know the inside out</h3>
+
+<h4 id="diagnostic-information">Diagnostic information</h4>
+
+<p>MongoDB includes diagnostic information.</p>
+
+<ul>
+<li>Log files</li>
+<li>db.serverStatus()</li>
+<li>Configuration:
+
+<ul>
+<li>db.cmdLineOptions()</li>
+<li>rs.status(), rs.conf()</li>
+<li>sh.status()</li>
+<li>The sharding <em>config</em> db.</li>
+</ul></li>
+</ul>
+
+<p>These are evidence you can examine to learn a <em>lot</em> about the state of your MongoDB instances.</p>
+
+<p>Graphical tools are <em>not</em> included in the normal server and client installation packages, but you can find them in MongoDB's cloud utlities, or third-party metric monitoring tools.</p>
+
+<h4 id="source-code">Source code</h4>
+
+<p>A nice feature, for the C++ programmers especially, is that the source code (excluding enterprise modules such as LDAP and Kerberos authentication, auditing, etc.) is publicly available.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/en/" title="Top page"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/en/connecting_guide/" title="Connecting to MongoDB" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.min.js?1559117002"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1559117002"></script>
+    <script src="/js/jquery.sticky.js?1559117002"></script>
+    <script src="/js/featherlight.min.js?1559117002"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1559117002"></script>
+    <script src="/js/highlight.pack.js?1559117002"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1559117002"></script>
+    <script src="/js/learn.js?1559117002"></script>
+    <script src="/js/hugo-learn.js?1559117002"></script>
+
+    <link href="/mermaid/mermaid.css?1559117002" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1559117002"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

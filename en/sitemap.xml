@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/human_ix/conn_string_uri/</loc>
+    <lastmod>2018-05-30T23:14:32+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/cs_nw_details/drivers/</loc>
+    <lastmod>2018-05-30T23:25:38+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/human_ix/mongo_shell/</loc>
+    <lastmod>2018-05-30T23:26:59+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/cs_nw_details/ha_connections/</loc>
+    <lastmod>2018-05-30T23:41:54+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/human_ix/</loc>
+    <lastmod>2018-05-30T22:56:34+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/guide_intro/</loc>
+    <lastmod>2018-05-24T15:23:42+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/cs_nw_details/</loc>
+    <lastmod>2018-05-30T22:56:34+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/connecting_guide/</loc>
+    <lastmod>2018-05-30T22:56:34+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/categories/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/credits/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/tags/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/en/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+</urlset>

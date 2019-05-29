@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>localhost:1313/ja/categories/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/ja/tags/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/ja/credits/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+  <url>
+    <loc>localhost:1313/ja/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="#ZgotmplZ"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="#ZgotmplZ"
+                />
+  </url>
+  
+</urlset>
