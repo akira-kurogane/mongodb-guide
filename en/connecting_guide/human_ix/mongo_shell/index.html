@@ -12,20 +12,20 @@
     <title>The mongo shell :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/mongodb-guide/css/nucleus.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/fontawesome-all.min.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/hybrid.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/featherlight.min.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/auto-complete.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/theme.css?1559169793" rel="stylesheet">
-    <link href="/mongodb-guide/css/hugo-theme.css?1559169793" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1559194796" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1559194796" rel="stylesheet">
     
-      <link href="/mongodb-guide/css/theme-green.css?1559169793" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1559194796" rel="stylesheet">
     
 
-    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1559169793"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1559194796"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -46,7 +46,7 @@
 
   <div id="header-wrapper">
     <div id="header">
-      <a id="logo" href="/">
+      <a id="logo" href="https://akira-kurogane.github.io/mongodb-guide/">
 
 Akira's MongoDB Guide
 
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1559169793"></script>
-<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1559169793"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1559194796"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1559194796"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/mongodb-guide/js/search.js?1559169793"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1559194796"></script>
 
     
   </div>
@@ -468,7 +468,7 @@ Akira's MongoDB Guide
 <ul>
 <li><a href="#shell-parsing">Shell parsing</a>
 <ul>
-<li><a href="#legacy-mysql-like-commands">Legacy MySQL-like commands</a></li>
+<li><a href="#the-syntax-exception-legacy-mysql-like-commands">The syntax exception: Legacy MySQL-like commands</a></li>
 <li><a href="#plain-javascript">Plain Javascript</a></li>
 <li><a href="#javascript-that-acts-with-database-connection-objects">Javascript that acts with database connection objects</a></li>
 <li><a href="#ever-present-db-namespace">Ever-present db namespace</a></li>
@@ -529,7 +529,7 @@ Akira's MongoDB Guide
         <span>
         
     	
-    	Expand me...
+    	Expand me to see mongo shell connection examples
     	
     	</span>
     </div>
@@ -572,7 +572,7 @@ mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatab
 mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print(&quot;Reconcilliation error: Collection a and b counts differ by &quot; + Math.abs(acnt - bcnt));'
 </code></pre>
 
-<p>In the case of sharded cluster do <em>not</em> add a replicaset parameter in the connection arguments. Just provide the hostname(s) and por(s) of the mongos node(s) you are connecting to.</p>
+<p>In the case of sharded cluster do <em>not</em> add a replicaset parameter in the connection arguments. Just provide the hostname and port of the mongos node you are connecting to (or a comma-delimited list of them).</p>
 
     </div>
 </div>
@@ -583,7 +583,7 @@ mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDa
 
 <h3 id="shell-parsing">Shell parsing</h3>
 
-<h4 id="legacy-mysql-like-commands">Legacy MySQL-like commands</h4>
+<h4 id="the-syntax-exception-legacy-mysql-like-commands">The syntax exception: Legacy MySQL-like commands</h4>
 
 <pre><code class="language-text">use &lt;database_name&gt;
 show databases
@@ -592,8 +592,7 @@ show collections
 
 <p>Apart from &quot;use <em>database_name</em>&quot;, which sets the database namespace the client sends in the Wire Protocol requests, these legacy command expressions are all translated internally to a Javascript function. For example &quot;show collections&quot; is really:</p>
 
-<pre><code class="language-js">//From mongo/shell/utils.js
-//The real code behind &quot;show collections&quot;:
+<pre><code class="language-js">//The real code behind &quot;show collections&quot;:
 if (what == &quot;collections&quot; || what == &quot;tables&quot;) {
     db.getCollectionNames().forEach(function(x) {
         print(x);
@@ -602,9 +601,11 @@ if (what == &quot;collections&quot; || what == &quot;tables&quot;) {
 }
 </code></pre>
 
+<p>To see how these parsing exceptions are achieved you can look at the <tt>shellHelper.show</tt> function in <a href="https://github.com/mongodb/mongo/blob/master/src/mongo/shell/utils.js">mongo/shell/utils.js</a>.</p>
+
 <h4 id="plain-javascript">Plain Javascript</h4>
 
-<p>The mongo shell will process javascript with referring to any database context if you want to! Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.</p>
+<p>The mongo shell will process javascript with referring to any database context, if you want to. Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.</p>
 
 <pre><code class="language-js">var x = 1;
 for (i = 0; i &lt; 100; i++) { print(i); }
@@ -644,10 +645,10 @@ while (cursor.hasNext()) {
 <p>In the example above:</p>
 
 <ol>
-<li><em>&lt;database_name&gt;</em> is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed there is another &quot;use xxxxx&quot; statement or something that implies it, like a <em>db.getSiblingDB(...)</em> function.</li>
+<li><em>&lt;database_name&gt;</em> is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed unless there is another <em>&quot;use xxxxx&quot;</em> statement or something that implies it, like a <em>db.getSiblingDB(...)</em> function.</li>
 <li><em>db.getVersion()</em> will create a <tt>buildinfo</tt> command as BSON object. Through javascript-interpreter-to-C++-code boundary and then the C++ driver library that is put that in wire protocol message message and send it the db server. The response travels those layers in reverse, finally ending with the <tt>buildinfo</tt> result in Javascript object, from which the <em>version</em> property is picked and printed.</li>
 <li><em>db.serverStatus()</em> is a helper function that executes _db.adminCommand({serverStatus: 1})) instead. I.e. this time the BSON object being packed and set is <em>{serverStatus: 1}</em> compared to <em>{hostinfo: 1}</em>. At the return the whole object (rather than just one scalar value property) is pretty-printed onto the terminal output.</li>
-<li>A similar pattern at first to the last two comands, just that a <em>{find: &quot;database_name.collection_name&quot;}</em> BSON object is being sent. However this time there will be a cursor with results. Through the driver API each document in the cursor results will be passed separately with each iteration of the cursor. If more results need to be fetched from the server side <tt>getMore</tt> requests holding the cursor id value from the <tt>find</tt> command's result will be sent and read repeatedly until the cursor is exhausted (or times out) on the server side.</li>
+<li>A similar pattern at first to the last two commands, with a <em>{find: &quot;database_name.collection_name&quot;}</em> BSON object being sent first. The result will contain the found docs, at least if they number 100 or less and fit within the max wire protocol message size. In that simple case it is one request, one response, end. But in the case not all of the documents are delived in one go the result will also contain a (cursor) <em>&quot;exhaust&quot;: false</em> value and cursor id value. The driver automatically continues fetching more results from server-side (assuming you bother to iterate the fetched first batch to its end) with a different type of command &ndash; the <a href="https://docs.mongodb.com/manual/reference/command/getMore/"><tt>getMore</tt></a> command (or in the legacy way, an <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/index.html#op-get-more">OP_GET_MORE</a> wire protocol message).</li>
 </ol>
 
 <h4 id="ever-present-db-namespace">Ever-present db namespace</h4>
@@ -656,13 +657,11 @@ while (cursor.hasNext()) {
 
 <p>Some commands don't logically require a db namespace &ndash; eg. isMaster, addShard, replSetGetStatus &ndash; but they won't work unless it is set to &quot;admin&quot;. Many a time I've had those fail until I typed &quot;use admin&quot; and tried again. Some like isMaster you don't notice because you're probably never call it except by the a shell helper function (<em>db.isMaster()</em>) that sets it.</p>
 
-<p><em>Crystal ball gazing:</em> Having said all this it isn't out the question that what is unnecessary will be removed in the future. The <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a> message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. E.g. the db server (mongod or mongos) could just silently ignore the db name scope from the client when it is a command such as isMaster, serverStatus, etc.</p>
+<p><em>Crystal ball gazing:</em> Having said all this it isn't out the question that what is unnecessary will be removed in the future. The <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a> message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. It will be interesting to see if the code base can handle having this trimmed out.</p>
 
 <h3 id="explicit-db-connection-objects">Explicit db connection objects</h3>
 
 <p>You don't have to use the &quot;db&quot; global var if you don't want to. You can manually create other live MongoDB connections objects with <tt>connect(&lt;conn_uri&gt;)</tt>, or <tt>new Mongo(&lt;conn_uri&gt;)</tt> and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.</p>
-
-<p><strong>TODO</strong> expand on what the wire protocol traffic is for all commands in the example above.</p>
 
 <h3 id="recap">Recap</h3>
 
@@ -674,14 +673,14 @@ while (cursor.hasNext()) {
 <li>Makes use of a javascript engine library and &quot;readline&quot;-style line editor library to provide a live Javascript command line interpreter / REPL.</li>
 <li>It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.</li>
 <li>Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database</li>
-<li>There is one &quot;<tt>db</tt>&quot; MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell. (TODO LINK to connection URI page)</li>
+<li>There is one &quot;<tt>db</tt>&quot; MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell.</li>
 <li>The behind-the-scenes flow every time you execute a db.XXX() command:
 
 <ol>
 <li>You create documents as Javascript objects, and execute Javascript functions in the interpreter.</li>
-<li>The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2(?) experimental OP_COMMAND format requests) and sends it over the network</li>
+<li>The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2 experimental OP_COMMAND format requests) and sends it over the network</li>
 <li>The server responds with a reply in BSON</li>
-<li>The mongo shell converts the reply to a javascript result, and the BSON data is converted to a Javascript object</li>
+<li>The mongo shell shunts the BSON into the TCP payload to C++ object, then cast/marshalled to a javascript object through the Javscript engine.</li>
 <li>The converted-to-Javascript-binary-format result is assigned into a javascript variable if you set one, or auto-printed into the shell terminal if you did not.</li>
 </ol></li>
 </ul>
@@ -696,7 +695,7 @@ while (cursor.hasNext()) {
 <li><em>(Deprecated v3.4; removed v4.2):</em> as the &quot;reduce&quot;, &quot;keyf&quot; or &quot;finalize&quot; arguments in a <tt>group</tt> command.</li>
 </ul>
 
-<p>These functions are javascript, but they get packed inside a special BSON datatype to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.</p>
+<p>These functions are javascript, but they get packed inside a special BSON datatype (just a string with a different enum value for type) to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.</p>
 
 
 
@@ -900,20 +899,20 @@ while (cursor.hasNext()) {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/mongodb-guide/js/clipboard.min.js?1559169793"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1559169793"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1559169793"></script>
-    <script src="/mongodb-guide/js/jquery.sticky.js?1559169793"></script>
-    <script src="/mongodb-guide/js/featherlight.min.js?1559169793"></script>
-    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1559169793"></script>
-    <script src="/mongodb-guide/js/highlight.pack.js?1559169793"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1559194796"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1559194796"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1559194796"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1559194796"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1559194796"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1559194796"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1559194796"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1559169793"></script>
-    <script src="/mongodb-guide/js/learn.js?1559169793"></script>
-    <script src="/mongodb-guide/js/hugo-learn.js?1559169793"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1559194796"></script>
+    <script src="/mongodb-guide/js/learn.js?1559194796"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1559194796"></script>
 
-    <link href="/mongodb-guide/mermaid/mermaid.css?1559169793" type="text/css" rel="stylesheet" />
-    <script src="/mongodb-guide/mermaid/mermaid.js?1559169793"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1559194796" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1559194796"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
