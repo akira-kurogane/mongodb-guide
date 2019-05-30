@@ -7,7 +7,7 @@ weight = 15
 
 From the perspective of the _driver developer_ a MongoDB driver:
 
-- Marshalls data from the language's native types into the format the MongoDB server requires (== a **BSON payload** proceeded by a few classically simple network fields in each packet's header area).
+- Marshalls data from the language's native types into the format the MongoDB server requires (== a BSON payload proceeded by a few classically simple network fields in each packet's header area).
 - Sends and receives that info, keeping track of which reply from a server matches which request.
   - When using a connection pool it also keeps a track of which thread the requests were sent from
 - Goes to error handling when there are network interruptions like abrupt socket closure and other TCP casuality situations
@@ -27,6 +27,8 @@ To look at it from another side this is what the driver API _doesn't do_:
 Apart from the fact that you open a connection, and there can be exceptions thrown when a server crashes or the network is disconnected, there is limited expression in the API that the database is on a remote server.
 There are no network-conscious concepts the user must engage with such as 'queue this request', 'pop reply off incoming message stack', etc.
 
+## Many drivers; one Wire Protocol
+
 Regardless of which driver you are using, at the Wire Protocol layer they are all the same fundamentally. If they are contemporary versions there's a good chance the BSON payload in each Wire protocol packet is identical excluding ephemeral fields like a timestamps.
 
 The format of data in MongoDB Wire Protocol requests and responses is relatively simple, but it is a binary one and is far from being human-readable. The below comes from TCP payloads captured using tcpdump, manually unwrapped using command line tools <tt>od</tt> and <tt>bsondump</tt> according to the info in the <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/">MongoDB wire protocol documentation</a>.
@@ -36,7 +38,11 @@ Example _find_ in various APIs |     | MongoDB wire packet |     | <tt>mongod</t
 **mongo shell** db.foo.find({"x": 99};<br>**PyMongo** db.foo.find({"x": 99})<br>**Java** db.getCollection("foo").find(eq("x", 99))<br>**PHP** $db->foo->find(['x' => 99]);<br>**Ruby** client[:foo].find(x: 99) | → | **<a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a>**<br>length=180;requestID=0x1b73a9;responseTo=0;opCode=2013(=OP_MSG type)<br>flags=0x00.0x00<br>section 1/1 = <tt>\{<br>&nbsp; "find":"foo",<br>&nbsp; "filter":\{"x":99.0\},<br>&nbsp; "$clusterTime":\{ ... }\},<br>&nbsp; "signature":\{ ... \},<br>&nbsp; "$db":"test"<br>\}</tt> | → | <a href="https://github.com/mongodb/mongo/blob/v3.6/src/mongo/db/commands/find_cmd.cpp">mongo::FindCmd::run</a>
  (A cursor object with first batch results) | ← | **<a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg">OP_MSG</a>** (as a reply)<br>length=180;requestID=0xb5a;responseTo=0x1b73a9;opCode=2013(=OP_MSG type)<br>flags=0x00.0x00<br>section 1/1 = <tt>\{<br>&nbsp; "cursor":\{<br>&nbsp; &nbsp; "id":\{"$numberLong":"0"\},<br>&nbsp; &nbsp; "ns":"test.foo",<br>&nbsp; &nbsp; "firstBatch":[<br>&nbsp; &nbsp; \{"\_id":ObjectId("5b3433ad88d64ee7afb5dc80"), "x":99.0,"order_cust_id":"AF4R2109"}<br>&nbsp; ]<br>&nbsp; \},<br>&nbsp; "ok":1.0,<br>&nbsp; "operationTime":\{ ... \},<br>&nbsp; "$clusterTime":\{ ... \},<br>&nbsp; "signature":\{ ... \},<br>&nbsp; "keyId":\{"$numberLong":"0"\}\}\}<br>\}</tt> | ← |  ↲
 
-#### A historical detour
+#### OP\_QUERY and early generations
+
+An optional detour for those who knew the original Wire protocol messages (OP\_QUERY, OP\_INSERT, etc.) and are interested in what traffic looked like with these.
+
+{{% expand %}}
 
 The above is latest-and-greatest OP_MSG format. At time of writing only the 3.6+ mongo shell and dev-branch drivers would be using it. In truth most driver versions are still being shoe-horned into the legacy **OP_QUERY** message type.
 
@@ -54,8 +60,13 @@ My way of looking at is:
 - Soon there many more command types that the database server accepted. A generic command wire packet format was needed. The existing drivers (that needed to be supported for some time) started using OP_QUERY overloaded for this purpose.
 - A generic command wire packet type OP_COMMAND was invented! And used by mongo shell v3.4(?) and between nodes in clusters and replica sets. But it didn't go mainstream.
 - Instead the OP_MSG type has become the new standard, to be used by 4.2? era drivers. Neither the collection name or database name is in the network header fields - they'll be in "ns" (namespace) inside the BSON payload instead.
+{{% /expand %}}
 
-You might have noticed that there's no single field in the BSON command that says what sort of command the client is sending. Does the server run through a list of keys in fixed order until it gets a match? (E.g. _if (commandMessage.hasKey("find") then --> FindCmd:run(), else if commandMessage.hasKey("update") -> UpdateCmd::run()_, etc. ....?).
+### Database command type
+
+You might have noticed that there's no primary / headlined / specially labeled value in the BSON command object that indicates what sort of command the client is sending.
+
+You might be wondering 'Does the server run through a list of key-value pairs in fixed order until it gets a match?' (E.g. _if (commandMessage.hasKey("find") then --> FindCmd:run(), else if commandMessage.hasKey("update") -> UpdateCmd::run()_, etc. ....?).
 
 Nope, a simpler mechanism is used. From <tt>util/net/op_msg.h</tt>:
 ```C++
@@ -63,6 +74,8 @@ Nope, a simpler mechanism is used. From <tt>util/net/op_msg.h</tt>:
         return body.firstElementFieldName();
     }
 ```
+
+Take the key name from the first key-value pair. End of function.
 
 A lesson from this is that order in BSON can matter (at least to MongoDB). Important for driver developers, but not application programmers as the driver API will take care of this point for you.
 

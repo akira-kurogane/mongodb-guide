@@ -23,7 +23,7 @@ On the unix (or windows) shell you can specify connection options, and optionall
 
 If you are not already familiar with the command-line arguments the mongo shell accepts please expand the following section.
 
-{{%expand%}}
+{{%expand "Expand me to see mongo shell connection examples" %}}
 The examples beneath show how to connect to:
 
 - A replicaset named "**merch_backend_rs**" 
@@ -57,7 +57,7 @@ mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatab
 mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
 ```
 
-In the case of sharded cluster do _not_ add a replicaset parameter in the connection arguments. Just provide the hostname(s) and por(s) of the mongos node(s) you are connecting to.
+In the case of sharded cluster do _not_ add a replicaset parameter in the connection arguments. Just provide the hostname and port of the mongos node you are connecting to (or a comma-delimited list of them).
 {{%/expand%}}
 
 ## Internals
@@ -66,7 +66,7 @@ Although it is made with C++ the language that this CLI interprets is Javascript
 
 ### Shell parsing
 
-#### Legacy MySQL-like commands
+#### The syntax exception: Legacy MySQL-like commands
 
 ```text
 use <database_name>
@@ -77,7 +77,6 @@ show collections
 Apart from "use _database\_name_", which sets the database namespace the client sends in the Wire Protocol requests, these legacy command expressions are all translated internally to a Javascript function. For example "show collections" is really:
 
 ```js
-//From mongo/shell/utils.js
 //The real code behind "show collections":
 if (what == "collections" || what == "tables") {
     db.getCollectionNames().forEach(function(x) {
@@ -87,9 +86,11 @@ if (what == "collections" || what == "tables") {
 }
 ```
 
+To see how these parsing exceptions are achieved you can look at the <tt>shellHelper.show</tt> function in [mongo/shell/utils.js](https://github.com/mongodb/mongo/blob/master/src/mongo/shell/utils.js).
+
 #### Plain Javascript
 
-The mongo shell will process javascript with referring to any database context if you want to! Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.
+The mongo shell will process javascript with referring to any database context, if you want to. Below are some client side-only expressions and functions, pretty much identical to those you can do in the native Javascript supported in web browsers etc.
 
 ```js
 var x = 1;
@@ -130,10 +131,10 @@ while (cursor.hasNext()) {
 
 In the example above:
 
-1. _&lt;database\_name&gt;_ is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed there is another "use xxxxx" statement or something that implies it, like a _db.getSiblingDB(...)_ function.
+1. _&lt;database\_name&gt;_ is set as the db scope. This will go in command objects put into MongoDB Wire protocol messages sent from here. It won't be changed unless there is another _"use xxxxx"_ statement or something that implies it, like a _db.getSiblingDB(...)_ function.
 2. _db.getVersion()_ will create a <tt>buildinfo</tt> command as BSON object. Through javascript-interpreter-to-C++-code boundary and then the C++ driver library that is put that in wire protocol message message and send it the db server. The response travels those layers in reverse, finally ending with the <tt>buildinfo</tt> result in Javascript object, from which the _version_ property is picked and printed.
 3. _db.serverStatus()_ is a helper function that executes _db.adminCommand({serverStatus: 1})) instead. I.e. this time the BSON object being packed and set is _{serverStatus: 1}_ compared to _{hostinfo: 1}_. At the return the whole object (rather than just one scalar value property) is pretty-printed onto the terminal output.
-4. A similar pattern at first to the last two comands, just that a _{find: "database\_name.collection\_name"}_ BSON object is being sent. However this time there will be a cursor with results. Through the driver API each document in the cursor results will be passed separately with each iteration of the cursor. If more results need to be fetched from the server side <tt>getMore</tt> requests holding the cursor id value from the <tt>find</tt> command's result will be sent and read repeatedly until the cursor is exhausted (or times out) on the server side.
+4. A similar pattern at first to the last two commands, with a _{find: "database\_name.collection\_name"}_ BSON object being sent first. The result will contain the found docs, at least if they number 100 or less and fit within the max wire protocol message size. In that simple case it is one request, one response, end. But in the case not all of the documents are delived in one go the result will also contain a (cursor) _"exhaust": false_ value and cursor id value. The driver automatically continues fetching more results from server-side (assuming you bother to iterate the fetched first batch to its end) with a different type of command &ndash; the [<tt>getMore</tt>](https://docs.mongodb.com/manual/reference/command/getMore/) command (or in the legacy way, an [OP\_GET\_MORE](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/index.html#op-get-more) wire protocol message).
 
 #### Ever-present db namespace
 
@@ -141,13 +142,11 @@ The sent commands always includes a database namespace. You can change it at wil
 
 Some commands don't logically require a db namespace &ndash; eg. isMaster, addShard, replSetGetStatus &ndash; but they won't work unless it is set to "admin". Many a time I've had those fail until I typed "use admin" and tried again. Some like isMaster you don't notice because you're probably never call it except by the a shell helper function (_db.isMaster()_) that sets it.
 
-_Crystal ball gazing:_ Having said all this it isn't out the question that what is unnecessary will be removed in the future. The [OP_MSG](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg) message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. E.g. the db server (mongod or mongos) could just silently ignore the db name scope from the client when it is a command such as isMaster, serverStatus, etc.
+_Crystal ball gazing:_ Having said all this it isn't out the question that what is unnecessary will be removed in the future. The [OP_MSG](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-msg) message format in particular doesn't require or even permit a db namespace in the network fields, so once older messages formats stop being supported some rationalization is possible. It will be interesting to see if the code base can handle having this trimmed out.
 
 ### Explicit db connection objects
 
 You don't have to use the "db" global var if you don't want to. You can manually create other live MongoDB connections objects with <tt>connect(&lt;conn_uri&gt;)</tt>, or <tt>new Mongo(&lt;conn_uri&gt;)</tt> and give those whatever variable name you like. It would be an untypical way to use the mongo shell however.
-
-**TODO** expand on what the wire protocol traffic is for all commands in the example above.
 
 ### Recap
 
@@ -158,12 +157,12 @@ To recap the mongo shell:
 - Makes use of a javascript engine library and "readline"-style line editor library to provide a live Javascript command line interpreter / REPL.
 - It doesn't handle the wire protocol 'raw' or control TCP primitives itself. It uses the standard C++ MongoDB client driver for that.
 - Can be used to run Javascript code for the sake of Javascript alone, but the purpose is communicate with the database
-- There is one "<tt>db</tt>" MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell. (TODO LINK to connection URI page)
+- There is one "<tt>db</tt>" MongoDB connection object created which represents the connection to the standalone mongod or replicaset of mongod nodes or mongos host you specified with the --host argument when you began the shell.
 - The behind-the-scenes flow every time you execute a db.XXX() command:
   1. You create documents as Javascript objects, and execute Javascript functions in the interpreter. 
-  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2(?) experimental OP_COMMAND format requests) and sends it over the network
+  2. The mongo shell converts the Javascript objects to BSON, and the functions to known MongoDB server commands, which are also serialized in a BSON format. These include the argument values (if any), puts it into the OP_MSG request (or legacy OP_QUERY or the v3.2 experimental OP_COMMAND format requests) and sends it over the network
   3. The server responds with a reply in BSON
-  4. The mongo shell converts the reply to a javascript result, and the BSON data is converted to a Javascript object
+  4. The mongo shell shunts the BSON into the TCP payload to C++ object, then cast/marshalled to a javascript object through the Javscript engine.
   5. The converted-to-Javascript-binary-format result is assigned into a javascript variable if you set one, or auto-printed into the shell terminal if you did not.
 
 _**Q.** "But what about server-side Javascript? That's what MongoDB uses right?"_
@@ -174,4 +173,4 @@ No, that's not what MongoDB uses. Well it can interpret and execute some javascr
 - _(Superseded by $expr in v3.6; removed v4.2):_ if using a $where operator in a <tt>find</tt> command, or
 - _(Deprecated v3.4; removed v4.2):_ as the "reduce", "keyf" or "finalize" arguments in a <tt>group</tt> command.
 
-These functions are javascript, but they get packed inside a special BSON datatype to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.
+These functions are javascript, but they get packed inside a special BSON datatype (just a string with a different enum value for type) to be sent to the server and the mongod is the only program I know that has ever been programmed to unpack that format. Being javascript it is a lot slower than the native C++ processing in the mongod process.

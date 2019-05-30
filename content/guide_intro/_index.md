@@ -45,7 +45,7 @@ The growth of e-commerce and social networking in the noughties lead to many tho
 
 The NoSQL databases for the most part came with a huge benefit for this businesses / websites - easy data partitioning. You don't program the distribution logic in your application, instead you leave it to the database driver or the db server node you connect to.
 
-The NoSQL databases mostly also included TODO LINK replication, making automatic database failover another thing that happens on the other 'side' of the database driver.
+The NoSQL databases mostly all include replication, making automatic database failover another thing that happens on the other 'side' of the database driver.
 
 Which field(s) should be chosen to partition data is still a very important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).
 
