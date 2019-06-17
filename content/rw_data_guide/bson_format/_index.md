@@ -1,8 +1,8 @@
 +++
-title = "The BSON document"
+title = "The data: BSON documents"
+description = "The JSON-like data format used in MongoDB"
 date =  2018-05-31T14:47:29+10:00
-draft = true
-weight = 5
+weight = 10
 +++
 
 MongoDB stores both user collections' data and also its system collections' data in one and only one binary format - the BSON format. It is a binary format for serializing objects of arbitrary keys and values, the same as JSON.

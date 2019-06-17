@@ -3,7 +3,6 @@ title = "Reading and writing"
 date = 2018-05-31T13:43:52+10:00
 weight = 130
 chapter = true
-draft = true
 pre = "<b>3. </b>"
 +++
 
@@ -11,5 +10,5 @@ pre = "<b>3. </b>"
 
 # Reading and writing MongoDB Data
 
-{{% children  %}}
+{{% children description="true" %}}
 
