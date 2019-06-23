@@ -3,8 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/mql_vs_sql/</loc>
+    <lastmod>2018-05-31T14:47:29+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/</loc>
     <lastmod>2018-05-30T23:14:32+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/bson_format/</loc>
+    <lastmod>2018-05-31T14:47:29+10:00</lastmod>
   </url>
   
   <url>
@@ -40,6 +50,11 @@
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/</loc>
     <lastmod>2018-05-30T22:56:34+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/</loc>
+    <lastmod>2018-05-31T13:43:52+10:00</lastmod>
   </url>
   
   <url>

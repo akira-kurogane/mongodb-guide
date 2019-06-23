@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.55.6" />
-    <meta name="description" content="A dash through the top reasons to use MongoDB">
+    <meta name="description" content="&#39;MQL&#39; vs. SQL">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>What you can do with MongoDB :: Akira&#39;s MongoDB Guide</title>
+    <title>&#39;MQL&#39; vs. SQL :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/guide_intro/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/mql_vs_sql/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -84,8 +84,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/guide_intro/">
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -353,8 +353,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/mql_vs_sql/" title="&#39;MQL&#39; vs. SQL" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/mql_vs_sql/">
@@ -444,7 +444,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/guide_intro/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/mql_vs_sql/" selected>English</option>
                     
                   
               
@@ -520,7 +520,13 @@ Akira's MongoDB Guide
             
           
           
-            <a href='/mongodb-guide/en/'>Top page</a> > What you can do with MongoDB
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > 'MQL' vs. SQL
+          
+         
           
          
           
@@ -533,25 +539,25 @@ Akira's MongoDB Guide
     <div class="wrapper">
 <nav id="TableOfContents">
 <ul>
-<li>
+<li><a href="#call-a-function-don-t-write-a-statement">Call a function; don't write a statement</a>
 <ul>
-<li>
+<li><a href="#1-there-is-no-mongodb-query-language">1. There is no MongoDB query <em>language</em></a></li>
+<li><a href="#2-call-a-function-and-give-it-arguments">2. Call a function and give it arguments.</a>
 <ul>
-<li><a href="#develop-faster">Develop faster</a>
-<ul>
-<li><a href="#broadest-client-language-support">Broadest client language support</a></li>
+<li><a href="#in-one-sense-db-and-collection-names-are-arguments-too">In one sense db and collection names are arguments too</a></li>
 </ul></li>
-<li><a href="#write-and-read-data-faster">Write and read data faster</a></li>
-<li><a href="#go-big">Go big</a></li>
-<li><a href="#get-bigger-quickly">Get bigger quickly</a></li>
-<li><a href="#be-small">Be small</a></li>
-<li><a href="#get-smaller-quickly">Get smaller quickly</a></li>
-<li><a href="#survive-server-data-center-failures">Survive server, data center failures</a></li>
-<li><a href="#know-the-inside-out">Know the inside out</a>
-<ul>
-<li><a href="#diagnostic-information">Diagnostic information</a></li>
-<li><a href="#source-code">Source code</a></li>
+<li><a href="#3-receive-the-result">3. Receive the result</a></li>
 </ul></li>
+<li><a href="#rpc-ish">RPC-ish</a>
+<ul>
+<li><a href="#more-like-an-rpc-using-lib-than-a-language">More like an RPC-using lib than a language</a></li>
+<li><a href="#the-language-is-knowing-the-function-reference">The 'language' is knowing the function reference</a></li>
+<li><a href="#your-job-as-the-mongodb-using-programmer">Your job as the MongoDB-using programmer</a>
+<ul>
+<li><a href="#1-remember-the-required-arguments">1. Remember the required arguments.</a></li>
+<li><a href="#2-get-familiar-with-the-object-packing-format-of-arguments">2. Get familiar with the object-packing format of arguments</a></li>
+<li><a href="#3-notice-when-client-side-is-presenting-a-pretty-picture-differing-from-the-server-command-reality">3. Notice when client-side is presenting a pretty picture differing from the server command reality</a></li>
+<li><a href="#4-keep-the-optional-args-in-your-fuzzy-memory">4. Keep the optional args in your fuzzy memory</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -571,7 +577,7 @@ Akira's MongoDB Guide
           
             <h1>
               
-              What you can do with MongoDB
+              &#39;MQL&#39; vs. SQL
             </h1>
           
 
@@ -582,113 +588,142 @@ Akira's MongoDB Guide
 
 	
 
-<h3 id="develop-faster">Develop faster</h3>
+<h1 id="call-a-function-don-t-write-a-statement">Call a function; don't write a statement</h1>
 
-<p>Mostly everyone who has used one of the 'NoSQL' databases which came into popularity post-2010, of which MongoDB is the most popular, already appreciate this. But for those of you still using relational databases the key reasons for the higher development productivity are:</p>
+<h2 id="1-there-is-no-mongodb-query-language">1. There is no MongoDB query <em>language</em></h2>
 
-<ul>
-<li>Reduced lines of code</li>
-<li>You don't need to perform a full mental switch between the paradigm of your application's data structure v.s. the server-side data storage mechanism.</li>
-</ul>
+<p>The &quot;L&quot; in SQL is &quot;Language&quot;. A syntax that defines how you can write a sentence such as &quot;SELECT usr_id, COUNT(*) AS count FROM TableA GROUP BY usr_id&quot; that can be parsed to become query or update plans.</p>
 
-<p>You are a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3900881/">glucose-powered computer</a> and context change is expensive. Only so much glucose can be converted by your neurons into thought-sparks a day, so save your sparks for things that are more valuable to you.</p>
+<p>MongoDB driver API's don't require that. They don't require you to 'program' a piece of text for the remote database server to parse (and potentially throw a syntax error on).</p>
 
-<h4 id="broadest-client-language-support">Broadest client language support</h4>
+<h2 id="2-call-a-function-and-give-it-arguments">2. Call a function and give it arguments.</h2>
 
-<p>Want to do things quicker by using more developers / tools? For example your Web front-end has been created in language <em>X</em>, but the data scientists that will mine gold from the big data need to use language <em>Y</em>? MongoDB has got you covered - C, C++, C#, Erlang, Go, Java, Node.js, Perl, PHP, Python, Ruby and Scala are supported.</p>
+<p>Depending on which language you are programming your client application in the API will be different, but the common thing is that you make all database requests by calling separate functions for the matching database commands.</p>
 
-<p>The simplicity of the client API will also reduce the <em>technical debt</em> of your codebase significantly. To the original developer this may seem unimportant, but for the development department that owns the technology it is more important than the speed of new feature development.</p>
+<p>Here are some examples of doing the insert command, covering one OOP and one imperative style language:</p>
 
-<h3 id="write-and-read-data-faster">Write and read data faster</h3>
+<pre><code>//Python
+my_collection.insert_one(doc)
 
-<p>This has always been my favourite feature of MongoDB.</p>
+//C
+mongoc_collection_insert_one(my_collection_pointer,
+                             doc_pointer, NULL, NULL, &amp;err);
+</code></pre>
 
-<p>Let's take a trip back in time, to 2010 or so. The first MongoDB version I was using was 1.6, and I had a task to load a dataset of some 10's of GB. I can't remember the client program, but it might have been mongoimport.</p>
+<p>The above use the API provided by <a href="https://api.mongodb.com/python/current/">PyMongo</a> and <a href="http://mongoc.org/">mongoc</a> MongoDB drivers. If you use Python or C you can see the syntax is very normal for them. Likewise the Java driver is idiomatic for Java, the NodeJS driver is idiomatic for NodeJS, the C# driver is idiomatic for C#, etc.</p>
 
-<p>As the data load progressed:</p>
+<p>A database-side command of <em>xXxx</em> will be called by executing the API function probably named <em>xXxx(..)</em> or <em>Xxxx(..)</em> or <em>mongo_xxxx(..)</em>, etc. It might be a synonym too, e.g. &quot;find&quot; &lt;--&gt; &quot;query&quot; or &quot;delete&quot; &lt;--&gt; &quot;remove&quot;.</p>
 
-<ol>
-<li>I was pleasantly surprised by the rate of document inserts.</li>
-<li>I was a little shocked by the rate of inserts.</li>
-<li>I was getting suspicious of the insertion rate. Was the counter just a client-side lie? (No, I confirmed server-side.)</li>
-<li>I started sanity-checking the numbers, by datasize too. I arrived at a figure ~30 MB/s.</li>
-<li>30 MB/s reminded me of something. At the time commodity HDD specs advertised 30MB/s write speeds. I checked the server's disk specs. They were the same 30 MB/s rate.</li>
-</ol>
+<p>Some of the functions in the driver API are extra wrappers that provide some kind of syntactic convenience. The <em>insert_one(..)</em> function and its partner <em>insert_many([..])</em> are an example. Underneath both is just one command, <a href="https://docs.mongodb.com/manual/reference/command/insert/">insert</a>, which requires that the document(s) being inserted be passed in an array. <em>insert_one</em> saves you the tiny bit of boilerplate work of instantiating an array to put your one document inside.</p>
 
-<p>The takeaway for me was <em>the hardware specs were no longer some sort of fantasy numbers way above the user's reality</em>, which was a given for RDBMS-using application developers until then. If the hardware manufacturers have engineered their equipment to flick <em>x</em> million or billion electrons per second from one silicon nano-suburb to another, I could now use <em>all</em> those electrons for my data purposes.</p>
+<h3 id="in-one-sense-db-and-collection-names-are-arguments-too">In one sense db and collection names are arguments too</h3>
 
-<p>With the change in hardware-land to SSDs, and furthermore MongoDB's change to the WiredTiger storage engine, MongoDB users now enjoy throughput and latency somewhat higher than the puny 30MB/s figure above. But the key point is to expect MongoDB to redline your <em>hardware's</em> throughput and/or latency by the volume of <em>your</em> data being moved, without the database software eating a noticeable chunk of the server capacity for itself.</p>
+<p>In the example above there are two arguments, although the OOP example especially makes it easy to miss. There is the collection that will be inserted to, plus the doc that will be inserted.</p>
 
-<h3 id="go-big">Go big</h3>
+<p>A database namespace will always be in scope too. Database name is typically set when you created the db connection so it wont be in the function-calling code line, but the driver will be packing it in every request for you behind the scenes.</p>
 
-<p>The growth of e-commerce and social networking in the noughties lead to many thousands of businesses having a problem that was limited to few before. This was dataset sizes that exceeded the capacity of the biggest server you could afford to buy. If your user base was large, well, you either became one of the few companies that engineered around this by getting good at <em>distributed data</em> in your server application, or you limited data detail and panicked about whether you'd last the next 2 months before the server RAM and disk upgrades were delivered.</p>
+<p>As a matter of semantics you might call both the database and collection scope or you might call them arguments.</p>
 
-<p>The NoSQL databases for the most part came with a huge benefit for this businesses / websites - easy data partitioning. You don't program the distribution logic in your application, instead you leave it to the database driver or the db server node you connect to.</p>
+<p>I would say: In the wire protocol packed format they are just string names (argument), but in the code they are scope.</p>
 
-<p>The NoSQL databases mostly all include replication, making automatic database failover another thing that happens on the other 'side' of the database driver.</p>
+<p>On the driver side the scope is kept mostly for tracking which db name and collection to pack in requests. On the server-side the db or collection name strings received from a wire protocol request are immediately used to reopen or instantiate memory structures with pointers to existing collection names for a given db, pointers to existing indexes for a collection, etc.</p>
 
-<p>Which field(s) should be chosen to partition data is still a very important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).</p>
+<h2 id="3-receive-the-result">3. Receive the result</h2>
 
-<h3 id="get-bigger-quickly">Get bigger quickly</h3>
+<p>Nothing new here for any who has programmed a database-using application before. When you call the function there will be a call over the network to the MongoDB server and for any given function in the API there will be one type of result.</p>
 
-<p>Starting with a single, unsharded MongoDB replica set is not a problem if suddenly you find you data volume growing. A single replica set can be dynamically converted, in configuration, to being the first shard of a one-shard MongoDB cluster. With no downtime or any reinsertion of your user data you can gain the ability to add new shards. Add one, two, as many as are needed, and the first cluster's data will be redistributed automatically until the number of documents in collections is balanced between the shards.</p>
+<p>To choose the simplest example this is the response from some deletes executed using PyMongo. The response confirms they ran OK; in the case of the second it shows that 5 documents matched the filter clause and were deleted.</p>
 
-<p>This has no impact on the logical view of the data to the client. To the client it is as though there is one server with larger capacity. Even document data that might happen to be in the process of being moved from one shard to another as part of shard balancing will not experience an error or delay. (It will delay the background move instead, if the access is write).</p>
+<pre><code class="language-python">...
+&gt;&gt;&gt; del_result = posts.delete_one({})
+&gt;&gt;&gt; del_result
+&lt;pymongo.results.DeleteResult object at 0x7f7580fa9ec8&gt;
+&gt;&gt;&gt; del_result.raw_result
+{'n': 1, 'ok': 1.0}
+&gt;&gt;&gt;
+&gt;&gt;&gt; del_result = posts.delete_many({&quot;z&quot;: &quot;test string&quot;})
+&gt;&gt;&gt; del_result.raw_result
+{'n': 5, 'ok': 1.0}
+</code></pre>
 
-<h3 id="be-small">Be small</h3>
+<p>Next example: The <em>find</em> (or however it is spelled) function returns a cursor object which can be used to iterate the 0 or more BSON documents the server matched in the query. A <em>find_one</em> (a.k.a. <em>findOne</em>) doesn't oblige to you to first take the cursor reference, then enter a loop to get the BSON results. Instead the result is a single BSON document (or null), once again saving you a little boilerplate code for the common case when you know you should only have one result (or don't care about supplementaries).</p>
 
-<p>You can also be small - MongoDB does not hang some performance-lowering burden of distributed data management on your database server, or place configuration burden on you as a database administrator, if you aren't using it.</p>
+<p>The various result types that exist are an interesting topic ... no, they're not. I lied. Whichever driver API you're using it is intuitive, but unchallenging and uninteresting as a result. Cursors iterate documents, writes return write results, the 'list database / collection / index names' functions return a cursor of those names, count returns a integer, etc., etc.</p>
 
-<p>You don't even have to have a replica set <em>if</em>, in a rare sort of use case, you can afford for your database to be down (say if a data center's power goes out) and furthermore don't care if the data is lost (say if the hard disk suffers irreversible corruption). MongoDB can run as a <em>standalone</em> <tt>mongod</tt> process and this lets you forgo the cost of having a second or third server. (Starting from v4.0 technically all nodes must be in a replica set by configuration, but that can be single-node replica set.)</p>
+<h1 id="rpc-ish">RPC-ish</h1>
 
-<h3 id="get-smaller-quickly">Get smaller quickly</h3>
+<h2 id="more-like-an-rpc-using-lib-than-a-language">More like an RPC-using lib than a language</h2>
 
-<p>I'm just kidding. But if you weren't, yes, you can use <a href="https://docs.mongodb.com/manual/reference/method/db.collection.remove/">remove</a> (== document delete), <a href="https://docs.mongodb.com/manual/reference/method/db.collection.drop/">drop</a> (== whole collection drop), <a href="https://docs.mongodb.com/manual/reference/method/rs.remove/">rs.remove(&lt;replica member&gt;)</a> and <a href="https://docs.mongodb.com/manual/reference/command/removeShard/">removeShard</a>.</p>
+<p>People who call it &quot;MQL&quot; reminds us of the 19th century people who used the term &quot;horseless carriage&quot; for the newly-invented automobile. Terms from incompatible old concepts were recycled to describe the new ones.</p>
 
-<h3 id="survive-server-data-center-failures">Survive server, data center failures</h3>
+<p>The automobile was truly something new. But a MongoDB driver is not - it packs requests as command objects (your client program language's data -&gt; BSON command object) and an 'X' command is executed through the matching function just for 'X' in the mongod server code. It's not generic enough to be an RPC, but it's something like that.</p>
 
-<p>MongoDB replica set members contain copies of each other's data to within whatever limit of time it takes for an update on the primary to be replicated to the secondaries. This can be just a millisecond in the better cases.</p>
+<h2 id="the-language-is-knowing-the-function-reference">The 'language' is knowing the function reference</h2>
 
-<p>An important corollary to this is: the drivers (i.e. the MongoDB API library you use in your code to connect to MongoDB) are all replicaset-aware, regardless of which language you are version.</p>
+<p>You can't just put anything in the <em>X(...)</em> function of course. It expects certain input, some required and some optional, and without the required arguments the driver will reject it even before sending it. At compile time, if it's a compiled language.</p>
 
-<p>If you are using sharding, you will connect to a <tt>mongos</tt> node. The <tt>mongos</tt> node does the failover handling in that case.</p>
-
-<p>So if a server dies:</p>
-
-<ul>
-<li>The remaining replica set nodes will notice this (default is with &lt;= 2 seconds, the 'heartbeat' cycle). If the server that died was the primary, they will hold a new election and one of the prior secondaries becomes the new primary. There is a dynamic replicaset state shared between them which is updated. When the former primary is restarted it will receive and act accordingly to that new state where it is a secondary, not try to continue as it was before it's halt.</li>
-<li>The clients that were connected, with the replica-set aware driver code, will detect the failure of the read/write they were performing at the time.</li>
-<li>Apart from the 'blip' of reads and writes that failed because they were en-route to the former primary just about the time it died, the application's database functionality <em>remains up</em>.
-E.g. if you were serving 10,000 web page request a minute some, say dozens, will have database errors. The web pages served before and after will be unaffected.</li>
-<li>You don't have to accept that the client fails to perform it's intended logic during the period of time between the first primary's crash and the new one stepping up. The type of error returned in the event of a lost primary will allow you to recognize that a new primary will shortly step up, and that you can try to do the same thing again (say with try-catch block). MongoDB drivers do <em>not</em> automatically retry for a good reason though - whether something should be retried or not depends on your application's requirements. So it is left to programmers to explicity choose what to do - retry, or not. Redo writes assuming the original context is still valid, or not. Just try the write again, and if there is a duplicate error you could assume the write originally succeeded (and was replicated to the secondary node that subsequently became the new primary)</li>
-</ul>
-
-<h3 id="know-the-inside-out">Know the inside out</h3>
-
-<h4 id="diagnostic-information">Diagnostic information</h4>
-
-<p>MongoDB includes diagnostic information.</p>
+<p>For example an update command in it's canonical, MongoDB Wire Protocol and server-side format has the following fields:</p>
 
 <ul>
-<li>Log files</li>
-<li>db.serverStatus()</li>
-<li>Configuration:
+<li>db + collection namespace (set via the scope of a collection object; a collection object pointer; etc.)</li>
+<li>An array of one or more composite update objects with these fields:
 
 <ul>
-<li>db.cmdLineOptions()</li>
-<li>rs.status(), rs.conf()</li>
-<li>sh.status()</li>
-<li>The sharding <em>config</em> db.</li>
+<li>A filter object to find the document(s) to update</li>
+<li>The update modifications</li>
+<li>Optional: upsert true/false</li>
+<li>Optional: &quot;multi&quot; true/false</li>
+<li>Optional: collation</li>
+<li>Optional: filters controlling which nested array items can be affected</li>
 </ul></li>
+<li>Optional: ordered processing only true/false</li>
+<li>Optional: writeConcern</li>
+<li>Optional: bypassDocumentValidation true/false</li>
 </ul>
 
-<p>These are evidence you can examine to learn a <em>lot</em> about the state of your MongoDB instances.</p>
+<p>Whichever programming language you are using the MongoDB driver API for it will, in it's update function (or update_one and update_many functions), be setting these same required fields and optionally setting the optional fields.</p>
 
-<p>Graphical tools are <em>not</em> included in the normal server and client installation packages, but you can find them in MongoDB's cloud utlities, or third-party metric monitoring tools.</p>
+<h2 id="your-job-as-the-mongodb-using-programmer">Your job as the MongoDB-using programmer</h2>
 
-<h4 id="source-code">Source code</h4>
+<h3 id="1-remember-the-required-arguments">1. Remember the required arguments.</h3>
 
-<p>A nice feature, for the C++ programmers especially, is that the source code (excluding enterprise modules such as LDAP and Kerberos authentication, auditing, etc.) is publicly available.</p>
+<p>E.g. that an update needs at least two arguments on top of it's collection namespace scope - one &quot;filter&quot; argument that finds the doc(s) to update; another to set the new value(s) in it.</p>
+
+<h3 id="2-get-familiar-with-the-object-packing-format-of-arguments">2. Get familiar with the object-packing format of arguments</h3>
+
+<p>When an argument is a scalar value, whether a universal programming datatype such as a string, number, boolean, or MongoDB extended type such as Datetime, ObjectId, etc., its obvious how to pass that.</p>
+
+<p>But when an argument is an object (such as query filter, update modification rule, shard zone tag range) that's not obvious because those design choices are arbitrary. (This applies to any language/system; this is not a MongoDB-specific issue).</p>
+
+<pre><code class="language-python">//mongo shell javascript example
+db.my_collection.find({&quot;x&quot;: {&quot;$lt&quot;: 100}}, {&quot;_id&quot;: true, &quot;dept&quot;: true})
+</code></pre>
+
+<p>The line above is equivalent to &quot;SELECT _id, dept FROM my_collection WHERE x &lt; 100&quot;.</p>
+
+<p>The command-delimted field name list &quot;_id, dept&quot; directly after the keyword &quot;SELECT&quot; in the SQL query becomes {&quot;_id&quot;: true, &quot;dept&quot;: true}. What was &quot;x &lt; 100&quot; put after the &quot;WHERE&quot; keyword in the SQL becomes {&quot;x&quot;: {&quot;$lt&quot;: 100}}.</p>
+
+<p>Learning the right order of the arguments is trivial, but the choices made on how to represent filter clauses, field lists, update operations are not necessarily the first one you might guess.</p>
+
+<p>So learn the <a href="https://docs.mongodb.com/manual/tutorial/query-documents/">query filter</a>, <a href="https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/">field projection</a>, <a href="https://docs.mongodb.com/manual/tutorial/update-documents/">update specification</a> and <a href="https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/index.html#examples">index specification</a> documents so you have fluent recall of them. The aggregation pipeline stages and operators are also deserve studying until you can at least remember $match, $project and $group fluently too.</p>
+
+<p>The query filter, update specification and aggregation pipeline stages have more-commonly used operators (e.g. $in, $sum, $set) and less-commonly used ones (too many to list). For the less common operatos and other object types (e.g. zoning shard tag ranges) just look them up on the rare occasions you use them.</p>
+
+<h3 id="3-notice-when-client-side-is-presenting-a-pretty-picture-differing-from-the-server-command-reality">3. Notice when client-side is presenting a pretty picture differing from the server command reality</h3>
+
+<p>Plenty of times the client-side function matches up without any noticeable difference to what the server command really is.</p>
+
+<p>But in other cases, particularly for the most-used commands, there are differences in what you see with your programming language's MongoDB driver API vs. the db server-side command spec.</p>
+
+<p>E.g. the reference for the <a href="https://docs.mongodb.com/manual/reference/command/insert/">insert</a>, <a href="https://docs.mongodb.com/manual/reference/command/update/">update</a> and <a href="https://docs.mongodb.com/manual/reference/command/delete/">delete</a> server commands show they all take <em>arrays</em> of the new insert / update specification / delete filter docs.</p>
+
+<p>Your (recent version) MongoDB driver has insert-one or insert-many, update-one or update-many, and delete-one or delete-many functions though.</p>
+
+<p>If you're aware that these are really calling the same server-side command it'll prevent you from various worries you might have. For example don't be concerned that calling <em>insert_many([new_doc])</em> with a single item in the array is going to have worse performance. It's exactly the same thing as <em>insert_one(new_doc)</em> to the server side.</p>
+
+<h3 id="4-keep-the-optional-args-in-your-fuzzy-memory">4. Keep the optional args in your fuzzy memory</h3>
+
+<p>So there's enough in your subconscious to guide you later do make an point of skimming all the options to find things that are novel or otherwise surprising.</p>
 
 
 
@@ -729,55 +764,8 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                         
                         
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -800,14 +788,10 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
 
                     
                     
+                        
+                    
                     
 
-                    
-            
-        
-                    
-            
-        
                     
                         
             
@@ -859,9 +843,6 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
         
                     
-            
-        
-                    
                         
             
             
@@ -897,6 +878,64 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
             
                 
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 
@@ -921,10 +960,10 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/" title="Top page"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/" title="Reading and writing"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/bson_format/" title="The data: BSON documents" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>

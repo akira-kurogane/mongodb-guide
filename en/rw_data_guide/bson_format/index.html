@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.55.6" />
-    <meta name="description" content="A dash through the top reasons to use MongoDB">
+    <meta name="description" content="The JSON-like data format used in MongoDB">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>What you can do with MongoDB :: Akira&#39;s MongoDB Guide</title>
+    <title>The data: BSON documents :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/guide_intro/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/bson_format/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -84,8 +84,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/guide_intro/">
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -379,8 +379,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/bson_format/" title="The data: BSON documents" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/bson_format/">
@@ -444,7 +444,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/guide_intro/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/bson_format/" selected>English</option>
                     
                   
               
@@ -520,7 +520,13 @@ Akira's MongoDB Guide
             
           
           
-            <a href='/mongodb-guide/en/'>Top page</a> > What you can do with MongoDB
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > The data: BSON documents
+          
+         
           
          
           
@@ -535,24 +541,7 @@ Akira's MongoDB Guide
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#develop-faster">Develop faster</a>
-<ul>
-<li><a href="#broadest-client-language-support">Broadest client language support</a></li>
-</ul></li>
-<li><a href="#write-and-read-data-faster">Write and read data faster</a></li>
-<li><a href="#go-big">Go big</a></li>
-<li><a href="#get-bigger-quickly">Get bigger quickly</a></li>
-<li><a href="#be-small">Be small</a></li>
-<li><a href="#get-smaller-quickly">Get smaller quickly</a></li>
-<li><a href="#survive-server-data-center-failures">Survive server, data center failures</a></li>
-<li><a href="#know-the-inside-out">Know the inside out</a>
-<ul>
-<li><a href="#diagnostic-information">Diagnostic information</a></li>
-<li><a href="#source-code">Source code</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#datatypes">Datatypes</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -571,7 +560,7 @@ Akira's MongoDB Guide
           
             <h1>
               
-              What you can do with MongoDB
+              The data: BSON documents
             </h1>
           
 
@@ -582,113 +571,69 @@ Akira's MongoDB Guide
 
 	
 
-<h3 id="develop-faster">Develop faster</h3>
+<p>MongoDB stores both user collections' data and also its system collections' data in one and only one binary format - the BSON format. It is a binary format for serializing objects of arbitrary keys and values, the same as JSON.</p>
 
-<p>Mostly everyone who has used one of the 'NoSQL' databases which came into popularity post-2010, of which MongoDB is the most popular, already appreciate this. But for those of you still using relational databases the key reasons for the higher development productivity are:</p>
+<p>TODO: [two-column view. JSON two- or three-value object on left, annotated or aligned matching BSON binary values in hex on right]</p>
+
+<p>JSON (and BSON with it) contains key names. This means storage space is consumed by string data of the key names repeated in every object.</p>
+
+<p>[psuedo-representation of a RDMBS or pre-RDBMS table row]</p>
+
+<p>[ ; id; peer_user_id; create_dt; seq_no; reaction_enum_value ]</p>
+
+<p>[ row header; int64; int64; datetime; int32; int32 ] = hdr sz? + 8 + 8 + 8 + 4 + 4 = 32 bytes + header size.</p>
+
+<p><code>{&quot;_id&quot;: &lt;int64&gt;, &quot;peer_user_id&quot;: &lt;int64&gt;, &quot;create_dt&quot;: &lt;datetime&gt;, &quot;seq_no&quot;: &lt;int32&gt;, &quot;reaction_enum_value&quot;: &lt;int64&gt;}</code> = BSON hdr fields + 3 (key) + 8 + 13 (key) + 8 + 10 (key) + 8 + 7 (key) + 4 + 20 (key) + 4 = 83 bytes + BSON header fields</p>
+
+<p>Recommendation: use short key names. One- or two-characters ones are easier to work with that long ones in my experience, anyhow.</p>
+
+<p>In practice BSON is the encoding of MongoDB and isn't used in any other software as popular as MongoDB yet. Nonetheless the BSON specification is one thing and MongoDB is another. There are some extra requirements that MongoDB places on any BSON object is will store:</p>
 
 <ul>
-<li>Reduced lines of code</li>
-<li>You don't need to perform a full mental switch between the paradigm of your application's data structure v.s. the server-side data storage mechanism.</li>
+<li>16MB maximum size. The BSON specification places no upper limit on the size of data it encodes but the MongoDB database server and the drivers do.</li>
+<li>&quot;_id&quot; field: Every document saved to a collection will have an &quot;_id&quot; field value. It is the primary key value of all collections. One of an ObjectId() type will be given automatically if none is specified at insert time.</li>
 </ul>
 
-<p>You are a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3900881/">glucose-powered computer</a> and context change is expensive. Only so much glucose can be converted by your neurons into thought-sparks a day, so save your sparks for things that are more valuable to you.</p>
+<h2 id="datatypes">Datatypes</h2>
 
-<h4 id="broadest-client-language-support">Broadest client language support</h4>
-
-<p>Want to do things quicker by using more developers / tools? For example your Web front-end has been created in language <em>X</em>, but the data scientists that will mine gold from the big data need to use language <em>Y</em>? MongoDB has got you covered - C, C++, C#, Erlang, Go, Java, Node.js, Perl, PHP, Python, Ruby and Scala are supported.</p>
-
-<p>The simplicity of the client API will also reduce the <em>technical debt</em> of your codebase significantly. To the original developer this may seem unimportant, but for the development department that owns the technology it is more important than the speed of new feature development.</p>
-
-<h3 id="write-and-read-data-faster">Write and read data faster</h3>
-
-<p>This has always been my favourite feature of MongoDB.</p>
-
-<p>Let's take a trip back in time, to 2010 or so. The first MongoDB version I was using was 1.6, and I had a task to load a dataset of some 10's of GB. I can't remember the client program, but it might have been mongoimport.</p>
-
-<p>As the data load progressed:</p>
-
-<ol>
-<li>I was pleasantly surprised by the rate of document inserts.</li>
-<li>I was a little shocked by the rate of inserts.</li>
-<li>I was getting suspicious of the insertion rate. Was the counter just a client-side lie? (No, I confirmed server-side.)</li>
-<li>I started sanity-checking the numbers, by datasize too. I arrived at a figure ~30 MB/s.</li>
-<li>30 MB/s reminded me of something. At the time commodity HDD specs advertised 30MB/s write speeds. I checked the server's disk specs. They were the same 30 MB/s rate.</li>
-</ol>
-
-<p>The takeaway for me was <em>the hardware specs were no longer some sort of fantasy numbers way above the user's reality</em>, which was a given for RDBMS-using application developers until then. If the hardware manufacturers have engineered their equipment to flick <em>x</em> million or billion electrons per second from one silicon nano-suburb to another, I could now use <em>all</em> those electrons for my data purposes.</p>
-
-<p>With the change in hardware-land to SSDs, and furthermore MongoDB's change to the WiredTiger storage engine, MongoDB users now enjoy throughput and latency somewhat higher than the puny 30MB/s figure above. But the key point is to expect MongoDB to redline your <em>hardware's</em> throughput and/or latency by the volume of <em>your</em> data being moved, without the database software eating a noticeable chunk of the server capacity for itself.</p>
-
-<h3 id="go-big">Go big</h3>
-
-<p>The growth of e-commerce and social networking in the noughties lead to many thousands of businesses having a problem that was limited to few before. This was dataset sizes that exceeded the capacity of the biggest server you could afford to buy. If your user base was large, well, you either became one of the few companies that engineered around this by getting good at <em>distributed data</em> in your server application, or you limited data detail and panicked about whether you'd last the next 2 months before the server RAM and disk upgrades were delivered.</p>
-
-<p>The NoSQL databases for the most part came with a huge benefit for this businesses / websites - easy data partitioning. You don't program the distribution logic in your application, instead you leave it to the database driver or the db server node you connect to.</p>
-
-<p>The NoSQL databases mostly all include replication, making automatic database failover another thing that happens on the other 'side' of the database driver.</p>
-
-<p>Which field(s) should be chosen to partition data is still a very important decision that you need to make for yourself, but after that your MongoDB cluster will allow you to grow your data up to (<tt>Single server storage size</tt>) x (100's).</p>
-
-<h3 id="get-bigger-quickly">Get bigger quickly</h3>
-
-<p>Starting with a single, unsharded MongoDB replica set is not a problem if suddenly you find you data volume growing. A single replica set can be dynamically converted, in configuration, to being the first shard of a one-shard MongoDB cluster. With no downtime or any reinsertion of your user data you can gain the ability to add new shards. Add one, two, as many as are needed, and the first cluster's data will be redistributed automatically until the number of documents in collections is balanced between the shards.</p>
-
-<p>This has no impact on the logical view of the data to the client. To the client it is as though there is one server with larger capacity. Even document data that might happen to be in the process of being moved from one shard to another as part of shard balancing will not experience an error or delay. (It will delay the background move instead, if the access is write).</p>
-
-<h3 id="be-small">Be small</h3>
-
-<p>You can also be small - MongoDB does not hang some performance-lowering burden of distributed data management on your database server, or place configuration burden on you as a database administrator, if you aren't using it.</p>
-
-<p>You don't even have to have a replica set <em>if</em>, in a rare sort of use case, you can afford for your database to be down (say if a data center's power goes out) and furthermore don't care if the data is lost (say if the hard disk suffers irreversible corruption). MongoDB can run as a <em>standalone</em> <tt>mongod</tt> process and this lets you forgo the cost of having a second or third server. (Starting from v4.0 technically all nodes must be in a replica set by configuration, but that can be single-node replica set.)</p>
-
-<h3 id="get-smaller-quickly">Get smaller quickly</h3>
-
-<p>I'm just kidding. But if you weren't, yes, you can use <a href="https://docs.mongodb.com/manual/reference/method/db.collection.remove/">remove</a> (== document delete), <a href="https://docs.mongodb.com/manual/reference/method/db.collection.drop/">drop</a> (== whole collection drop), <a href="https://docs.mongodb.com/manual/reference/method/rs.remove/">rs.remove(&lt;replica member&gt;)</a> and <a href="https://docs.mongodb.com/manual/reference/command/removeShard/">removeShard</a>.</p>
-
-<h3 id="survive-server-data-center-failures">Survive server, data center failures</h3>
-
-<p>MongoDB replica set members contain copies of each other's data to within whatever limit of time it takes for an update on the primary to be replicated to the secondaries. This can be just a millisecond in the better cases.</p>
-
-<p>An important corollary to this is: the drivers (i.e. the MongoDB API library you use in your code to connect to MongoDB) are all replicaset-aware, regardless of which language you are version.</p>
-
-<p>If you are using sharding, you will connect to a <tt>mongos</tt> node. The <tt>mongos</tt> node does the failover handling in that case.</p>
-
-<p>So if a server dies:</p>
+<p>JSON only supports the same datatypes that a Javascript tokenizer will handle. (If you are Javascript programmer you are no doubt thinking 'But what about other types such as Date?' Surprise- these are not covered by the JSON specification.)</p>
 
 <ul>
-<li>The remaining replica set nodes will notice this (default is with &lt;= 2 seconds, the 'heartbeat' cycle). If the server that died was the primary, they will hold a new election and one of the prior secondaries becomes the new primary. There is a dynamic replicaset state shared between them which is updated. When the former primary is restarted it will receive and act accordingly to that new state where it is a secondary, not try to continue as it was before it's halt.</li>
-<li>The clients that were connected, with the replica-set aware driver code, will detect the failure of the read/write they were performing at the time.</li>
-<li>Apart from the 'blip' of reads and writes that failed because they were en-route to the former primary just about the time it died, the application's database functionality <em>remains up</em>.
-E.g. if you were serving 10,000 web page request a minute some, say dozens, will have database errors. The web pages served before and after will be unaffected.</li>
-<li>You don't have to accept that the client fails to perform it's intended logic during the period of time between the first primary's crash and the new one stepping up. The type of error returned in the event of a lost primary will allow you to recognize that a new primary will shortly step up, and that you can try to do the same thing again (say with try-catch block). MongoDB drivers do <em>not</em> automatically retry for a good reason though - whether something should be retried or not depends on your application's requirements. So it is left to programmers to explicity choose what to do - retry, or not. Redo writes assuming the original context is still valid, or not. Just try the write again, and if there is a duplicate error you could assume the write originally succeeded (and was replicated to the secondary node that subsequently became the new primary)</li>
+<li>String (Null-terminated UTF-8)</li>
+<li>Number (JSON does not specify the binary format)</li>
+<li>Boolean</li>
+<li>Null</li>
+<li>Object</li>
+<li>Array</li>
 </ul>
 
-<h3 id="know-the-inside-out">Know the inside out</h3>
+<p>BSON extends to have these necessary datatypes that mostly any database would need:</p>
 
-<h4 id="diagnostic-information">Diagnostic information</h4>
-
-<p>MongoDB includes diagnostic information.</p>
+<p>Number types:</p>
 
 <ul>
-<li>Log files</li>
-<li>db.serverStatus()</li>
-<li>Configuration:
-
-<ul>
-<li>db.cmdLineOptions()</li>
-<li>rs.status(), rs.conf()</li>
-<li>sh.status()</li>
-<li>The sharding <em>config</em> db.</li>
-</ul></li>
+<li>int32</li>
+<li>int64</li>
+<li>uint64</li>
+<li>Double (8-byte IEEE 754-2008 format)</li>
+<li>Decimal (16-byte IEEE 754-2008 format)</li>
+<li>Datetime (without timezone, i.e. assumed to be UTC always)</li>
+<li>Timestamp</li>
+<li>Generic binary data</li>
+<li>ObjectID (MongoDB uses this type. It would be called a GUID in some other databases that exist.)</li>
 </ul>
 
-<p>These are evidence you can examine to learn a <em>lot</em> about the state of your MongoDB instances.</p>
+<p>BSON also include these (in my opinion) exotic-for-a-database-system datatypes</p>
 
-<p>Graphical tools are <em>not</em> included in the normal server and client installation packages, but you can find them in MongoDB's cloud utlities, or third-party metric monitoring tools.</p>
-
-<h4 id="source-code">Source code</h4>
-
-<p>A nice feature, for the C++ programmers especially, is that the source code (excluding enterprise modules such as LDAP and Kerberos authentication, auditing, etc.) is publicly available.</p>
+<ul>
+<li>Min key</li>
+<li>Max key</li>
+<li>Javascript code (As a UTF8 string, i.e. not in a compiled, runtime-executable format.)</li>
+<li>A few special 'binary types'</li>
+<li>Function (as a compiled, runtime-executable format????)</li>
+<li>UUID</li>
+<li>MD5</li>
+</ul>
 
 
 
@@ -729,55 +674,8 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                         
                         
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -800,14 +698,10 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
 
                     
                     
+                        
+                    
                     
 
-                    
-            
-        
-                    
-            
-        
                     
                         
             
@@ -859,9 +753,6 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
         
                     
-            
-        
-                    
                         
             
             
@@ -897,6 +788,64 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
             
             
                 
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -921,10 +870,10 @@ E.g. if you were serving 10,000 web page request a minute some, say dozens, will
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/" title="Top page"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/mql_vs_sql/" title="&#39;MQL&#39; vs. SQL"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/mql_vs_sql/" title="&#39;MQL&#39; vs. SQL" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
