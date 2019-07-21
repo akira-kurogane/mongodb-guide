@@ -99,7 +99,7 @@ Whichever programming language you are using the MongoDB driver API for it will,
 
 ## Your job as the MongoDB-using programmer
 
-### 1. Remember the required arguments.
+### 1. Memorize the basic, required arguments.
 
 E.g. that an update needs at least two arguments on top of it's collection namespace scope - one "filter" argument that finds the doc(s) to update; another to set the new value(s) in it. 
 
@@ -124,18 +124,22 @@ So learn the [query filter](https://docs.mongodb.com/manual/tutorial/query-docum
 
 The query filter, update specification and aggregation pipeline stages have more-commonly used operators (e.g. $in, $sum, $set) and less-commonly used ones (too many to list). For the less common operatos and other object types (e.g. zoning shard tag ranges) just look them up on the rare occasions you use them.
 
-### 3. Notice when client-side is presenting a pretty picture differing from the server command reality
+### 3. Keep the optional stuff in your fuzzy memory
 
-Plenty of times the client-side function matches up without any noticeable difference to what the server command really is.
+On your first read do make an point of skimming all the options to find things that are novel or otherwise surprising. Leave those neat tricks (or gotchas) in your subconcious so it can guide you later.
+
+### Advanced study
+
+#### Notice when client-side is presenting a pretty picture differing from the server command reality
+
+Most of the client-side functions match up to a single server command with arguments that are exactly the same. rs.status() -> replSetGetStatus, db.createUser(...) -> createUser, etc. Sometimes it a different command name and 
 
 But in other cases, particularly for the most-used commands, there are differences in what you see with your programming language's MongoDB driver API vs. the db server-side command spec.
 
-E.g. the reference for the [insert](https://docs.mongodb.com/manual/reference/command/insert/), [update](https://docs.mongodb.com/manual/reference/command/update/) and [delete](https://docs.mongodb.com/manual/reference/command/delete/) server commands show they all take _arrays_ of the new insert / update specification / delete filter docs.
+E.g. 1. db.setLogLevel(1, "network") -> { setParameter: 1, logComponentVerbosity: {"network": 1} }
+
+E.g. 2. You might seen in tutorials that the insert, update and delete methods in your API's examples were being fed single documents. In truth their matching server commands ([insert](https://docs.mongodb.com/manual/reference/command/insert/), [update](https://docs.mongodb.com/manual/reference/command/update/) and [delete](https://docs.mongodb.com/manual/reference/command/delete/)) take _arrays_ of the new insert / update specification / delete filter docs.
 
 Your (recent version) MongoDB driver has insert-one or insert-many, update-one or update-many, and delete-one or delete-many functions though.
 
 If you're aware that these are really calling the same server-side command it'll prevent you from various worries you might have. For example don't be concerned that calling _insert\_many(\[new\_doc\])_ with a single item in the array is going to have worse performance. It's exactly the same thing as _insert\_one(new\_doc)_ to the server side.
-
-### 4. Keep the optional args in your fuzzy memory
-
-So there's enough in your subconscious to guide you later do make an point of skimming all the options to find things that are novel or otherwise surprising.

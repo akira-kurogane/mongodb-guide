@@ -18,7 +18,7 @@ At this point I expect all readers fall into one of following three groups:
 
 If you are in group #1 I'm sorry but I can't 'sexy it up' in any way, no matter how hard I try. At it's simplest the URI you type is short and easy, but as you add authentication credentials and options it can't help becoming more and more verbose.
 
-If you are in group #2 one special difference to note is that multiple host+port tuples can be accepted, instead of just one. More on this in the[Replicaset host-list syntax](#replicaset-host-list-syntax) section below.
+If you are in group #2 one special difference to note is that multiple host+port tuples can be accepted, instead of just one. More on this in the [Replicaset host-list syntax](#replicaset-host-list-syntax) section below.
 
 If you are in group #3, cool, you're done, you don't need this page and you can move onto the next. (And I'll say I'm envious that you've been given enough privileges to add and modify SRV records on your DNS servers.)
 

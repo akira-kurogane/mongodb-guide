@@ -94,6 +94,7 @@ MongoDB includes diagnostic information.
   - rs.status(), rs.conf()
   - sh.status()
   - The sharding _config_ db.
+- currentOp and _system.profile_ sampling documents
 
 These are evidence you can examine to learn a _lot_ about the state of your MongoDB instances. 
 
