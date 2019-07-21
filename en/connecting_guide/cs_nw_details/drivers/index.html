@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta name="description" content="Putting perspective on what a MongoDB driver is through a description of the shape and behaviour of your client requests (and server replies) as TCP traffic">
 <meta name="author" content="Akira Kurogane">
 
@@ -12,20 +12,20 @@
     <title>Drivers and &#39;the wire&#39; :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/fontawesome-all.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hybrid.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/featherlight.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/auto-complete.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/theme.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hugo-theme.css?1561281049" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1563681063" rel="stylesheet">
     
-      <link href="/mongodb-guide/css/theme-green.css?1561281049" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1563681063" rel="stylesheet">
     
 
-    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1561281049"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1563681063"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1561281049"></script>
-<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1563681063"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1563681063"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/mongodb-guide/js/search.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1563681063"></script>
 
     
   </div>
@@ -663,30 +663,42 @@ There are no network-conscious concepts the user must engage with such as 'queue
         <i style="font-size:x-small;" class="fas fa-chevron-right"></i>
         <span>
         
-        
-        Expand me...
-        
-        </span>
+    	
+    	Expand me...
+    	
+    	</span>
     </div>
     <div class="expand-content" style="display: none;">
-        
+        <p>The above is latest-and-greatest OP_MSG format. At time of writing only the 3.6+ mongo shell and dev-branch drivers would be using it. In truth most driver versions are still being shoe-horned into the legacy <strong>OP_QUERY</strong> message type.</p>
 
-The above is latest-and-greatest OP_MSG format. At time of writing only the 3.6+ mongo shell and dev-branch drivers would be using it. In truth most driver versions are still being shoe-horned into the legacy **OP_QUERY** message type.
+<p>Per its name OP_QUERY was meant to only be for queries, but was repurposed for mostly any type of request message. In its network packet fields it included a &quot;fullCollectionName&quot; field because queries always need a a db and collection name scope). But there are commands that don't have a collection scope (eg. replicaSetGetStatus, createUser)  but don't have a dedicated wire protocol message type either. How to send them? The workaround for those cases was that &quot;$cmd&quot; was used as a <em>dummy collection name</em> at the end of the &quot;fullCollectionName&quot; field. This workaround became so standard that it is even set this way for commands such as <em>find</em> which do need a collection scope. You can see in the example below that the collection name &quot;foo&quot; has moved inside the BSON and is absent outside.</p>
 
-Per its name OP_QUERY was meant to only be for queries, but was repurposed for mostly any type of request message. In its network packet fields it included a "fullCollectionName" field because queries always need a a db and collection name scope). But there are commands that don't have a collection scope (eg. replicaSetGetStatus, createUser)  but don't have a dedicated wire protocol message type either. How to send them? The workaround for those cases was that "$cmd" was used as a _dummy collection name_ at the end of the "fullCollectionName" field. This workaround became so standard that it is even set this way for commands such as _find_ which do need a collection scope. You can see in the example below that the collection name "foo" has moved inside the BSON and is absent outside.
+<table>
+<thead>
+<tr>
+<th>Legacy wire packet examples</th>
+</tr>
+</thead>
 
+<tbody>
+<tr>
+<td><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-query">OP_QUERY</a><br>length=215;requestId=0x6633483;responseTo=0;opCode=2004(=OP_QUERY type)<br>fullCollectionName=&quot;test.$cmd&quot; <em>//N.b. the dummy &quot;$cmd&quot; collection name</em> <br>numberToSkip=0;numberToReturn=0xffff<br>document = <tt>{<br>&nbsp; &quot;find&quot;:&quot;foo&quot;,<br>&nbsp; &quot;filter&quot;:{&quot;x&quot;:99},<br>&nbsp; &quot;lsid&quot;:{ ... },<br>&nbsp; &quot;$clusterTime&quot;:{ ... },<br>&nbsp; &quot;signature&quot;:{ ... },<br>&nbsp; &quot;keyId&quot;:{&quot;$numberLong&quot;:&quot;0&quot;}}}<br>}</tt></td>
+</tr>
 
-| Legacy wire packet examples |
-| --------------------------- |
-| <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-query">OP_QUERY</a><br>length=215;requestId=0x6633483;responseTo=0;opCode=2004(=OP_QUERY type)<br>fullCollectionName="test.$cmd" _//N.b. the dummy "$cmd" collection name_ <br>numberToSkip=0;numberToReturn=0xffff<br>document = <tt>\{<br>&nbsp; "find":"foo",<br>&nbsp; "filter":\{"x":99\},<br>&nbsp; "lsid":\{ ... \},<br>&nbsp; "$clusterTime":\{ ... \},<br>&nbsp; "signature":\{ ... \},<br>&nbsp; "keyId":\{"$numberLong":"0"\}\}\}<br>\}</tt> | 
-| <a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-reply">OP_REPLY</a><br>length=301;requestId=0xbb8;responseTo=0x6633483;opCode=1(=OP_REPLY type)<br>responseFlags=0x08(=AwaitCapable)<br>cursorID=0 _//important for getMore cmds that follow, if any_;<br>startingFrom=0;numberReturned=1<br>document = <tt>\{<br>&nbsp; "cursor"<br>&nbsp; \{<br>&nbsp; &nbsp; "firstBatch":[<br>&nbsp; &nbsp; &nbsp; \{"_id":ObjectId("5b3433ad88d64ee7afb5dc80"), "x":99.0,"order_cust_id":"AF4R2109"\}<br>&nbsp; &nbsp; ],<br>&nbsp; &nbsp; "id":\{"$numberLong":"0"\},<br>&nbsp; &nbsp; "ns":"test.foo"\},<br>&nbsp; &nbsp; "ok":1.0,<br>&nbsp; &nbsp; "operationTime":\{ ... \},<br>&nbsp; &nbsp; "signature":\{ .. \}<br>&nbsp; \}<br>\}</tt> |
+<tr>
+<td><a href="https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/#op-reply">OP_REPLY</a><br>length=301;requestId=0xbb8;responseTo=0x6633483;opCode=1(=OP_REPLY type)<br>responseFlags=0x08(=AwaitCapable)<br>cursorID=0 <em>//important for getMore cmds that follow, if any</em>;<br>startingFrom=0;numberReturned=1<br>document = <tt>{<br>&nbsp; &quot;cursor&quot;<br>&nbsp; {<br>&nbsp; &nbsp; &quot;firstBatch&quot;:[<br>&nbsp; &nbsp; &nbsp; {&quot;_id&quot;:ObjectId(&quot;5b3433ad88d64ee7afb5dc80&quot;), &quot;x&quot;:99.0,&quot;order_cust_id&quot;:&quot;AF4R2109&quot;}<br>&nbsp; &nbsp; ],<br>&nbsp; &nbsp; &quot;id&quot;:{&quot;$numberLong&quot;:&quot;0&quot;},<br>&nbsp; &nbsp; &quot;ns&quot;:&quot;test.foo&quot;},<br>&nbsp; &nbsp; &quot;ok&quot;:1.0,<br>&nbsp; &nbsp; &quot;operationTime&quot;:{ ... },<br>&nbsp; &nbsp; &quot;signature&quot;:{ .. }<br>&nbsp; }<br>}</tt></td>
+</tr>
+</tbody>
+</table>
 
-My way of looking at is:
+<p>My way of looking at is:</p>
 
-- In the beginning there were just collection editing or reading commands (query, insert, update, delete) and four wire packet types for those, plus a reply message type. The db+collection namespace was put in a network field, outside the BSON payload document.
-- Soon there many more command types that the database server accepted. A generic command wire packet format was needed. The existing drivers (that needed to be supported for some time) started using OP_QUERY overloaded for this purpose.
-- A generic command wire packet type OP_COMMAND was invented! And used by mongo shell v3.4(?) and between nodes in clusters and replica sets. But it didn't go mainstream.
-- Instead the OP_MSG type has become the new standard, to be used by 4.2? era drivers. Neither the collection name or database name is in the network header fields - they'll be in "ns" (namespace) inside the BSON payload instead.
+<ul>
+<li>In the beginning there were just collection editing or reading commands (query, insert, update, delete) and four wire packet types for those, plus a reply message type. The db+collection namespace was put in a network field, outside the BSON payload document.</li>
+<li>Soon there many more command types that the database server accepted. A generic command wire packet format was needed. The existing drivers (that needed to be supported for some time) started using OP_QUERY overloaded for this purpose.</li>
+<li>A generic command wire packet type OP_COMMAND was invented! And used by mongo shell v3.4(?) and between nodes in clusters and replica sets. But it didn't go mainstream.</li>
+<li>Instead the OP_MSG type has become the new standard, to be used by 4.2? era drivers. Neither the collection name or database name is in the network header fields - they'll be in &quot;ns&quot; (namespace) inside the BSON payload instead.</li>
+</ul>
 
     </div>
 </div>
@@ -969,20 +981,20 @@ My way of looking at is:
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/mongodb-guide/js/clipboard.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/jquery.sticky.js?1561281049"></script>
-    <script src="/mongodb-guide/js/featherlight.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/highlight.pack.js?1561281049"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1563681063"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1563681063"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1561281049"></script>
-    <script src="/mongodb-guide/js/learn.js?1561281049"></script>
-    <script src="/mongodb-guide/js/hugo-learn.js?1561281049"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1563681063"></script>
+    <script src="/mongodb-guide/js/learn.js?1563681063"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1563681063"></script>
 
-    <link href="/mongodb-guide/mermaid/mermaid.css?1561281049" type="text/css" rel="stylesheet" />
-    <script src="/mongodb-guide/mermaid/mermaid.js?1561281049"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1563681063" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1563681063"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

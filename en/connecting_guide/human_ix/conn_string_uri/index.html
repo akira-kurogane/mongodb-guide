@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta name="description" content="MongoDB connection URI syntax">
 <meta name="author" content="Akira Kurogane">
 
@@ -12,20 +12,20 @@
     <title>Connection string URI :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/fontawesome-all.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hybrid.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/featherlight.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/auto-complete.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/theme.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hugo-theme.css?1561281049" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1563681063" rel="stylesheet">
     
-      <link href="/mongodb-guide/css/theme-green.css?1561281049" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1563681063" rel="stylesheet">
     
 
-    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1561281049"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1563681063"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1561281049"></script>
-<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1563681063"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1563681063"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/mongodb-guide/js/search.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1563681063"></script>
 
     
   </div>
@@ -609,7 +609,7 @@ Akira's MongoDB Guide
 
 <p>If you are in group #1 I'm sorry but I can't 'sexy it up' in any way, no matter how hard I try. At it's simplest the URI you type is short and easy, but as you add authentication credentials and options it can't help becoming more and more verbose.</p>
 
-<p>If you are in group #2 one special difference to note is that multiple host+port tuples can be accepted, instead of just one. More on this in the<a href="#replicaset-host-list-syntax">Replicaset host-list syntax</a> section below.</p>
+<p>If you are in group #2 one special difference to note is that multiple host+port tuples can be accepted, instead of just one. More on this in the <a href="#replicaset-host-list-syntax">Replicaset host-list syntax</a> section below.</p>
 
 <p>If you are in group #3, cool, you're done, you don't need this page and you can move onto the next. (And I'll say I'm envious that you've been given enough privileges to add and modify SRV records on your DNS servers.)</p>
 
@@ -638,9 +638,9 @@ The TCP connection will never be established and the error message will be somet
 
 <p><tt>mongodb://<strong>akira:secret@</strong>myhost.my.domain:27017/</tt></p>
 
-<div class="notices tip" >
-If you have tricky punctuation characters in your password that would wreck the URI parsing (i.e. "/", ":", "@", or "%") encode those with [percent encoding](https://tools.ietf.org/html/rfc3986#section-2.1). E.g. "EatMyH@t" -> "EatMyH%40t".
+<div class="notices tip" ><p>If you have tricky punctuation characters in your password that would wreck the URI parsing (i.e. &quot;/&quot;, &quot;:&quot;, &quot;@&quot;, or &quot;%&quot;) encode those with <a href="https://tools.ietf.org/html/rfc3986#section-2.1">percent encoding</a>. E.g. &quot;EatMyH@t&quot; -&gt; &quot;EatMyH%40t&quot;.</p>
 </div>
+
 
 <p>By default/convention the user authentication credentials are saved in the &quot;<strong>admin</strong>&quot; db on the server. This is the assumed default for mongodb connection URIs too, so you can leave it absent (as above) most of the time.</p>
 
@@ -650,9 +650,9 @@ If you have tricky punctuation characters in your password that would wreck the 
 
 <p><tt>mongodb://akira:secret@myhost.my.domain:27017/[some_other_db]<strong>?authSource=orderhist</strong></tt></p>
 
-<div class="notices warning" >
-I do not recommended created user auth outside the "admin" db &ndash; the above is just for reference in case you are accessing a non-conventional MongoDB cluster or replica set.
+<div class="notices warning" ><p>I do not recommended created user auth outside the &quot;admin&quot; db &ndash; the above is just for reference in case you are accessing a non-conventional MongoDB cluster or replica set.</p>
 </div>
+
 
 <p>What if the user credentials are rejected (e.g. unknown username or wrong password)?
 The TCP socket connection will be established for a moment. Over the TCP connection the username and it's hashed password will be sent. If they fail the server will send the failure reply ('user unauthorized', etc.) in a MongoDB Wire protocol OP_REPLY (or rereply OP_MSG?), then close the socket immediately.</p>
@@ -673,9 +673,9 @@ The TCP socket connection will be established for a moment. Over the TCP connect
 
 <p><tt>mongodb://akira:secret@myhost.my.domain:27017/?ssl=true&amp;minPoolSize=50</tt></p>
 
-<div class="notices note" >
-Staring in v4.2 there is general renaming of "SSL" as "TLS" in mongod/mongos server node and mongo shell options, and the MongoDB documentation in general ([link](https://docs.mongodb.com/master/release-notes/4.2/#add-tls-options)). It seems the connection string URI options are going to remain _ssl\*_ though.
+<div class="notices note" ><p>Staring in v4.2 there is general renaming of &quot;SSL&quot; as &quot;TLS&quot; in mongod/mongos server node and mongo shell options, and the MongoDB documentation in general (<a href="https://docs.mongodb.com/master/release-notes/4.2/#add-tls-options">link</a>). It seems the connection string URI options are going to remain <em>ssl*</em> though.</p>
 </div>
+
 
 <h4 id="most-common-options">Most common options</h4>
 
@@ -968,20 +968,20 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/mongodb-guide/js/clipboard.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/jquery.sticky.js?1561281049"></script>
-    <script src="/mongodb-guide/js/featherlight.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/highlight.pack.js?1561281049"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1563681063"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1563681063"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1561281049"></script>
-    <script src="/mongodb-guide/js/learn.js?1561281049"></script>
-    <script src="/mongodb-guide/js/hugo-learn.js?1561281049"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1563681063"></script>
+    <script src="/mongodb-guide/js/learn.js?1563681063"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1563681063"></script>
 
-    <link href="/mongodb-guide/mermaid/mermaid.css?1561281049" type="text/css" rel="stylesheet" />
-    <script src="/mongodb-guide/mermaid/mermaid.js?1561281049"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1563681063" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1563681063"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

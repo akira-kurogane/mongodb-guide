@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta name="description" content="The JSON-like data format used in MongoDB">
 <meta name="author" content="Akira Kurogane">
 
@@ -12,20 +12,20 @@
     <title>The data: BSON documents :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/fontawesome-all.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hybrid.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/featherlight.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/auto-complete.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/theme.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hugo-theme.css?1561281049" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1563681063" rel="stylesheet">
     
-      <link href="/mongodb-guide/css/theme-green.css?1561281049" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1563681063" rel="stylesheet">
     
 
-    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1561281049"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1563681063"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1561281049"></script>
-<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1563681063"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1563681063"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/mongodb-guide/js/search.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1563681063"></script>
 
     
   </div>
@@ -573,19 +573,135 @@ Akira's MongoDB Guide
 
 <p>MongoDB stores both user collections' data and also its system collections' data in one and only one binary format - the BSON format. It is a binary format for serializing objects of arbitrary keys and values, the same as JSON.</p>
 
-<p>TODO: [two-column view. JSON two- or three-value object on left, annotated or aligned matching BSON binary values in hex on right]</p>
+<table>
+<thead>
+<tr>
+<th>JSON equivalent</th>
+<th>Serialized form in hexadecimal byte values</th>
+</tr>
+</thead>
 
-<p>JSON (and BSON with it) contains key names. This means storage space is consumed by string data of the key names repeated in every object.</p>
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td>0x3e = 62 (byte size of this document) as int32<br><tt>3e 00 00 00</tt></td>
+</tr>
 
-<p>[psuedo-representation of a RDMBS or pre-RDBMS table row]</p>
+<tr>
+<td>{</td>
+<td>&nbsp;</td>
+</tr>
 
-<p>[ ; id; peer_user_id; create_dt; seq_no; reaction_enum_value ]</p>
+<tr>
+<td>&nbsp; &quot;_id&quot; : 7,</td>
+<td>(datatype 0x01 = double), (cstring &quot;_id\0&quot;), (7 as a double floating-point value)<br><tt>01 &nbsp; 5f 69 64 00 &nbsp; 00 00 00 00 00 00 1c 40</tt></td>
+</tr>
 
-<p>[ row header; int64; int64; datetime; int32; int32 ] = hdr sz? + 8 + 8 + 8 + 4 + 4 = 32 bytes + header size.</p>
+<tr>
+<td>&nbsp; &quot;instr&quot; : &quot;XYZ 3m&quot;,</td>
+<td>(datatype 0x07 = string), (cstring &quot;instr\0&quot;), ((not-cstring!) string len 0x07 in int32), (byte array &quot;XYZ 3m&quot; (6 bytes) + an extra null byte)<br><tt>02 &nbsp; 69 6e 73 74 72 &nbsp; 00 &nbsp; 07 00 00 00 &nbsp; 58 59 5a 20 33 6d 00</tt></td>
+</tr>
 
-<p><code>{&quot;_id&quot;: &lt;int64&gt;, &quot;peer_user_id&quot;: &lt;int64&gt;, &quot;create_dt&quot;: &lt;datetime&gt;, &quot;seq_no&quot;: &lt;int32&gt;, &quot;reaction_enum_value&quot;: &lt;int64&gt;}</code> = BSON hdr fields + 3 (key) + 8 + 13 (key) + 8 + 10 (key) + 8 + 7 (key) + 4 + 20 (key) + 4 = 83 bytes + BSON header fields</p>
+<tr>
+<td>&nbsp; &quot;hval&quot; : 904.72,</td>
+<td>(datatype 0x01 = double), (cstring &quot;hval\0&quot;), (904.72 in a double)<br><tt>01 &nbsp; 68 76 61 6c 00 &nbsp; f6 28 5c 8f c2 45 8c 40</tt></td>
+</tr>
 
-<p>Recommendation: use short key names. One- or two-characters ones are easier to work with that long ones in my experience, anyhow.</p>
+<tr>
+<td>&nbsp; &quot;ts&quot; : ISODate(&quot;2019-07-21T01:12:15.348Z&quot;)</td>
+<td>(type 0x09 UTC datetime), (cstring &quot;ts\0&quot;), (UTC milliseconds since the Unix epoch in an int64)<br><tt>09 &nbsp; 74 73 00 &nbsp; f4 1e 16 12 6c 01 00 00</tt></td>
+</tr>
+
+<tr>
+<td>}</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+<td><tt>0x00</tt> datatype indicator for a BSON document<br>N.b. the document type is the only one that has it's type indicator at the end.</td>
+</tr>
+</tbody>
+</table>
+
+<div class="expand">
+    <div class="expand-label" style="cursor: pointer;" onclick="$h = $(this);$h.next('div').slideToggle(100,function () {$h.children('i').attr('class',function () {return $h.next('div').is(':visible') ? 'fas fa-chevron-down' : 'fas fa-chevron-right';});});">
+        <i style="font-size:x-small;" class="fas fa-chevron-right"></i>
+        <span>
+        
+    	
+    	Notes on the above example
+    	
+    	</span>
+    </div>
+    <div class="expand-content" style="display: none;">
+        <ul>
+<li>The &quot;cstring&quot; type used for key names means UTF-8 character string with a tailing null byte on the end. This means all valid UTF-8 strings <em>except</em> the case of having a string of one or more null bytes, which is pointless as a key name value anyhow.</li>
+<li>Even though the &quot;_id&quot; value above looked like an integer to our naked eye, mongo javascript shell made it a 64 bit double float. This happened because I created the document in the (javascript) mongo shell. Depending on your client language you may or not have a floating-point or integer-style value by default; in all client languages you can specify the type if you are more explicity. E.g. in the mongo javascript shell I could have created the _id value as <tt>new NumberInt(7)</tt>, or NumberLong.</li>
+<li>You probably worked this out: Little-endian byte order is used for all the basic types. I.e. everything that isn't a byte string/array.</li>
+</ul>
+
+    </div>
+</div>
+
+<div class="expand">
+    <div class="expand-label" style="cursor: pointer;" onclick="$h = $(this);$h.next('div').slideToggle(100,function () {$h.children('i').attr('class',function () {return $h.next('div').is(':visible') ? 'fas fa-chevron-down' : 'fas fa-chevron-right';});});">
+        <i style="font-size:x-small;" class="fas fa-chevron-right"></i>
+        <span>
+        
+    	
+    	shell example with bsondump of a single-doc collection
+    	
+    	</span>
+    </div>
+    <div class="expand-content" style="display: none;">
+        <pre><code class="language-bash">~$ mongodump &lt;connection_args_to_default_test_db&gt; --eval 'db.foo.insert({&quot;_id&quot;: 7, &quot;instr&quot;: &quot;XYZ 3m&quot;, &quot;hval&quot;: 904.72, &quot;ts&quot;: new ISODate()})'
+WriteResult({ &quot;nInserted&quot; : 1 })
+testrs:PRIMARY&gt; 
+bye
+~$ mongodump &lt;connection_args&gt; -d test -c foo --out /tmp/dump
+2019-07-21T10:13:54.137+0900	writing test.foo to 
+2019-07-21T10:13:54.149+0900	done dumping test.foo (1 document)
+~$ 
+~$ bsondump /tmp/dump/test/foo.bson 
+{&quot;_id&quot;:7.0,&quot;instr&quot;:&quot;XYZ 3m&quot;,&quot;hval&quot;:904.72,&quot;ts&quot;:{&quot;$date&quot;:&quot;2019-07-21T01:12:15.348Z&quot;}}
+~$ #bsondump's job is to print a JSON string representation. To make strictly
+~$ #  valid JSON it must use only the base JSON scalar datatypes. To do this it
+~$ #  follows MongoDB's &quot;Extended JSON&quot; rules such as using {&quot;$date&quot;:&quot;...&quot;} for
+~$ #  an ISODate. This makes it look like &quot;ts&quot; was a nested object, but it was
+~$ #  scalar value - the BSON spec's 64-bit integer of UTC milliseconds.
+~$ 
+~$ od -An -t x1 /tmp/dump/test/foo.bson
+ 3e 00 00 00 01 5f 69 64 00 00 00 00 00 00 00 1c
+ 40 02 69 6e 73 74 72 00 07 00 00 00 58 59 5a 20
+ 33 6d 00 01 68 76 61 6c 00 f6 28 5c 8f c2 45 8c
+ 40 09 74 73 00 f4 1e 16 12 6c 01 00 00 00
+~$ 
+~$ #The 0x3e (= 62) little-endian int32 at the beginning is the byte length of
+~$ #  the first doc. There is no size field/value for the whole collection at
+~$ #  the beginning of the dump file.
+</code></pre>
+
+    </div>
+</div>
+
+<p>The fine detail above is just being shown for the curious. If you want to see even more check out the specification page in <a url="http://bsonspec.org/">bsonspec.org</a>.</p>
+
+<p>The main point for database users is:</p>
+
+<ul>
+<li>BSON is a variable-length format that packs the key-value pairs one after the other in tuples of type + key name [+ byte length when not a fixed-length type] + value data.
+
+<ul>
+<li>For brevity no nested objects or arrays were shown in the example above, but they are also merely another key-value tuple in this serialization/deserialization algorithm.</li>
+</ul></li>
+<li>Key names consume space in <em>every</em> document, even when all the documents in a collection have exactly the same ones. Use short key names to save space.</li>
+<li>The format places no expectations/assumptions about which fields are included, or in which order they are serialized.
+
+<ul>
+<li>Exception: arrays are implemented as objects that must have keys 0, 1, 2, ...</li>
+</ul></li>
+</ul>
 
 <p>In practice BSON is the encoding of MongoDB and isn't used in any other software as popular as MongoDB yet. Nonetheless the BSON specification is one thing and MongoDB is another. There are some extra requirements that MongoDB places on any BSON object is will store:</p>
 
@@ -883,20 +999,20 @@ Akira's MongoDB Guide
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/mongodb-guide/js/clipboard.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/jquery.sticky.js?1561281049"></script>
-    <script src="/mongodb-guide/js/featherlight.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/highlight.pack.js?1561281049"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1563681063"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1563681063"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1561281049"></script>
-    <script src="/mongodb-guide/js/learn.js?1561281049"></script>
-    <script src="/mongodb-guide/js/hugo-learn.js?1561281049"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1563681063"></script>
+    <script src="/mongodb-guide/js/learn.js?1563681063"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1563681063"></script>
 
-    <link href="/mongodb-guide/mermaid/mermaid.css?1561281049" type="text/css" rel="stylesheet" />
-    <script src="/mongodb-guide/mermaid/mermaid.js?1561281049"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1563681063" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1563681063"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

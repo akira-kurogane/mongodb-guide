@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta name="description" content="The simple truth about the mongo shell">
 <meta name="author" content="Akira Kurogane">
 
@@ -12,20 +12,20 @@
     <title>The mongo shell :: Akira&#39;s MongoDB Guide</title>
 
     
-    <link href="/mongodb-guide/css/nucleus.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/fontawesome-all.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hybrid.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/featherlight.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/auto-complete.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/theme.css?1561281049" rel="stylesheet">
-    <link href="/mongodb-guide/css/hugo-theme.css?1561281049" rel="stylesheet">
+    <link href="/mongodb-guide/css/nucleus.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1563681063" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1563681063" rel="stylesheet">
     
-      <link href="/mongodb-guide/css/theme-green.css?1561281049" rel="stylesheet">
+      <link href="/mongodb-guide/css/theme-green.css?1563681063" rel="stylesheet">
     
 
-    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1561281049"></script>
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1563681063"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -60,14 +60,14 @@ Akira's MongoDB Guide
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1561281049"></script>
-<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1563681063"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1563681063"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
     
 </script>
-<script type="text/javascript" src="/mongodb-guide/js/search.js?1561281049"></script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1563681063"></script>
 
     
   </div>
@@ -616,36 +616,40 @@ Akira's MongoDB Guide
         <i style="font-size:x-small;" class="fas fa-chevron-right"></i>
         <span>
         
-        
-        Expand me to see mongo shell connection examples
-        
-        </span>
+    	
+    	Expand me to see mongo shell connection examples
+    	
+    	</span>
     </div>
     <div class="expand-content" style="display: none;">
-        
-The examples beneath show how to connect to:
+        <p>The examples beneath show how to connect to:</p>
 
-- A replicaset named "**merch_backend_rs**" 
-- It has two normal, data-bearing nodes running at
-  - **dbsvrhost1:27017** (the current primary),
-  - **dbsvrhost2:27017** (currently a secondary), 
-- And an arbiter on a third host somewhere.
-- The main user database is "**orderhist**".
-- There is a user "**akira**" with password "**secret**", and the usual "**admin**" db is the authentication database (i.e. where the _system.users_ and related system collections are).
+<ul>
+<li>A replicaset named &quot;<strong>merch_backend_rs</strong>&quot;</li>
+<li>It has two normal, data-bearing nodes running at
 
-Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.
-```sh
-# Most typical
+<ul>
+<li><strong>dbsvrhost1:27017</strong> (the current primary),</li>
+<li><strong>dbsvrhost2:27017</strong> (currently a secondary),</li>
+</ul></li>
+<li>And an arbiter on a third host somewhere.</li>
+<li>The main user database is &quot;<strong>orderhist</strong>&quot;.</li>
+<li>There is a user &quot;<strong>akira</strong>&quot; with password &quot;<strong>secret</strong>&quot;, and the usual &quot;<strong>admin</strong>&quot; db is the authentication database (i.e. where the <em>system.users</em> and related system collections are).</li>
+</ul>
+
+<p>Common usage forms shown below. See <a href="https://docs.mongodb.com/manual/reference/program/mongo/">here</a> for the all the options.</p>
+
+<pre><code class="language-sh"># Most typical
 mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin
 
 # Specify the replicaset name to guarantee a proper replset connection
 mongo --host merch_backend_rs/dbsvrhost1:27017,dbsvrhost2:27017/orderhist -u akira -p secret --authenticationDatabase admin
 
 # Using a mongodb URI connection string, the same as in your application code.
-mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/orderhist?authSource=admin&replicaSet=merch_backend_rs'
+mongo --host 'mongodb://akira:secret@dbsvrhost1:27017,dbsvrhost2:27017/orderhist?authSource=admin&amp;replicaSet=merch_backend_rs'
 
 # If you have disabled authentication in the mongod configuration, and it is 
-#  running on port 27017 on localhost, and you want to use the "test" db ...
+#  running on port 27017 on localhost, and you want to use the &quot;test&quot; db ...
 #  Bingo!, the naked command will work.
 mongo
 
@@ -653,10 +657,10 @@ mongo
 mongo --host dbsvrhost1:27017/orderhist -u akira -p secret --authenticationDatabase admin daily_report.js
 
 # Execute a javascript statement as a command-line argument.
-mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print("Reconcilliation error: Collection a and b counts differ by " + Math.abs(acnt - bcnt));'
-```
+mongo --host dbsvrhost1:27017/orderhist_db -u akira -p secret --authenticationDatabase admin --eval 'var acnt = db.collection_a.count(); var bcnt = db.collection_b.count(); if (acnt != bcnt) print(&quot;Reconcilliation error: Collection a and b counts differ by &quot; + Math.abs(acnt - bcnt));'
+</code></pre>
 
-In the case of sharded cluster do _not_ add a replicaset parameter in the connection arguments. Just provide the hostname and port of the mongos node you are connecting to (or a comma-delimited list of them).
+<p>In the case of sharded cluster do <em>not</em> add a replicaset parameter in the connection arguments. Just provide the hostname and port of the mongos node you are connecting to (or a comma-delimited list of them).</p>
 
     </div>
 </div>
@@ -1033,20 +1037,20 @@ while (cursor.hasNext()) {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/mongodb-guide/js/clipboard.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/jquery.sticky.js?1561281049"></script>
-    <script src="/mongodb-guide/js/featherlight.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1561281049"></script>
-    <script src="/mongodb-guide/js/highlight.pack.js?1561281049"></script>
+    <script src="/mongodb-guide/js/clipboard.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1563681063"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1563681063"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1563681063"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1561281049"></script>
-    <script src="/mongodb-guide/js/learn.js?1561281049"></script>
-    <script src="/mongodb-guide/js/hugo-learn.js?1561281049"></script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1563681063"></script>
+    <script src="/mongodb-guide/js/learn.js?1563681063"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1563681063"></script>
 
-    <link href="/mongodb-guide/mermaid/mermaid.css?1561281049" type="text/css" rel="stylesheet" />
-    <script src="/mongodb-guide/mermaid/mermaid.js?1561281049"></script>
+    <link href="/mongodb-guide/mermaid/mermaid.css?1563681063" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1563681063"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
