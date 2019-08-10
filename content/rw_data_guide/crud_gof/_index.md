@@ -30,4 +30,8 @@ E.g. 3. An upsert is also really an update command like just above, but with a <
 
 {{% children %}}
 
+_To come:_
 
+- The insert command
+- The update command
+- The delete command
