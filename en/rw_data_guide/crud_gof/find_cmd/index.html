@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.40.1" />
-    <meta name="description" content=" ">
+    <meta name="description" content="Akira&#39;s guide for MongoDB">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>Connecting to MongoDB :: Akira&#39;s MongoDB Guide</title>
+    <title>The find command :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1565406726" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/connecting_guide/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -108,8 +108,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/connecting_guide/">
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -405,7 +405,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -434,8 +434,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/" title="The find command" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/">
@@ -508,7 +508,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/" selected>English</option>
                     
                   
               
@@ -572,6 +572,8 @@ Akira's MongoDB Guide
                         </a>
                     </span>
                   
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
                   <span class="links">
                  
                  
@@ -582,7 +584,19 @@ Akira's MongoDB Guide
             
           
           
-            <a href='/mongodb-guide/en/'>Top page</a> > Connecting to MongoDB
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > <a href='/mongodb-guide/en/rw_data_guide/crud_gof/'>Queries, Inserts, Updates and Deletes</a> > The find command
+          
+         
+          
+         
           
          
           
@@ -591,6 +605,24 @@ Akira's MongoDB Guide
                   </span>
                 </div>
                 
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#the-alternative-to-find">The alternative to find</a></li>
+<li><a href="#no-collection-joins-oh-wait-yes-collection-joins">No collection joins. Oh wait, yes, collection joins.</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
               </div>
             </div>
             
@@ -598,9 +630,12 @@ Akira's MongoDB Guide
         
         </div>
         
-          <div id="chapter">
-        
         <div id="body-inner">
+          
+            <h1>
+              
+              The find command
+            </h1>
           
 
         
@@ -610,71 +645,41 @@ Akira's MongoDB Guide
 
 	
 
-<h3 id="chapter-2">Chapter 2</h3>
+<p>You know what <tt>find</tt> is about - it's how you read collection data. You send it with a <strong>query filter</strong> (like the WHERE clause of SQL) and it returns a cursor with documents matching that filter. If you omit a query filter it will return all documents.</p>
 
-<h1 id="connecting-to-mongodb">Connecting to MongoDB</h1>
+<p>Unlike SQL SELECT query a <tt>find</tt> command can only operate on a single collection or view.</p>
 
+<p>Excluding the scope of the collection name the <a href="https://docs.mongodb.com/manual/reference/command/find/">find</a> command has no required arguments, only optional ones.</p>
 
+<p>In practice the <strong>query filter</strong> argument is usually set - it's not often you want to read the entire collection. The <strong>field projection</strong> argument or the <strong>sort order</strong> argument are the next most commonly-used ones. After that are ones like <tt>limit</tt>, <tt>skip</tt>, <tt>collation</tt> and index <tt>hint</tt> that also in SQL. There are also ones that more specialist and/or don't have a SQL equivalent. E.g. setting <tt>batchSize</tt>, or using <tt>tailable</tt> and <tt>awaitData</tt> to make a tailable cursor.</p>
 
+<h3 id="the-alternative-to-find">The alternative to find</h3>
 
+<p>The find command is not the only way to read documents from collection. The <a href="">aggregation pipeline</a> also returns documents, with the same cursor concept that a find provides.</p>
 
+<p>The result from the classic find command:</p>
 
+<pre><code class="language-text">db.collection.find(filter_arg, projection_arg, sort_order)
+</code></pre>
 
-<ul class="children children-li">
-	
+<p>will be indentical to that of the following aggregation pipeline.</p>
 
-	
-		
-			
-		
-	
-	
-	
+<pre><code class="language-text">db.collection.aggregate([
+  {$match: filter_arg},
+  {$sort: sort_order},
+  {$proj: projection_arg}
+])
+</code></pre>
 
-	
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/human_ix/" >How to connect from your app or a terminal</a>
-</li>
-				
+<p>The <strong>query engine</strong> of MongoDB will create an internal plan that is either identical, or logically identically at any rate. Exactly the same documents will be returned. It will also follow the same sort order.</p>
 
-				
-					
-<p>First things first: how you connect to the database service as a client app or administrator</p>
-					
-				
-			
-			
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/" >Client-Server network communication</a>
-</li>
-				
+<p>The order of some the pipeline stages in the aggregation above don't matter, by the way. It could have been the $sort first, $match second. If the $proj doesn't remove any of the fields that the $match or $sort stages reference then any of the other four permutations would also be OK. Aggregation pipeline optimization will collapse logically equivalent pipeline links internally to the same plan the query engine.</p>
 
-				
-					
-<p>The shape of network communication between MongoDB clients and server</p>
-					
-				
-			
-			
-		
-	
+<h3 id="no-collection-joins-oh-wait-yes-collection-joins">No collection joins. Oh wait, yes, collection joins.</h3>
 
-	
-</ul>
+<p>It's not too hard to argue that NoSQL databases' biggest paradigm change was that they didn't support table ( / collection) joins.</p>
 
-
-
-
+<p>This is still true of the find command. The <a href="">aggregation pipeline</a> on the other hand does support joins through the <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/">$lookup</a> operator.</p>
 
 
 
@@ -684,8 +689,6 @@ Akira's MongoDB Guide
 	
 </footer>
 
-        
-            </div> 
         
         </div> 
         
@@ -736,7 +739,6 @@ Akira's MongoDB Guide
             
                 
                     
-                    
                 
                 
 
@@ -746,59 +748,6 @@ Akira's MongoDB Guide
                     
                     
 
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
                     
                         
             
@@ -843,9 +792,6 @@ Akira's MongoDB Guide
                     
                     
 
-                    
-            
-        
                     
             
         
@@ -900,10 +846,17 @@ Akira's MongoDB Guide
             
         
                     
+            
+        
+                    
+            
+        
+                    
                         
             
             
                 
+                    
                     
                 
                 
@@ -919,6 +872,58 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -946,10 +951,10 @@ Akira's MongoDB Guide
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/mql_vs_sql/" title="&#39;MQL&#39; vs. SQL" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>

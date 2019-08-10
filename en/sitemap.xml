@@ -18,6 +18,10 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/</loc>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/</loc>
     <lastmod>2018-05-30T23:25:38+10:00</lastmod>
   </url>
@@ -25,6 +29,10 @@
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/</loc>
     <lastmod>2018-05-30T23:26:59+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/</loc>
   </url>
   
   <url>
