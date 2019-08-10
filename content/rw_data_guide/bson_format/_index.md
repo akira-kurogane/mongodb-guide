@@ -70,10 +70,12 @@ The main point for database users is:
 - Key names consume space in _every_ document, even when all the documents in a collection have exactly the same ones. Use short key names to save space.
 - Except for the required \["0", "1", "2", ...\] in arrays the format places no expectations/assumptions about which fields are included, or in which order they are serialized.
 
-In practice BSON is the encoding of MongoDB and isn't used in any other software as popular as MongoDB yet. Nonetheless the BSON specification is one thing and MongoDB is another. There are some extra requirements that MongoDB places on any BSON object it will store:
+In practice BSON is the encoding of MongoDB and isn't used in any other software as popular as MongoDB yet. Nonetheless the BSON specification is one thing and MongoDB is another. There are some extra requirements that MongoDB places on any BSON object it will store in a collection:
 
 - 16MB maximum size. The BSON specification places no upper limit on the size of data it encodes but the MongoDB database server and the drivers do.
-- "\_id" field: Every document saved to a collection will have an "\_id" field value. It is the primary key value of all collections excluding the oplog. An \_id value of an ObjectId() type will be given automatically by the driver (not the db server) if none is specified at by the user code above the driver API beforean insert.
+- "\_id" field: Exluding the oplog every document saved to a collection will have an "\_id" field value. It is the primary key value. An \_id value of an ObjectId() type will be given automatically by the driver (not the db server) if none is specified at by the user code above the driver API beforean insert.
+
+BSON is also used by MongoDB to package commands and results being sent to and from the server using the wire protocol. The BSON command documents being sent by clients will have the command name as the first key (this is a fixed expectation of the mongod/mongos server nodes) and don't need an \_id key as they don't represent a collection document. They might have a collection document embedded, eg. { "insert": "mycollection", "documents": \[ { "\_id": 999, .... } \], ... }.
 
 ## Datatypes
 
