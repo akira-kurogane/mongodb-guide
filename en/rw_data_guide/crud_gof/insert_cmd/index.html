@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.40.1" />
-    <meta name="description" content="The shape of network communication between MongoDB clients and server">
+    <meta name="description" content="Akira&#39;s guide for MongoDB">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>Client-Server network communication :: Akira&#39;s MongoDB Guide</title>
+    <title>The insert command :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1565494197" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/connecting_guide/cs_nw_details/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -108,7 +108,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
-        parent
+        
         
         
         ">
@@ -227,8 +227,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/">
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -405,7 +405,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -460,8 +460,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/" title="The insert command" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/">
@@ -560,7 +560,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/" selected>English</option>
                     
                   
               
@@ -640,7 +640,13 @@ Akira's MongoDB Guide
             
           
           
-            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/connecting_guide/'>Connecting to MongoDB</a> > Client-Server network communication
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > <a href='/mongodb-guide/en/rw_data_guide/crud_gof/'>Queries, Inserts, Updates and Deletes</a> > The insert command
+          
+         
           
          
           
@@ -653,7 +659,20 @@ Akira's MongoDB Guide
                 
                     <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#the-tt-id-tt-primary-key-field">The <tt>_id</tt> primary key field</a>
+<ul>
+<li><a href="#no-auto-increment-data-type-function">No auto_increment data type / function</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -669,7 +688,7 @@ Akira's MongoDB Guide
           
             <h1>
               
-              Client-Server network communication
+              The insert command
             </h1>
           
 
@@ -680,65 +699,30 @@ Akira's MongoDB Guide
 
 	
 
+<p>The <tt>insert</tt> command requires the collection name it will be operating on, and then just the new document (or documents - technically it accepts an array of them) that should go into the collection.</p>
 
+<p>If the documents can't be inserted an error will be returned. As the insert command can contain multiple documents to insert the error field is not one error code and/or message, but rather the <tt>writeError<strong>s</strong></tt> array.</p>
 
+<p>When it succeeds the server response <em>does not</em> return the _id value of the document. But the MongoDB driver usually has saved it before being sent (maybe making a new one itself if it was not specified). So usually the driver can give it to you as property. See the section below for more details.</p>
 
+<p>Errors that incur can be access control ones (no write privilege on that collection), document validation rejection (if you are one of the relative few using them), writeConcern errors (such as might happen the moment secondaries are lost to the point of not having a majority in a replica set), etc. By far the most common too see is <em>E11000 duplicate key error</em>. This will arise both for duplicate values in user-made unique indexes and the compulsory primary key index on &quot;_id&quot;.</p>
 
-<ul class="children children-li">
-	
+<h3 id="the-tt-id-tt-primary-key-field">The <tt>_id</tt> primary key field</h3>
 
-	
-		
-			
-		
-	
-	
-	
+<p>Documents that lack an &quot;_id&quot; field will be given a new ObjectId as the _id value.</p>
 
-	
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" >Drivers and &#39;the wire&#39;</a>
-</li>
-				
-
-				
-					
-<p>Putting perspective on what a MongoDB driver is through a description of the shape and behaviour of your client requests (and server replies) as TCP traffic</p>
-					
-				
-			
-			
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" >Automatic failover</a>
-</li>
-				
-
-				
-					
-<p>A light introduction regarding how MongoDB drivers will automatically respond to server failures</p>
-					
-				
-			
-			
-		
-	
-
-	
+<ul>
+<li>Typically the MongoDB driver will generate the new ObjectId and add it before sending. There is no need that it be done server side. That's the beauty of the GUUID-style ObjectId datatype &ndash; it's so easy to generate unique values.</li>
+<li>Even if the driver didn't create and add a new ObjectId value for _id then as a final line of policy implementation the server will.<br>I think in this case you will have no information client-side about what the new _id value is, unless the insert was (opaquely to you) changed to be an update command in <em>upsert</em> mode and then getLastError command was used correctly (according to the oldest protocol conventions) and gets it from the <em>upserted</em> value there.</li>
 </ul>
 
+<p>The server will also force that _id be the first field by BSON ordering if it wasn't already. I.e. if you had sent <tt>{&quot;a&quot;: true, &quot;_id&quot;: 999, &quot;b&quot;: false}</tt> you will find it is <tt>{&quot;_id&quot;: 999, &quot;a&quot;: true, &quot;b&quot;: false}</tt> when you get it back in a query.</p>
 
+<h4 id="no-auto-increment-data-type-function">No auto_increment data type / function</h4>
 
+<p>If you don't like the GUUID-like ObjectIds and insted would prefer an unbroken chain of auto-incrementing integers as the primary key, sorry, that can only be performant in unpartitioned database designs and MongoDB does not provide it.</p>
 
+<p>Well, a performant way could exist for distributed databases that are always partitioned on the primary key, but MongoDB supports data partitioning by any secondary index as well. So n'th- and n+1'th-created documents can be on different shards. As an unavoidable result of allowing for that an implementation of an auto-incrementing integer value would have to use a software lock that waits out the responses from all shard primaries to make sure that the next integer isn't being 'double-booked' in 2+ shards simultaneously. That doesn't scale when you have a collection spread across multiple servers.</p>
 
 
 
@@ -798,7 +782,6 @@ Akira's MongoDB Guide
             
                 
                     
-                    
                 
                 
 
@@ -813,9 +796,6 @@ Akira's MongoDB Guide
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -855,63 +835,6 @@ Akira's MongoDB Guide
                     
                     
 
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
                     
             
         
@@ -966,10 +889,17 @@ Akira's MongoDB Guide
             
         
                     
+            
+        
+                    
+            
+        
+                    
                         
             
             
                 
+                    
                     
                 
                 
@@ -985,6 +915,9 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1017,6 +950,61 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 
@@ -1044,10 +1032,10 @@ Akira's MongoDB Guide
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/" title="The find command"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" title="The delete command" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>

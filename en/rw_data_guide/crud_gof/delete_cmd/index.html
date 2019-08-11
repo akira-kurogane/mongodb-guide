@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.40.1" />
-    <meta name="description" content="The shape of network communication between MongoDB clients and server">
+    <meta name="description" content="Akira&#39;s guide for MongoDB">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>Client-Server network communication :: Akira&#39;s MongoDB Guide</title>
+    <title>The delete command :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1565494197" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/connecting_guide/cs_nw_details/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -108,7 +108,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
-        parent
+        
         
         
         ">
@@ -227,8 +227,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/">
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -405,7 +405,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -486,8 +486,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" title="The delete command" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/">
@@ -560,7 +560,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" selected>English</option>
                     
                   
               
@@ -640,7 +640,13 @@ Akira's MongoDB Guide
             
           
           
-            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/connecting_guide/'>Connecting to MongoDB</a> > Client-Server network communication
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > <a href='/mongodb-guide/en/rw_data_guide/crud_gof/'>Queries, Inserts, Updates and Deletes</a> > The delete command
+          
+         
           
          
           
@@ -669,7 +675,7 @@ Akira's MongoDB Guide
           
             <h1>
               
-              Client-Server network communication
+              The delete command
             </h1>
           
 
@@ -678,67 +684,16 @@ Akira's MongoDB Guide
 
 
 
-	
+	<p><tt>delete</tt> is simple. The command requires the collection name it is operating on, and technically it can be multiple deletes in one command object (like insert and update), but after that the only argument you usually specify is the &quot;q&quot; (query) filter one. The only other options are <tt>limit</tt> (think of this as a boolean - 1 to limit to 1, 0 for limitation to be disabled) and the uncommonly-used collation option.</p>
 
+<p>Like insert and update one delete command accepts an array of delete statements,</p>
 
+<p>I really only want to point out two things:</p>
 
-
-
-<ul class="children children-li">
-	
-
-	
-		
-			
-		
-	
-	
-	
-
-	
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" >Drivers and &#39;the wire&#39;</a>
-</li>
-				
-
-				
-					
-<p>Putting perspective on what a MongoDB driver is through a description of the shape and behaviour of your client requests (and server replies) as TCP traffic</p>
-					
-				
-			
-			
-		
-	
-		
-			
-				
-<li>
-<a href="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" >Automatic failover</a>
-</li>
-				
-
-				
-					
-<p>A light introduction regarding how MongoDB drivers will automatically respond to server failures</p>
-					
-				
-			
-			
-		
-	
-
-	
+<ul>
+<li>Set an empty filter argument and you will delete <strong>all</strong> documents. For some this is anti-intuitive: 'I specified nothing, nothing should be deleted' is the idea. Lose this idea! This is a filter - &quot;filter nothing&quot; == &quot;do it to everything&quot;.</li>
+<li><strong>Deletes are not 'cheap'</strong>. They must do approximately the same I/O that an update command does. Removing the document from secondary indexes efficiently requires knowing the key values it was placed by in those indexes &ndash; and the best way to get those is to read the entire document that you will soon 'destroy' and never read again.<br>The human concept for delete is 'forgetting about those documents'. In mental enery terms nothing could be easier. Instead of that, though, think of it as a clean-up that you must do right now, no excuses, before you do anything else.<br>Dropping a whole collection on the other hand is quick and 'cheap' for the size of data being released.</li>
 </ul>
-
-
-
-
 
 
 
@@ -798,7 +753,6 @@ Akira's MongoDB Guide
             
                 
                     
-                    
                 
                 
 
@@ -813,9 +767,6 @@ Akira's MongoDB Guide
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -855,63 +806,6 @@ Akira's MongoDB Guide
                     
                     
 
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
                     
             
         
@@ -966,10 +860,17 @@ Akira's MongoDB Guide
             
         
                     
+            
+        
+                    
+            
+        
+                    
                         
             
             
                 
+                    
                     
                 
                 
@@ -985,6 +886,9 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1017,6 +921,58 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -1044,10 +1000,10 @@ Akira's MongoDB Guide
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/" title="The insert command"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/" title="The find command" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
