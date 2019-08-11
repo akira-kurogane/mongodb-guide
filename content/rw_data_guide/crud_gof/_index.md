@@ -19,6 +19,7 @@ The most fundamental commands for reading and writing unfortunately have a sligh
 | mongoc driver | mongoc\_collection\_find | ...\_insert | ...\_update | ...\_delete |
 | Java driver | find() | insertOne()<br>insertMany() | updateOne()<br>updateMany() | deleteOne()<br>deleteMany() | 
 | (Mostly) extinct aliases | query() | | upsert\*<br>save | | |
+| Legacy Wire<br>Protocol msgs | OP\_QUERY | OP\_INSERT | OP\_UPDATE | OP\_DELETE |
 
 Variations such as insertOne(), updateMany() are just syntactic sugar.
 
@@ -32,6 +33,19 @@ E.g. 3. An upsert is also really an update command like just above, but with a <
 
 _To come:_
 
-- The insert command
 - The update command
-- The delete command
+
+
+#### Historical detour
+
+The documentation for the delete command says _"New in version 2.6"_. 'What! Was MongoDB an append-only database before then?'
+
+Actually the same version info is written for the other two write commands (insert, update). And the find command has _"New in version 3.2"_!
+
+What this points out is that before v2.6 did not accept BSON command objects that were formatted like <tt>{"insert": &lt;collection\_name&gt;, ...}</tt>, <tt>{"update": &lt;collection\_name&gt;, ...}</tt>, <tt>{"delete": &lt;collection\_name&gt;, ...}</tt>. Instead the clients sent an OP\_INSERT, OP\_UDPATE or OP\_DELETE mongo wire protocol message. The target collection name was up a level in a field in the wire protocol message object, whilst every other field was still in the same format in the BSON object packed within.
+
+The difference may seem merely lexical, but the introducing a BSON format spec to allow an array of writes in each wire request (rather than just one) improved the way that bulk writes could be done.
+
+<tt>{"find": &lt;collection\_name&gt;, ...}</tt> likewise wasn't recognized by the server until v3.2. Before then queries were always sent in an OP\_QUERY wire protocol message. The OP\_QUERY wire protocol is still used a lot as a legacy workaround that won't be resolved until OP\_MSG becomes standard. Until then a query might be a classic OP\_QUERY with the target collection in the wire protocol field, or it might be an OP\_QUERY with the fake "$cmd" name string in the wire protocol field for collection, and the packed BSON object will have <tt>"find": &lt;collection\_name&gt;</tt> as it first key-value pair (indicating that is the command name and what its scope is).
+
+FYI in v3.2 an OP\_COMMAND message type was introduced in tandem with the packing of queries in a more generic command BSON object, but it never became mainstream. It was considered deprecated by v3.6 and is removed completely by v4.2.
