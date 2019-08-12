@@ -31,11 +31,6 @@ E.g. 3. An upsert is also really an update command like just above, but with a <
 
 {{% children %}}
 
-_To come:_
-
-- The update command
-
-
 #### Historical detour
 
 The documentation for the delete command says _"New in version 2.6"_. 'What! Was MongoDB an append-only database before then?'
