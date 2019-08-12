@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>Top page :: Akira&#39;s MongoDB Guide</title>
+    <title>The update command :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1565580070" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/">
+  <body class="" data-url="/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -324,7 +324,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
-        
+        parent
         
         
         ">
@@ -405,7 +405,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -486,8 +486,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/" title="The update command" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/">
@@ -586,22 +586,10 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/" selected>English</option>
                     
                   
               
-                  
-              
-          
-              
-              
-                  
-              
-                  
-                    
-                    
-                      <option id="ja" value="https://akira-kurogane.github.io/mongodb-guide/ja/">日本語</option>
-                    
                   
               
           
@@ -651,37 +639,185 @@ Akira's MongoDB Guide
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/rw_data_guide/'>Reading and writing</a> > <a href='/mongodb-guide/en/rw_data_guide/crud_gof/'>Queries, Inserts, Updates and Deletes</a> > The update command
+          
+         
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#query-filter">Query filter</a></li>
+<li><a href="#object-modification-spec">Object modification spec</a></li>
+<li><a href="#multi-upsert-collation">Multi, Upsert, Collation</a></li>
+<li><a href="#ordered-batch-writes-writeconcern-document-validation">Ordered batch writes, writeConcern, document validation</a></li>
+</ul></li>
+<li><a href="#performance">Performance</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
         <div id="head-tags">
         
         </div>
         
         <div id="body-inner">
           
+            <h1>
+              
+              The update command
+            </h1>
+          
 
         
 
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
-
- 
 
 
-<h1 id="akira-s-guide-to-mongodb">Akira's guide to MongoDB</h1>
+	
 
-<p>A guide aimed towards:</p>
+<p>In any database I can think of an update has two fundamental pieces of work to do &ndash; a query to find the matching documents' place in the underlying storage, and the write modification that is done upon them.</p>
+
+<p>Accordingly the query filter and the object modification spec object are the two compulsory but separate arguments of a MongoDB <tt>update</tt> command. An example as mongo shell function:</p>
+
+<pre><code class="language-json">db.cc_status_collection.update(
+  { /* query filter: */
+    &quot;client_code&quot;: &quot;R8THH&quot;,
+    &quot;expiry&quot;: {&quot;$exists&quot;: false }
+  },
+  { /* update spec: */
+    &quot;$set&quot;: { &quot;expiry&quot;: ISODate(&quot;2019-08-31T00:00Z&quot;), &quot;plevel&quot;: 0 },
+    &quot;$unset&quot;: {&quot;active_contacts&quot;: &quot;&quot; },
+    &quot;$inc&quot;: { &quot;admin_op_transaction_count&quot;: 1 }
+  }
+  /* (other option fields exist; not used in this example) */
+)
+</code></pre>
+
+<h4 id="query-filter">Query filter</h4>
+
+<p>The update command's query filter (a.k.a. predicate) is exactly the same as the find command's.</p>
+
+<p>Just as with find it can be an empty object &ndash; this means match any/all documents, as with a find command. Whether it matches just one or all depends on the &quot;multi&quot; flag discussed in the other options subsection below. find's equivalent is the &quot;limit&quot; option which can be any number, but update's multi is a boolean - 1 or all, no inbetween. N.b. options are not part of query filter or the object modification spec; they are set to the side of those two.</p>
+
+<h4 id="object-modification-spec">Object modification spec</h4>
+
+<p>The object modification spec cannot simply be the new object, or just some key-value pairs within it, in verbatim key-value pairs like the document given to an insert command. It must be a set of <strong>update operators</strong> which will objects that specify the target fields and the new value or increment amount or array modifications etc. that will be performed on them.</p>
+
+<p>Hence rather than supplying just: <tt>&quot;expiry&quot;: ISODate(&quot;2019-08-31T00:00Z&quot;)</tt></p>
+
+<p>You must have a $set operation: <tt>&quot;$set&quot;: { &quot;expiry&quot;: ISODate(&quot;2019-08-31T00:00Z&quot;), ... }</tt></p>
+
+<p>$set is the most fundamental <a href="https://docs.mongodb.com/manual/reference/operator/update/">update operator</a> but it is only one of many:</p>
 
 <ul>
-<li>Server / database administrators who will be running MongoDB servers, or</li>
-<li>Application developers who want a deep understanding of the performance, communication and high-availability behaviour of MongoDB clusters.<br /></li>
+<li>Approximately a dozen operators for updating scalar value fields.</li>
+<li>Approximately half a dozen operators for modifying nested arrays.</li>
+<li>Three 'operators' that provide a syntax for access specific values in nested arrays (<tt>$,</tt> <tt>$[]</tt>, <tt>$[&lt;identifier&gt;]</tt>).</li>
 </ul>
 
-<p>The chapter structure and topic emphasis is shaped by my experience working for MongoDB support. That is it is weighted according to what sort of questions and conceptual gaps I know are more common amongst professional MongoDB users, including those with many years experience of relational databases.</p>
+<p>And there are about half a dozen operator <em>modifiers</em> (eg. $each, $sort). Documentation note: the modifiers are confusingly shown in the MongoDB document navigation list as operators, at least as of Aug 2019.</p>
 
-<p>Driver API usage will be explained in tandem with Mongo Wire Protocol as it is the common reality underlying all of the drivers. It is also the key piece of the picture when understanding how and when client requests and the server responses enter and leave the <tt>mongod</tt> and <tt>mongos</tt> server processes.</p>
+<p>Update operators are statements - you are instructing what to do with a field (or list of fields) with a mini-command, you might say.</p>
+
+<pre><code class="language-json">    &quot;$set&quot;: { &quot;expiry&quot;: ISODate(&quot;2019-08-31T00:00Z&quot;), &quot;plevel&quot;: 0 },
+</code></pre>
+
+<p>Nearly every operator can iterate through a list of fields, doing the same thing for each. The &quot;$set&quot; operation above shows how that syntax works with two fields but it could be hundreds or thousands probably. Only $bit is an exception I believe &ndash; if you needed to do it for multiple fields and a <tt>{ &quot;$bit&quot;: ... }</tt> operation for each in the object modification spec.</p>
+
+<p>There is no operator that will iterate all fields, or all fields matching a regex. The array reference operators provide some ways to iterate/find values regardless of which array index they are at, but as for key-value pairs you must supply the exact key names when you submit the update request.</p>
+
+<p>In summary: the object modification spec is a sequentially-executed list of operations, each with a list of fields that will be modified, that will transform a copy of the old document to the new one.</p>
+
+<h4 id="multi-upsert-collation">Multi, Upsert, Collation</h4>
+
+<p>For every update there is a <tt>multi</tt>, <tt>upsert</tt> and <tt>collation</tt> option. This means that in a bulk updates you can mix and match these modes for each update separately.</p>
+
+<p><strong>multi</strong></p>
+
+<p>In short, if you were to use updateOne(...) in the mongo shell (or whatever driver API's equivalent) <tt>multi</tt> will be <tt>false</tt>. If you use updateMany(...) it will be <tt>true</tt>. If you use the legacy <em>update(...)</em> that existed before there were the new ...One() / ...Many() variants it will be <strong>false</strong>. I.e. if you leave the multi option unset the update commands only affects one (or zero) documents.</p>
+
+<p><strong>upsert</strong></p>
+
+<p>From the documentation: <em>&quot;Optional. If true, perform an insert if no documents match the query.&quot;</em></p>
+
+<p>If an upsert applies (i.e. no existing documents matched that query) the multi value has no relevance - one document will be inserted.</p>
+
+<p>The way to tell if you command created a new document or not is to look in the &quot;upserted&quot; nested array that is returned. It will contain the _id value of the new document. If you have multiple updates in a single <tt>{&quot;update&quot;: ..., &quot;updates&quot;: [ ... ], ... }</tt> request you'll need to do matching to the original request to determine which ones exactly became upserts and which didn't. This is low-level (or at least semi-low) detail though. Possibly your driver does this automatically and you can access the original updates vs. new upsert _id idiomatically.</p>
+
+<h4 id="ordered-batch-writes-writeconcern-document-validation">Ordered batch writes, writeConcern, document validation</h4>
+
+<p>The &quot;ordered&quot;, &quot;writeConcern&quot; and &quot;bypassDocumentValidation&quot; options are set at the same level as the array and hence apply to all the updates, if there are more than one. See batch writes for more information regarding &quot;ordered&quot;.</p>
+
+<h3 id="performance">Performance</h3>
+
+<p>As with a find command you should be sure there is an index that makes the query part efficient. There is no way (or need) to make the update part more efficient - once the real address to the document(s) is found the same amount of work is going to be performed.</p>
+
+<p>The objection modification work might seem to be the bigger part of the work - it is usually the harder of the two main arguments to write, and it seems the software must take many more steps to execute than the query part.</p>
+
+<p>The work to modify the BSON object is usually less time-consuming than the query part, however. Thousands of CPU steps can be performed faster in first-level cache than even one out-of-cache memory access to get a part of the storage engine's data structure (e.g. the next B-tree node) and that will probably be repeated several times before the existing document is fully accessed. And that's with a perfect index - think how high the cost will be if you have to document-scan <em>N</em> documents before finding the one to update.</p>
+
+
+
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
         
         </div> 
         
@@ -850,6 +986,7 @@ Akira's MongoDB Guide
             
                 
                     
+                    
                 
                 
 
@@ -864,6 +1001,9 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -897,6 +1037,7 @@ Akira's MongoDB Guide
             
                 
                     
+                    
                 
                 
 
@@ -911,6 +1052,9 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -944,6 +1088,7 @@ Akira's MongoDB Guide
             
                 
                     
+                    
                 
                 
 
@@ -959,6 +1104,9 @@ Akira's MongoDB Guide
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -986,8 +1134,10 @@ Akira's MongoDB Guide
 	 
 	 
 		
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/" title="The insert command"> <i class="fa fa-chevron-left"></i></a>
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+			<a class="nav nav-next" href="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" title="The delete command" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -1026,4 +1176,3 @@ Akira's MongoDB Guide
 </script>
   </body>
 </html>
-

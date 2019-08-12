@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The update command on Akira&#39;s MongoDB Guide</title>
+    <link>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/</link>
+    <description>Recent content in The update command on Akira&#39;s MongoDB Guide</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
