@@ -11,12 +11,14 @@ pre = "<b>4. </b>"
 
 # Making MongoDB Stable
 
-### Why are all the good DBs and other datastores replicated these days? 
+MongoDB gives your application high availability through three features:
 
-(A story about improved speeds and sizes whilst no progress for mean time-to-failure)
+* Replication between replica set nodes
+* Automatic endpoint switching in the drivers
+* Tunable client-side preferences for write and read guarantees
 
-### The oplog mechanims
+Backup and restore: There is no _inbuilt_ backup command (at least in MongoDB's own versions). It is up to you to create them by executing commands externally. Restoring is even more difficult.
 
-TODO
+Performance stability: A MongoDB DBA does not tune this, but there are implementation details to know (especially the flush-to-disk cycle) that both application developer and DBAs should know.
 
-{{% children  %}}
+{{% children %}}

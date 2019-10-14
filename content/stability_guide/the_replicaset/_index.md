@@ -1,5 +1,5 @@
 +++
-title = "The MongoDB replica set"
+title = "Replica sets"
 date =  2018-05-31T15:23:26+10:00
 weight = 5
 draft = true
