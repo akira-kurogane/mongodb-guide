@@ -13,6 +13,11 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/bulk_writes/</loc>
+    <lastmod>2019-09-30T00:00:00+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/bson_format/</loc>
     <lastmod>2018-05-31T14:47:29+10:00</lastmod>
   </url>
@@ -53,6 +58,11 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/performance/</loc>
+    <lastmod>2018-05-31T15:23:26+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/</loc>
     <lastmod>2018-05-30T22:56:34+10:00</lastmod>
   </url>
@@ -75,6 +85,11 @@
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/</loc>
     <lastmod>2018-05-31T13:43:52+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/</loc>
+    <lastmod>2018-05-31T13:47:51+10:00</lastmod>
   </url>
   
   <url>

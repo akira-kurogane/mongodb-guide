@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.40.1" />
-    <meta name="description" content="MongoDB connection URI syntax">
+    <meta name="description" content="Akira&#39;s guide for MongoDB">
 <meta name="author" content="Akira Kurogane">
 
     <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
 
-    <title>Connection string URI :: Akira&#39;s MongoDB Guide</title>
+    <title>Making MongoDB stable :: Akira&#39;s MongoDB Guide</title>
 
     
     <link href="/mongodb-guide/css/nucleus.css?1571450476" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/">
+  <body class="" data-url="/mongodb-guide/en/stability_guide/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -108,7 +108,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
-        parent
+        
         
         
         ">
@@ -137,7 +137,7 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
-        parent
+        
         
         
         ">
@@ -166,8 +166,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/">
@@ -580,8 +580,8 @@ Akira's MongoDB Guide
   
     
     <li data-nav-id="/mongodb-guide/en/stability_guide/" title="Making MongoDB stable" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/mongodb-guide/en/stability_guide/">
@@ -674,7 +674,7 @@ Akira's MongoDB Guide
                   
                     
                     
-                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/" selected>English</option>
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/" selected>English</option>
                     
                   
               
@@ -738,8 +738,6 @@ Akira's MongoDB Guide
                         </a>
                     </span>
                   
-                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
-                  
                   <span class="links">
                  
                  
@@ -750,19 +748,7 @@ Akira's MongoDB Guide
             
           
           
-            
-            
-          
-          
-            
-            
-          
-          
-            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/connecting_guide/'>Connecting to MongoDB</a> > <a href='/mongodb-guide/en/connecting_guide/human_ix/'>How to connect from your app or a terminal</a> > Connection string URI
-          
-         
-          
-         
+            <a href='/mongodb-guide/en/'>Top page</a> > Making MongoDB stable
           
          
           
@@ -771,38 +757,6 @@ Akira's MongoDB Guide
                   </span>
                 </div>
                 
-                    <div class="progress">
-    <div class="wrapper">
-<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#non-uri-formats">Non-URI formats</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#examples">Examples</a>
-<ul>
-<li><a href="#basic-minimal">Basic / minimal</a></li>
-<li><a href="#adding-access-credentials">Adding access credentials</a></li>
-<li><a href="#connection-options">Connection options</a>
-<ul>
-<li><a href="#most-common-options">Most common options</a></li>
-<li><a href="#the-one-connection-parameter-that-can-t-go-in-the-uri">The (one) connection parameter that can't go in the URI</a></li>
-</ul></li>
-<li><a href="#replicaset-host-list-syntax">Replicaset host-list syntax</a></li>
-<li><a href="#defaults">Defaults</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
-    </div>
-</div>
-
-                
               </div>
             </div>
             
@@ -810,12 +764,9 @@ Akira's MongoDB Guide
         
         </div>
         
+          <div id="chapter">
+        
         <div id="body-inner">
-          
-            <h1>
-              
-              Connection string URI
-            </h1>
           
 
         
@@ -825,129 +776,62 @@ Akira's MongoDB Guide
 
 	
 
-<p>Ladies and gentlemen, I present to you <em>(drum roll)</em> the standard MongoDB connection string URI:</p>
+<h3 id="chapter-4">Chapter 4</h3>
 
-<p><tt>mongodb://[user[:password]@]host[:port][,host[:port]]*[/[database_name][?[conn_option[=value]][,conn_option[=value]]*]]</tt></p>
+<h1 id="making-mongodb-stable">Making MongoDB Stable</h1>
 
-<p>At this point I expect all readers fall into one of following three groups:</p>
-
-<ol>
-<li><em>'Yuck. Punctuation vomit or what?'</em></li>
-<li><em>'Ah, a URI like those ones for <a href="https://tools.ietf.org/html/draft-patrick-lambert-odbc-uri-scheme-00">ODBC</a> / <a href="https://www.postgresql.org/docs/9.3/libpq-connect.html">Postgresql</a> / <a href="https://docs.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-2017">MS SQL server</a> / <a href="https://dev.mysql.com/doc/refman/8.0/en/connecting-using-uri-or-key-value-pairs.html#connecting-using-uri">MySQL</a> etc. ...'</em></li>
-<li><em>'You've neglected the DNS/SRV seedlist format, moron'</em></li>
-</ol>
-
-<p>If you are in group #1 I'm sorry but I can't 'sexy it up' in any way, no matter how hard I try. At it's simplest the URI you type is short and easy, but as you add authentication credentials and options it can't help becoming more and more verbose.</p>
-
-<p>If you are in group #2 one special difference to note is that multiple host+port tuples can be accepted, instead of just one. More on this in the <a href="#replicaset-host-list-syntax">Replicaset host-list syntax</a> section below.</p>
-
-<p>If you are in group #3, cool, you're done, you don't need this page and you can move onto the next. (And I'll say I'm envious that you've been given enough privileges to add and modify SRV records on your DNS servers.)</p>
-
-<h4 id="non-uri-formats">Non-URI formats</h4>
-
-<p>You may have used (or will see on other sites) ways to connect without using the URI format. E.g. with the shell <code>mongo --host myhost.my.domain:27018</code>, or a code sample something like <code>var conn = new MongoClient(&quot;myhost.my.domain&quot;, 27018)'</code>.</p>
-
-<p>These are just for legacy compatibility and/or to give some abbreviation. In reality those arguments will be immediately reformatted into a new 'mongodb://...' string and that is what the driver code will use.</p>
-
-<p>As well as being deprecated the non-URI formats differ in syntax from one language driver to another. Let's just stop thinking about them a.s.a.p.</p>
-
-<h2 id="examples">Examples</h2>
-
-<h3 id="basic-minimal">Basic / minimal</h3>
-
-<p>To make a new connection a MongoDB client needs at least the two things any TCP connection requires - a hostname (or it's IP address) and a port.</p>
-
-<p><tt>mongodb://myhost.my.domain:27017/</tt></p>
-
-<p>What if host or port are wrong or the MongoDB server can't be reached because of a network problem?
-The TCP connection will never be established and the error message will be something along those lines. E.g. 'socket exception', and not 'MongoDB server failure'.</p>
-
-<h3 id="adding-access-credentials">Adding access credentials</h3>
-
-<p>If the DB requires users to authenticate with username and password then add those too, delimited by &quot;:&quot; and suffixed with &quot;@&quot;.</p>
-
-<p><tt>mongodb://<strong>akira:secret@</strong>myhost.my.domain:27017/</tt></p>
-
-<div class="notices tip" ><p>If you have tricky punctuation characters in your password that would wreck the URI parsing (i.e. &quot;/&quot;, &quot;:&quot;, &quot;@&quot;, or &quot;%&quot;) encode those with <a href="https://tools.ietf.org/html/rfc3986#section-2.1">percent encoding</a>. E.g. &quot;EatMyH@t&quot; -&gt; &quot;EatMyH%40t&quot;.</p>
-</div>
-
-
-<p>By default/convention the user authentication credentials are saved in the &quot;<strong>admin</strong>&quot; db on the server. This is the assumed default for mongodb connection URIs too, so you can leave it absent (as above) most of the time.</p>
-
-<p>But if the &quot;akira&quot; user authentication credentials had been created in in the &quot;orderhist&quot; user databases then that db name is needed as shown below. The first format sets the starting db namespace (that commands such as find, db stats, etc. will act in) as &quot;orderhist&quot; and the auth source db is assumed to be the same. The second format allows for the starting db namespace to be something else.</p>
-
-<p><tt>mongodb://akira:secret@myhost.my.domain:27017/<strong>orderhist</strong></tt></p>
-
-<p><tt>mongodb://akira:secret@myhost.my.domain:27017/[some_other_db]<strong>?authSource=orderhist</strong></tt></p>
-
-<div class="notices warning" ><p>I do not recommended created user auth outside the &quot;admin&quot; db &ndash; the above is just for reference in case you are accessing a non-conventional MongoDB cluster or replica set.</p>
-</div>
-
-
-<p>What if the user credentials are rejected (e.g. unknown username or wrong password)?
-The TCP socket connection will be established for a moment. Over the TCP connection the username and it's hashed password will be sent. If they fail the server will send the failure reply ('user unauthorized', etc.) in a MongoDB Wire protocol OP_REPLY (or rereply OP_MSG?), then close the socket immediately.</p>
-
-<p><em><strong>Q.</strong> &quot;What if the MongoDB server requires user authentication but the client fails to give username and password?&quot;</em></p>
-
-<p>Unintuitively the TCP connection will be established and stay open! It will remain open to allow the client to send db user credentials. Any command other than <em><a href="https://docs.mongodb.com/manual/reference/command/authenticate/"><tt>authenticate</tt></a></em> or the ones drivers need for basic state detection (<em><a href="https://docs.mongodb.com/manual/reference/command/isMaster/"><tt>isMaster</tt></a></em>, <em><a href="https://docs.mongodb.com/manual/reference/command/hostInfo/"><tt>hostInfo</tt></a></em>, etc.) will be rejected with an authorization error.</p>
-
-<h3 id="connection-options">Connection options</h3>
-
-<p>For convenience the full syntax again:</p>
-
-<p><tt>mongodb://[user[:password]@]host[:port][,host[:port]]*[/[database_name][?[conn_option[=value]][,conn_option[=value]]*]]</tt></p>
-
-<p>After the &quot;/&quot; that follows host[:port] all the values are optional. The first is the user_auth_db_name (see above), then whether that db name is present or not put &quot;?&quot; before any other parameters. Delimit with an &quot;&amp;&quot;, like in a HTTP URI.</p>
-
-<p><strong>Example</strong> If the DB was configured to accept connections that use SSL network encryption then from the client side we add the &quot;ssl=true&quot; to instruct the driver to do that. If we want the driver to make a pool of at least 50 database connections that different threads in the application can share, then we could add &quot;minPoolSize=50&quot;.</p>
-
-<p><tt>mongodb://akira:secret@myhost.my.domain:27017/?ssl=true&amp;minPoolSize=50</tt></p>
-
-<div class="notices note" ><p>Staring in v4.2 there is general renaming of &quot;SSL&quot; as &quot;TLS&quot; in mongod/mongos server node and mongo shell options, and the MongoDB documentation in general (<a href="https://docs.mongodb.com/master/release-notes/4.2/#add-tls-options">link</a>). It seems the connection string URI options are going to remain <em>ssl*</em> though.</p>
-</div>
-
-
-<h4 id="most-common-options">Most common options</h4>
-
-<p>... as I recall seeing / expect should be used.</p>
+<p>MongoDB gives your application high availability through three features:</p>
 
 <ul>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#replica-set-option">replicaSet</a>. Invalid if connecting to a sharded cluster. But otherwise use this ensure you establish a replicaset connection that will failover in the event of a primary switch, rather than just having a standalone connection.</li>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#urioption.authSource">authSource</a></li>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#urioption.readPreference">readPreference</a> N.b. I'd recommend not using this; i.e. always use the default, which is doing reads only from primaries. But I know many users do secondary reads (I hypothesize a habit learned from completely different, non-db systems that have load balancers) and this is the option for setting that.</li>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#urioption.w">w</a> (write concern level)</li>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#urioption.connectTimeoutMS">connectTimeoutMS</a></li>
-<li><a href="https://docs.mongodb.com/manual/reference/connection-string/#urioption.retryWrites">retryWrites</a> If there is a primary switch this will automatically retry once (but only once) any writes to the old primary that errored because it crashed / was stepped down in the middle of the first attempt.</li>
+<li>Replication between replica set nodes</li>
+<li>Automatic endpoint switching in the drivers</li>
+<li>Tunable client-side preferences for write and read guarantees</li>
 </ul>
 
-<h4 id="the-one-connection-parameter-that-can-t-go-in-the-uri">The (one) connection parameter that can't go in the URI</h4>
+<p>Backup and restore: There is no <em>inbuilt</em> backup command (at least in MongoDB's own versions). It is up to you to create them by executing commands externally. Restoring is even more difficult.</p>
 
-<p>Using the &quot;ssl=true&quot; option in my example above requires me to point out that, unfortunately, one of the SSL options (but so far only this one) need to be passed to the client connection function outside of URI. SSL connections usually require a CA cert file and/or a client certificate file to be used, and you can't put a local filepath into an URI. (Well maybe you can, but this isn't standardizedyet.)</p>
+<p>Performance stability: A MongoDB DBA does not tune this, but there are implementation details to know (especially the flush-to-disk cycle) that both application developer and DBAs should know.</p>
 
-<p>A C++ driver example of adding an SSL client PEM file is shown below. The point is simply that the minimal case of needing just one line with the URI connection in it is no longer possible; we have to prepare and add an extra connection option alongside it when the client connection object is constructed.</p>
 
-<pre><code class="language-C++">mongocxx::options::ssl ssl_opts{};
-ssl_opts.pem_file(&quot;client.pem&quot;);
 
-mongocxx::options::client client_opts{};
-client_opts.ssl_opts(ssl_opts);
 
-auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters&gt;..&amp;ssl=true&quot;}, client_opts};
-</code></pre>
 
-<h3 id="replicaset-host-list-syntax">Replicaset host-list syntax</h3>
 
-<p>The MongoDB connection URIs above could be syntactically valid as HTTP URLs if we simply replace &quot;mongodb&quot; with &quot;http&quot;, but it isn't always so. There is one key HTTP-like rule-breaker which is necessitated by the fact that MongoDB typically uses replica sets. If a replica set has hosts hostA, hostB and hostC, each using the same port 27017, then the URI can accept them in a comma-separated list:</p>
 
-<p><tt>mongodb://akira:secret@hostA:27017,hostB:27017,hostC:27017/?ssl=true&amp;minPoolSize=50</tt></p>
+<ul class="children children-li">
+	
 
-<p>If you only specify one host (let's say hostA:27017) that the driver can connect to it will automatically query for the full replica set configuration/status. After that it will be aware of all the other hosts, so it might seem unnecessary to specify multiple hosts to connect to. But imagine a time when hostA was shut down for maintenance, or had crashed, and the client has to establish a new connection.</p>
+	
+		
+			
+		
+	
+	
+	
 
-<h3 id="defaults">Defaults</h3>
+	
+		
+	
+		
+			
+				
+<li>
+<a href="/mongodb-guide/en/stability_guide/performance/" >Performance stability</a>
+</li>
+				
 
-<p>Most of of the URI parameters have default values.</p>
+				
+			
+			
+		
+	
 
-<p>Most useful to know is that the hostname default is <strong>localhost</strong>, and the port default is <strong>27017</strong>. It's these that make it possible for clients to connect without specifying any connection options at all. All you need to do is to set up a mongod or mongos process running on port 27017 with no user authentication on the same server as the client.</p>
+	
+</ul>
+
+
+
+
 
 
 
@@ -957,6 +841,8 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
 	
 </footer>
 
+        
+            </div> 
         
         </div> 
         
@@ -1007,7 +893,6 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
                 
                     
-                    
                 
                 
 
@@ -1023,7 +908,6 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
                 
                     
-                    
                 
                 
 
@@ -1038,7 +922,6 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
             
                 
-                    
                     
                 
                 
@@ -1055,9 +938,6 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -1279,6 +1159,7 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
                 
                     
+                    
                 
                 
 
@@ -1293,6 +1174,9 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1317,10 +1201,10 @@ auto client = mongocxx::client{uri{&quot;mongodb://host1/?..&lt;other_parameters
 	 
 	 
 		
-			<a class="nav nav-prev" href="/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" title="The delete command"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/mongodb-guide/en/stability_guide/performance/" title="Performance stability" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
