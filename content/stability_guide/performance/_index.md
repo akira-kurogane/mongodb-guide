@@ -2,7 +2,6 @@
 title = "Performance stability"
 date =  2018-05-31T15:23:26+10:00
 weight = 70
-draft = true
 +++
 
 This chapter's title implies that MongDB has a performance stability issue. It does not.
@@ -32,7 +31,7 @@ Two things to be aware of regarding time-to-live indexes
 * Once per minute. The TTL index deletes are executed by a background thread that sleeps for 60 secs by default before iterating all indexes with the "expireAfterSeconds" field. If the deletes take, say, 0.3s in total each minute there will be 60.3s cycle of deletes appearing. This is a different cycle to checkpoints. Eventually they will overlap, then move apart, then move over again, etc.
 * If a large number of docs match the TTL clause there will be no mercy - the mongod node will process the deletes for all them at once. And deletes are basically as costly as updates (they have to be - the documents have to be read to get the values that are the keys that should be removed from the secondary indexes). It is a common mistake to create a new TTL index to keep a collection smaller and not think that the first TTL 'pass' might be deleting a huge fraction of the collection in one go.
 
-If you would like a much more constant cost and can accept a policy based on size rather than exact age, pleae use capped collections.
+If you would like a much more constant cost and can accept a policy based on _size_ rather than a timestamp-value limit, please use capped collections.
 
 #### The OS performance is unstable
 
