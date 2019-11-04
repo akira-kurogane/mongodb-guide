@@ -5,11 +5,11 @@ weight = 30
 draft = true
 +++
 
-When there is an (election)[the_replicaset/elections] writes from clients must start going to the new primary. Likewise reads using the (default) primary read preference must go there, and reads using secondary read preference should be directed only to nodes that are secondary after the election.
+When there is an [election](../the_replicaset/elections) writes from clients must start going to the new primary. Likewise reads using the (default) primary read preference must go there, and reads using secondary read preference should be directed only to nodes that are secondary after the election.
 
-What you need to is: Nothing, nothing at all. It is handled for the clients automatically, and DBAs do not have to install or configure anything extra either.
+What you need to do is: Nothing, nothing at all. It is handled for the clients automatically, and DBAs do not have to install or configure anything extra either.
 
-The reason is the MongoDB drivers have the code that does it. This is another design decision implemneted from very early in MongoDB's development, and as result it is something that you can rely today without even noticing it.
+The reason is the MongoDB drivers have the code that does it. This is another design decision implemented from very early in MongoDB's development, and was something that you could rely on without even noticing it even before MongoDB became well-known.
 
 Given how many different languages MongoDB drivers were implemented in this is impressive. Network programming is asynchronous by nature and has a menagerie of error possibilities that can't be abstracted away, but the same complex switching logic was achieved in each language.
 

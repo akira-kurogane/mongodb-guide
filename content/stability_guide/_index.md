@@ -12,18 +12,11 @@ pre = "<b>4. </b>"
 
 **High availability**
 
-MongoDB gives your application high availability through three features:
+MongoDB gives your application high availability through two features:
 
-* Replication between replica set nodes
-* Automatic endpoint switching in the drivers
-* Tunable client-side preferences for write and read guarantees
+* [Replication between replica set nodes](the_replicaset/), with automatic switching of the primary role when necessary.
+* [Automatic endpoint switching in the drivers](driver_failover/)
 
-**Backup and restore**
+A related feature is:
 
-There is no _inbuilt_ backup command (at least in MongoDB's own versions). It is up to you to create them by executing commands externally. Restoring is even more difficult.
-
-**Performance stability**
-
-A MongoDB DBA does not tune this, but there are implementation details to know (especially the flush-to-disk cycle) that both application developer and DBAs should know.
-
-{{% children %}}
+* [Tunable client-side preferences for write and read guarantees](write_and_read_concern/)
