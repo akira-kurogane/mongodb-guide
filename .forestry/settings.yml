@@ -11,7 +11,7 @@ sections:
   match: "*"
 - type: directory
   path: content/rw_data_guide
-  label: Rw data guide
+  label: rw_data_guide
   create: all
   match: "**/*"
 - type: directory
