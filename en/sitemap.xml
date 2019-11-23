@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/the_replicaset/config_and_status/</loc>
+    <lastmod>2019-10-19T09:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/perf_guide/plan_optimization/</loc>
+    <lastmod>2018-06-01T11:25:51+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/serverstatus/</loc>
+    <lastmod>2018-05-31T16:37:47+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/expansion_guide/active_dataset_concept/</loc>
+    <lastmod>2018-05-31T15:58:46+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/the_replicaset/</loc>
+    <lastmod>2018-05-31T15:23:26+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/mql_vs_sql/</loc>
     <lastmod>2018-05-31T14:47:29+10:00</lastmod>
   </url>
@@ -13,8 +38,38 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/the_replicaset/elections/</loc>
+    <lastmod>2019-10-19T09:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/oplog_replication/</loc>
+    <lastmod>2019-10-14T06:23:26+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/bulk_writes/</loc>
     <lastmod>2019-09-30T00:00:00+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/perf_guide/hardware_upgrade/</loc>
+    <lastmod>2018-06-01T11:27:49+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/cloud_metrics/</loc>
+    <lastmod>2018-05-31T16:38:31+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/authentication/</loc>
+    <lastmod>2018-05-31T16:28:13+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/expansion_guide/hardware_increase/</loc>
+    <lastmod>2018-05-31T16:03:04+10:00</lastmod>
   </url>
   
   <url>
@@ -27,8 +82,38 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/perf_guide/shard_big_collections/</loc>
+    <lastmod>2018-06-01T11:28:43+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/cloud_alerts/</loc>
+    <lastmod>2018-05-31T16:41:29+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/access_control/</loc>
+    <lastmod>2018-05-31T16:28:25+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/expansion_guide/sharding/</loc>
+    <lastmod>2018-05-31T16:05:23+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/</loc>
     <lastmod>2018-05-30T23:25:38+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/third_party_systems/</loc>
+    <lastmod>2018-05-31T16:41:47+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/network_encryption/</loc>
+    <lastmod>2018-05-31T16:32:06+10:00</lastmod>
   </url>
   
   <url>
@@ -45,8 +130,33 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/currentop/</loc>
+    <lastmod>2018-05-31T16:42:01+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/storage_encryption/</loc>
+    <lastmod>2018-05-31T16:32:15+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/</loc>
     <lastmod>2018-05-30T23:41:54+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/driver_failover/</loc>
+    <lastmod>2019-10-14T08:23:26+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/non_mongodb_hardening/</loc>
+    <lastmod>2018-05-31T16:32:47+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/aggregation_pipeline/</loc>
+    <lastmod>2018-05-31T15:08:28+10:00</lastmod>
   </url>
   
   <url>
@@ -54,7 +164,32 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/auditing/</loc>
+    <lastmod>2018-05-31T16:32:55+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/write_and_read_concern/</loc>
+    <lastmod>2018-05-31T15:55:52+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/imp_exp_utilities/</loc>
+    <lastmod>2018-05-31T15:09:46+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/</loc>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/backup_choices/</loc>
+    <lastmod>2018-05-31T15:56:49+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/restore/</loc>
+    <lastmod>2018-05-31T15:23:26+10:00</lastmod>
   </url>
   
   <url>
@@ -93,8 +228,32 @@
   </url>
   
   <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/expansion_guide/</loc>
+    <lastmod>2018-05-31T13:58:00+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/perf_guide/</loc>
+    <lastmod>2018-05-31T13:59:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/secure_guide/</loc>
+    <lastmod>2018-05-31T14:01:46+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/</loc>
+    <lastmod>2018-05-31T14:02:39+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://akira-kurogane.github.io/mongodb-guide/en/docs_guide/</loc>
+    <lastmod>2018-05-31T14:03:29+10:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/categories/</loc>
-    <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
@@ -123,7 +282,6 @@
   
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/en/tags/</loc>
-    <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"

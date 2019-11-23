@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Replica sets on Akira&#39;s MongoDB Guide</title>
+    <link>https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/the_replicaset/</link>
+    <description>Recent content in Replica sets on Akira&#39;s MongoDB Guide</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 31 May 2018 15:23:26 +1000</lastBuildDate>
+    
+	<atom:link href="https://akira-kurogane.github.io/mongodb-guide/en/stability_guide/the_replicaset/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="description" content="Akira&#39;s guide for MongoDB">
+<meta name="author" content="Akira Kurogane">
+
+    <link rel="icon" href="/mongodb-guide/images/favicon.png" type="image/png">
+
+    <title>Cloud metrics :: Akira&#39;s MongoDB Guide</title>
+
+    
+    <link href="/mongodb-guide/css/nucleus.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/fontawesome-all.min.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/hybrid.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/featherlight.min.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/perfect-scrollbar.min.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/auto-complete.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/atom-one-dark-reasonable.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/theme.css?1574476271" rel="stylesheet">
+    <link href="/mongodb-guide/css/hugo-theme.css?1574476271" rel="stylesheet">
+    
+      <link href="/mongodb-guide/css/theme-green.css?1574476271" rel="stylesheet">
+    
+
+    <script src="/mongodb-guide/js/jquery-3.3.1.min.js?1574476271"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/mongodb-guide/en/monitoring_guide/cloud_metrics/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="https://akira-kurogane.github.io/mongodb-guide/">
+
+Akira's MongoDB Guide
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/mongodb-guide/js/lunr.min.js?1574476271"></script>
+<script type="text/javascript" src="/mongodb-guide/js/auto-complete.js?1574476271"></script>
+<script type="text/javascript">
+    
+        var baseurl = "https:\/\/akira-kurogane.github.io\/mongodb-guide\/\/en";
+    
+</script>
+<script type="text/javascript" src="/mongodb-guide/js/search.js?1574476271"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/guide_intro/" title="What you can do with MongoDB" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/guide_intro/">
+          <b>1. </b>What you can do with MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/" title="Connecting to MongoDB" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/">
+          <b>2. </b>Connecting to MongoDB
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/" title="How to connect from your app or a terminal" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/">
+          Human how-to
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/" title="Connection string URI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/conn_string_uri/">
+          Connection string URI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/" title="The mongo shell" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/human_ix/mongo_shell/">
+          The mongo shell
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/" title="Client-Server network communication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/">
+          client ⇄ TCP ⇄ db server
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/" title="Drivers and &#39;the wire&#39;" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/drivers/">
+          Drivers and &#39;the wire&#39;
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/" title="Automatic failover" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/connecting_guide/cs_nw_details/ha_connections/">
+          Automatic failover
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/" title="Reading and writing" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/">
+          <b>3. </b>Reading and writing
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/mql_vs_sql/" title="&#39;MQL&#39; vs. SQL" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/mql_vs_sql/">
+          &#39;MQL&#39; vs. SQL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/bulk_writes/" title="Bulk writes API" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/bulk_writes/">
+          Bulk writes API
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/bson_format/" title="The data: BSON documents" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/bson_format/">
+          The data: BSON documents
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/" title="Queries, Inserts, Updates and Deletes" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/crud_gof/">
+          The CRUD G.o.F.
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/" title="The find command" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/crud_gof/find_cmd/">
+          find
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/" title="The insert command" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/crud_gof/insert_cmd/">
+          insert
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/" title="The update command" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/crud_gof/update_cmd/">
+          update
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/" title="The delete command" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/crud_gof/delete_cmd/">
+          delete
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/aggregation_pipeline/" title="Aggregation Pipeline" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/aggregation_pipeline/">
+          Aggregation Pipeline
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/rw_data_guide/imp_exp_utilities/" title="Import and export utilities" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/rw_data_guide/imp_exp_utilities/">
+          Import and export utilities
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/" title="Making MongoDB stable" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/">
+          <b>4. </b>Making MongoDB stable
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/the_replicaset/" title="Replica sets" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/the_replicaset/">
+          Replica sets
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/the_replicaset/config_and_status/" title="Replica set configuration and status" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/the_replicaset/config_and_status/">
+          Conf &amp; status
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/the_replicaset/elections/" title="Replica set elections" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/the_replicaset/elections/">
+          Elections
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/oplog_replication/" title="MongoDB Oplog" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/oplog_replication/">
+          MongoDB Oplog
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/driver_failover/" title="Driver automatic failover" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/driver_failover/">
+          Driver automatic failover
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/write_and_read_concern/" title="Read and Write concern" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/write_and_read_concern/">
+          Read and Write concern
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/backup_choices/" title="Backup choices" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/backup_choices/">
+          Backup choices
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/restore/" title="Restoring backups" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/restore/">
+          Restoring backups
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/stability_guide/performance/" title="Performance stability" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/stability_guide/performance/">
+          Performance stability
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/expansion_guide/" title="Making MongoDB bigger" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/expansion_guide/">
+          <b>5. </b>Making MongoDB bigger
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/expansion_guide/active_dataset_concept/" title="Active dataset - Key concept" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/expansion_guide/active_dataset_concept/">
+          Active dataset - Key concept
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/expansion_guide/hardware_increase/" title="Hardware - the simple answer" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/expansion_guide/hardware_increase/">
+          Hardware - the simple answer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/expansion_guide/sharding/" title="Sharding for expansion" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/expansion_guide/sharding/">
+          Sharding for expansion
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/perf_guide/" title="Making MongoDB fast" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/perf_guide/">
+          <b>6. </b>Making MongoDB fast
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/perf_guide/plan_optimization/" title="Improving your queries, updates and aggregations" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/perf_guide/plan_optimization/">
+          Improving your queries, updates and aggregations
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/perf_guide/hardware_upgrade/" title="Provisioning more and/or better hardware" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/perf_guide/hardware_upgrade/">
+          Provisioning more and/or better hardware
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/perf_guide/shard_big_collections/" title="Shard your biggest datasets" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/perf_guide/shard_big_collections/">
+          Shard your biggest datasets
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/" title="Making MongoDB secure" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/">
+          <b>7. </b>Making MongoDB secure
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/authentication/" title="Enabling authentication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/authentication/">
+          Enabling authentication
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/access_control/" title="Access control (a.k.a. Authorization)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/access_control/">
+          Access control (a.k.a. Authorization)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/network_encryption/" title="Network encryption" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/network_encryption/">
+          Network encryption
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/storage_encryption/" title="Storage encryption" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/storage_encryption/">
+          Storage encryption
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/non_mongodb_hardening/" title="Other &#39;hardening&#39;" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/non_mongodb_hardening/">
+          Other &#39;hardening&#39;
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/secure_guide/auditing/" title="Auditing" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/secure_guide/auditing/">
+          Auditing
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/" title="MongoDB Diagnosis" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/">
+          <b>8. </b>MongoDB Diagnosis
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/serverstatus/" title="serverStatus command" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/serverstatus/">
+          serverStatus command
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/cloud_metrics/" title="Cloud metrics" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/cloud_metrics/">
+          Cloud metrics
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/cloud_alerts/" title="Cloud alerts" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/cloud_alerts/">
+          Cloud alerts
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/third_party_systems/" title="Third party systems" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/third_party_systems/">
+          Third party systems
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/monitoring_guide/currentop/" title="db.currentOp()" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/monitoring_guide/currentop/">
+          db.currentOp()
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/mongodb-guide/en/docs_guide/" title="Read the docs" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/mongodb-guide/en/docs_guide/">
+          <b>9. </b>Read the docs
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/akira-kurogane/mongodb-guide"><i class='fa fa-fw fa-github'></i> Github repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://akira-kurogane.github.io/en/mongodb-guide/credits"><i class='fa fa-fw fa-bullhorn'></i> Theme credits</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="https://akira-kurogane.github.io/mongodb-guide/en/monitoring_guide/cloud_metrics/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <center>
+
+    Github repo: 
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide" data-icon="octicon-star" data-show-count="false" aria-label="Star Akira's MongoDB Guide on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/akira-kurogane/mongodb-guide/fork" data-icon="octicon-repo-forked" data-show-count="false" aria-label="Fork Akira's MongoDB Guide on GitHub">Fork</a>
+
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/mongodb-guide/en/'>Top page</a> > <a href='/mongodb-guide/en/monitoring_guide/'>MongoDB Diagnosis</a> > Cloud metrics
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Cloud metrics
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/mongodb-guide/en/monitoring_guide/serverstatus/" title="serverStatus command"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/mongodb-guide/en/monitoring_guide/cloud_alerts/" title="Cloud alerts" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/mongodb-guide/js/clipboard.min.js?1574476271"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.min.js?1574476271"></script>
+    <script src="/mongodb-guide/js/perfect-scrollbar.jquery.min.js?1574476271"></script>
+    <script src="/mongodb-guide/js/jquery.sticky.js?1574476271"></script>
+    <script src="/mongodb-guide/js/featherlight.min.js?1574476271"></script>
+    <script src="/mongodb-guide/js/html5shiv-printshiv.min.js?1574476271"></script>
+    <script src="/mongodb-guide/js/highlight.pack.js?1574476271"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/mongodb-guide/js/modernizr.custom-3.6.0.js?1574476271"></script>
+    <script src="/mongodb-guide/js/learn.js?1574476271"></script>
+    <script src="/mongodb-guide/js/hugo-learn.js?1574476271"></script>
+
+    <link href="/mongodb-guide/mermaid/mermaid.css?1574476271" type="text/css" rel="stylesheet" />
+    <script src="/mongodb-guide/mermaid/mermaid.js?1574476271"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
