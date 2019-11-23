@@ -2,14 +2,13 @@
 title = "Replica sets"
 date =  2018-05-31T15:23:26+10:00
 weight = 5
-draft = true
 +++
 
 ## Downtime-proofing
 
-Replica sets have been around for a while before MongoDB. The usual name for those is Master-Slave pairs or sets. Clients write to the one master node (or a node that is acting as master for those particular records) and the slaves copy the same updates.
+Replica sets have been around for a while before MongoDB. The older name for those was master-slave sets. Clients write to the one master node (or a node that is acting as master for those particular records) and the slaves copy the same updates.
 
-The relational databases that existed before MongoDB had to bolt this on after their original design was already set. MongoDB and other distributed databases or key-value stores of the same generation, such as Cassandra and Redis, are built with the mechanics for replication from the start.
+Relational databases that existed before MongoDB had to 'bolt it on' after their original design was already set. MongoDB and other distributed databases or key-value stores of the same generation, such as Cassandra and Redis, had the mechanics for replication built in from the start. (To be pedantic: they were in mind from the start and were programmed in during the beta-phase development.)
 
 The original purpose of the older master-slave replication added onto relational databases is being a guarantee against data being lost if the master node crashes and can't be recovered.
 

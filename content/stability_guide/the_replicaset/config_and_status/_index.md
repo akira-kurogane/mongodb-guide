@@ -3,7 +3,6 @@ title = "Replica set configuration and status"
 menuTitle = "Conf & status"
 date =  2019-10-19T09:00:00+09:00
 weight = 5
-draft = true
 +++
 
 
@@ -33,9 +32,9 @@ While a node is running normally as a primary:
 
 * Clients will send all write commands to it
 * Clients will also send read commands to it if they have (the default) "primary". "primaryPreferred" and "nearest" read preference reads may also be coming.
-* At least one of the secondaries will be tailing its oplog. (Not necessarily all of them &ndash; they usually do, but they can also tail from another secondaryif it allows the replication to go faster.)
-* It monitors the highest optime the fastest secondary has proceeded to, the maxim optime half (or more) of the secondaries have proceeded to by the information they pass back in the repeating getmore commands from the secondaries and the heartbeats.
-* When w:2+ or w:majority commands they are queued after they complete on the primary. Only when an asynchronous process tracking the progress for the relevant number of secondaries reaches the same opTime (or later) does the command complete, including sending the net response back to the client.
+* At least one of the secondaries will be tailing its oplog. (Not necessarily all of them &ndash; they usually do, but they can also tail from another secondary if it allows the replication to go faster.)
+* It monitors the highest optime the fastest secondary has proceeded to, the maximum optime half (or more) of the secondaries have proceeded to by the information they pass back in the repeating getmore commands from the secondaries and the heartbeats.
+* When it finishes applying writes with w:2+ or w:majority writeConcern against its own data it parks those in a queue and, for the meantime, stops working on them. Only when an asynchronous process tracking the progress for the relevant number of secondaries reaches the same opTime (or later) does the command properly complete, including sending the net response back to the client.
 
 While a node is running normally as a secondary:
 
