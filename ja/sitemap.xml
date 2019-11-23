@@ -4,6 +4,7 @@
   
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/ja/categories/</loc>
+    <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -18,6 +19,7 @@
   
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/ja/tags/</loc>
+    <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -46,6 +48,7 @@
   
   <url>
     <loc>https://akira-kurogane.github.io/mongodb-guide/ja/</loc>
+    <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
